@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Commands | AlienCharm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Akony Bold Font -->
+    <link rel="preconnect" href="https://fonts.cdnfonts.com">
+    <link href="https://fonts.cdnfonts.com/css/akony" rel="stylesheet">
+    
+    <!-- Sprite Graffiti Font -->
+    <link rel="preconnect" href="https://fonts.cdnfonts.com">
+    <link href="https://fonts.cdnfonts.com/css/sprite-graffiti" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Основные цвета */
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            
+            /* Космические цвета */
+            --space-dark: #0a0a2a;
+            --space-purple: #4a00e0;
+            --space-blue: #00b4d8;
+            --space-neon: #00ff9d; /* Мятно-зеленый */
+            --space-star: #ffd700;
+            
+            /* Акцентные цвета */
+            --accent-cyan: #00d1ff;
+            --accent-magenta: #ff00ff;
+            --accent-yellow: #ffd700;
+            
+            /* Градиенты */
+            --gradient-cyber: linear-gradient(45deg, var(--accent-cyan), var(--accent-magenta));
+            --gradient-space: linear-gradient(135deg, var(--space-purple), var(--space-blue));
+            --gradient-subtle: linear-gradient(135deg, rgba(0, 209, 255, 0.1), rgba(255, 0, 255, 0.1));
+            --gradient-space-subtle: linear-gradient(135deg, rgba(74, 0, 224, 0.1), rgba(0, 180, 216, 0.1));
+            
+            /* Тени */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-space: 0 10px 30px rgba(0, 180, 216, 0.2);
+            
+            /* Радиусы */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            
+            /* Переходы */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Макеты */
+            --container-max: 1200px;
+            --container-padding: 1.5rem;
+        }
+
+        .light-mode {
+            --bg-primary: var(--white);
+            --bg-secondary: var(--gray-50);
+            --bg-tertiary: var(--gray-100);
+            --text-primary: var(--gray-900);
+            --text-secondary: var(--gray-800);
+            --text-tertiary: var(--gray-300);
+            --border-color: var(--gray-200);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --outline-color: rgba(0, 0, 0, 0.3);
+            --bg-outline-color: rgba(0, 0, 0, 0.6);
+            --logo-color: var(--black);
+            --metrics-bg: var(--black);
+            --metrics-text: var(--white);
+            --hero-bg-color: var(--white);
+            --btn-bg: var(--black);
+            --btn-text: var(--white);
+            --btn-border: var(--black);
+            --btn-hover-bg: var(--gray-900);
+            --btn-hover-border: var(--gray-900);
+            --cross-color: var(--black);
+            --accent-color: var(--accent-cyan);
+            --gradient-primary: var(--gradient-cyber);
+            --gradient-subtle-active: var(--gradient-subtle);
+            --theme-btn-bg: var(--gray-100);
+            --theme-btn-border: var(--gray-300);
+        }
+
+        .dark-mode {
+            --bg-primary: var(--black);
+            --bg-secondary: var(--gray-900);
+            --bg-tertiary: var(--gray-800);
+            --text-primary: var(--white);
+            --text-secondary: var(--gray-200);
+            --text-tertiary: var(--gray-300);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --outline-color: rgba(0, 0, 0, 0.7);
+            --bg-outline-color: rgba(255, 255, 255, 0.5);
+            --logo-color: var(--white);
+            --metrics-bg: var(--white);
+            --metrics-text: var(--black);
+            --hero-bg-color: var(--black);
+            --btn-bg: var(--white);
+            --btn-text: var(--black);
+            --btn-border: var(--white);
+            --btn-hover-bg: var(--gray-100);
+            --btn-hover-border: var(--gray-100);
+            --cross-color: var(--white);
+            --accent-color: var(--accent-cyan);
+            --gradient-primary: var(--gradient-cyber);
+            --gradient-subtle-active: var(--gradient-subtle);
+            --theme-btn-bg: var(--gray-800);
+            --theme-btn-border: rgba(255, 255, 255, 0.1);
+        }
+
+        .space-mode {
+            --bg-primary: var(--space-dark);
+            --bg-secondary: rgba(10, 10, 42, 0.8);
+            --bg-tertiary: rgba(74, 0, 224, 0.1);
+            --text-primary: var(--white);
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-tertiary: rgba(255, 255, 255, 0.6);
+            --border-color: rgba(0, 180, 216, 0.2);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --outline-color: rgba(0, 180, 216, 0.5);
+            --bg-outline-color: rgba(0, 180, 216, 0.3);
+            --logo-color: var(--space-neon);
+            --metrics-bg: var(--space-blue);
+            --metrics-text: var(--space-dark);
+            --hero-bg-color: rgba(10, 10, 42, 0.9);
+            --btn-bg: var(--space-blue);
+            --btn-text: var(--space-dark);
+            --btn-border: var(--space-blue);
+            --btn-hover-bg: var(--space-neon);
+            --btn-hover-border: var(--space-neon);
+            --cross-color: var(--space-neon); /* Изменено на мятно-зеленый */
+            --accent-color: var(--space-neon);
+            --gradient-primary: var(--gradient-space);
+            --gradient-subtle-active: var(--gradient-space-subtle);
+            --theme-btn-bg: rgba(0, 180, 216, 0.1);
+            --theme-btn-border: rgba(0, 180, 216, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color var(--transition-slow), color var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Звезды для космической темы */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0;
+            transition: opacity var(--transition-slow);
+        }
+
+        .space-mode .stars {
+            opacity: 1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: var(--space-star);
+            border-radius: 50%;
+            transition: background-color var(--transition-slow);
+        }
+
+        /* Анимированный фон с крестиками и текстом */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.5;
+            transition: opacity var(--transition-slow);
+        }
+
+        /* Контейнер для крестиков - АБСОЛЮТНОЕ РАСПОЛОЖЕНИЕ */
+        .cross-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            animation: scrollDown 80s linear infinite;
+        }
+
+        /* Контейнер для фонового текста */
+        .text-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            gap: 4rem;
+            padding: 3rem;
+            animation: scrollDown 40s linear infinite;
+            z-index: -1; /* Текст позади крестиков */
+        }
+
+        /* НЕПРЕРЫВНАЯ АНИМАЦИЯ */
+        @keyframes scrollDown {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        /* Стили для жирных крестиков X */
+        .cross {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            transition: transform var(--transition-slow);
+        }
+
+        /* ЛЕВАЯ НАКЛОННАЯ ЛИНИЯ X (от левого верхнего к правому нижнему) */
+        .cross::before {
+            content: '';
+            position: absolute;
+            background-color: var(--cross-color);
+            border-radius: 3px; /* Более скругленные углы для толстых линий */
+            width: 100%;
+            height: calc(var(--cross-size) * 0.25); /* УВЕЛИЧЕНА толщина: 25% от размера крестика */
+            transform: rotate(45deg);
+            transform-origin: center;
+            transition: background-color var(--transition-slow), transform var(--transition-slow);
+        }
+
+        /* ПРАВАЯ НАКЛОННАЯ ЛИНИЯ X (от правого верхнего к левому нижнему) */
+        .cross::after {
+            content: '';
+            position: absolute;
+            background-color: var(--cross-color);
+            border-radius: 3px; /* Более скругленные углы для толстых линий */
+            width: 100%;
+            height: calc(var(--cross-size) * 0.25); /* УВЕЛИЧЕНА толщина: 25% от размера крестика */
+            transform: rotate(-45deg);
+            transform-origin: center;
+            transition: background-color var(--transition-slow), transform var(--transition-slow);
+        }
+
+        /* Фоновый текст */
+        .bg-text {
+            font-family: 'Akony', 'Space Grotesk', monospace;
+            font-size: 5.5rem;
+            font-weight: 900;
+            color: transparent !important;
+            -webkit-text-stroke: 1.5px var(--bg-outline-color);
+            text-stroke: 1.5px var(--bg-outline-color);
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            white-space: nowrap;
+            text-transform: uppercase;
+            user-select: none;
+            opacity: 0.6;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none !important;
+            background-clip: border-box !important;
+            -webkit-background-clip: border-box !important;
+            text-shadow: none !important;
+            box-shadow: none !important;
+            paint-order: stroke fill;
+            -webkit-paint-order: stroke;
+            letter-spacing: 1px;
+            transition: all var(--transition-slow);
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Навигация */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-md);
+            transition: background-color var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Akony', 'Space Grotesk', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--logo-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color var(--transition-slow), background var(--transition-slow), -webkit-background-clip var(--transition-slow), background-clip var(--transition-slow);
+        }
+
+        .logo:hover {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Минималистичные кнопки переключения темы */
+        .theme-buttons {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--theme-btn-bg);
+            border: 1px solid var(--theme-btn-border);
+            border-radius: var(--radius-md);
+            padding: 0.25rem;
+            transition: background var(--transition-slow), border-color var(--transition-slow);
+        }
+
+        .theme-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-color);
+        }
+
+        .theme-btn.active {
+            background: var(--accent-color);
+            color: var(--bg-primary);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+        }
+
+        .space-mode .theme-btn.active {
+            background: var(--space-neon);
+            color: var(--space-dark);
+        }
+
+        /* Кнопка "К командам" */
+        .commands-jump-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 2px solid var(--btn-border);
+            border-radius: var(--radius-lg);
+            font-family: 'Space Grotesk', monospace;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .commands-jump-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--btn-hover-bg);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .commands-jump-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+            color: var(--btn-text);
+            border-color: var(--btn-hover-border);
+        }
+
+        .commands-jump-btn:hover::before {
+            opacity: 1;
+        }
+
+        .commands-jump-btn:active {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .commands-jump-btn i {
+            font-size: 1.1em;
+            transition: transform var(--transition-base);
+        }
+
+        .commands-jump-btn:hover i {
+            transform: translateY(3px);
+        }
+
+        /* Анимация пульсации для привлечения внимания */
+        @keyframes pulse {
+            0% {
+                box-shadow: var(--shadow-lg);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+            }
+            100% {
+                box-shadow: var(--shadow-lg);
+            }
+        }
+
+        @keyframes pulse-space {
+            0% {
+                box-shadow: var(--shadow-space);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(0, 180, 216, 0.1);
+            }
+            100% {
+                box-shadow: var(--shadow-space);
+            }
+        }
+
+        .light-mode .commands-jump-btn,
+        .dark-mode .commands-jump-btn {
+            animation: pulse 3s infinite;
+        }
+
+        .space-mode .commands-jump-btn {
+            animation: pulse-space 3s infinite;
+        }
+
+        /* Херо секция с ОДНОТОННЫМ фоном на всю ширину, ПРОЗРАЧНОСТЬЮ 20% и РАЗМЫТИЕМ 30% */
+        .hero {
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-left: calc(-1 * var(--container-padding));
+            margin-right: calc(-1 * var(--container-padding));
+            transition: all var(--transition-slow);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* ПРОЗРАЧНОСТЬ 20% и РАЗМЫТИЕ 30% */
+            opacity: 0.2;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            transition: background var(--transition-slow), opacity var(--transition-slow);
+        }
+
+        .light-mode .hero::before {
+            background: var(--white); /* Белый фон в светлой теме */
+        }
+
+        .dark-mode .hero::before {
+            background: var(--black); /* Черный фон в темной теме */
+        }
+
+        .space-mode .hero::before {
+            background: var(--space-dark); /* Темно-синий фон в космической теме */
+        }
+
+        .hero-title {
+            font-family: 'Sprite Graffiti', 'Space Grotesk', monospace;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-slow);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-slow);
+        }
+
+        /* Контейнер для метрик внутри hero */
+        .hero-metrics-container {
+            position: relative;
+            z-index: 1;
+            margin-top: 3rem;
+        }
+
+        /* Ключевые метрики */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 4rem 0;
+        }
+
+        .metric-card {
+            background: var(--metrics-bg);
+            border: none;
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-slow);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Эффект при наведении - легкое свечение */
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 0 0 0px rgba(255, 255, 255, 0);
+            transition: box-shadow var(--transition-base);
+            z-index: 0;
+        }
+
+        .light-mode .metric-card::before {
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .metric-card::before {
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .space-mode .metric-card::before {
+            box-shadow: inset 0 0 0 1px rgba(0, 180, 216, 0.2);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .light-mode .metric-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .metric-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+
+        .space-mode .metric-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 180, 216, 0.2);
+        }
+
+        .metric-value {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--metrics-text);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-slow);
+        }
+
+        .metric-label {
+            color: var(--metrics-text);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-slow), opacity var(--transition-slow);
+        }
+
+        /* Карточки команд с раскрывающимися секциями */
+        .commands-section {
+            margin: 2rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            z-index: 2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .section-header:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(0, 209, 255, 0.1), var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .space-mode .section-header:hover {
+            border-color: var(--space-neon);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.1), var(--shadow-lg);
+        }
+
+        .section-header.expanded {
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            border-bottom-color: transparent;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: color var(--transition-slow);
+        }
+
+        .section-toggle {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            transition: transform var(--transition-base), color var(--transition-slow);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .space-mode .section-toggle {
+            color: var(--space-neon);
+        }
+
+        .section-toggle.rotated {
+            transform: rotate(180deg);
+        }
+
+        .section-badge {
+            background: var(--white);
+            color: var(--black);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: none;
+            border: none;
+            transition: background var(--transition-slow), color var(--transition-slow);
+        }
+
+        .light-mode .section-badge {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .space-mode .section-badge {
+            background: var(--space-neon);
+            color: var(--space-dark);
+        }
+
+        .commands-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            border-top: none;
+            transition: all var(--transition-slow);
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .commands-wrapper.expanded {
+            max-height: 3000px;
+            opacity: 1;
+            border-color: var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .command-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .command-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-subtle-active);
+            transition: left var(--transition-base);
+        }
+
+        .command-item:hover::before {
+            left: 0;
+        }
+
+        .command-item:hover {
+            border-color: var(--accent-color);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .space-mode .command-item:hover {
+            border-color: var(--space-neon);
+        }
+
+        .command-text {
+            font-family: 'Space Grotesk', monospace;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-slow);
+        }
+
+        .command-hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            opacity: 0.7;
+            position: relative;
+            z-index: 1;
+            transition: color var(--transition-slow), opacity var(--transition-slow);
+        }
+
+        .command-icon {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all var(--transition-base);
+            position: relative;
+            z-index: 1;
+            color: var(--accent-color);
+            transition: color var(--transition-slow);
+        }
+
+        .space-mode .command-icon {
+            color: var(--space-neon);
+        }
+
+        .command-item:hover .command-icon {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Информационные карточки */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 4rem 0;
+        }
+
+        .info-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: background var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
+        }
+
+        .info-card-title {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color var(--transition-slow);
+        }
+
+        .info-card-icon {
+            color: var(--accent-color);
+            transition: color var(--transition-slow);
+        }
+
+        .space-mode .info-card-icon {
+            color: var(--space-neon);
+        }
+
+        .info-card-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            transition: color var(--transition-slow);
+        }
+
+        /* Система начисления шармов */
+        .balance-container {
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            z-index: 2;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .balance-header:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(0, 209, 255, 0.1), var(--shadow-xl);
+        }
+
+        .space-mode .balance-header:hover {
+            border-color: var(--space-neon);
+            box-shadow: 0 4px 12px rgba(0, 255, 157, 0.1), var(--shadow-xl);
+        }
+
+        .balance-header.expanded-header {
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            border-bottom-color: transparent;
+            box-shadow: 0 4px 12px rgba(0, 209, 255, 0.05), var(--shadow-md);
+        }
+
+        .balance-title {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: color var(--transition-slow);
+        }
+
+        .balance-toggle {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            transition: transform var(--transition-base), color var(--transition-slow);
+        }
+
+        .space-mode .balance-toggle {
+            color: var(--space-neon);
+        }
+
+        .balance-toggle.rotated {
+            transform: rotate(180deg);
+        }
+
+        .balance-content-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            margin-top: -1px;
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            border-top: none;
+            transition: all 0.5s ease-out;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .balance-content-wrapper.expanded {
+            max-height: 500px;
+            opacity: 1;
+            border-color: var(--border-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .balance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .balance-table th {
+            text-align: left;
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            font-family: 'Space Grotesk', monospace;
+            font-weight: 600;
+            background: var(--bg-tertiary);
+            transition: background var(--transition-slow), border-color var(--transition-slow), color var(--transition-slow);
+        }
+
+        .balance-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color var(--transition-slow), color var(--transition-slow), background var(--transition-slow);
+        }
+
+        .balance-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .balance-table tr:hover {
+            background: var(--gradient-subtle-active);
+        }
+
+        /* Уведомление о копировании */
+        .copy-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-xl);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all var(--transition-base);
+            z-index: 1000;
+        }
+
+        .copy-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Футер с фоном в зависимости от темы */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+            background-color: var(--bg-primary); /* Полоса фона в зависимости от темы */
+            position: relative;
+            z-index: 100; /* Чтобы футер был поверх анимированного фона */
+            transition: background-color var(--transition-slow), border-color var(--transition-slow), color var(--transition-slow);
+        }
+
+        /* Подпись дизайнера */
+        .designer-signature {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-family: 'Space Grotesk', monospace;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            transition: opacity var(--transition-base), color var(--transition-slow);
+        }
+
+        .designer-signature:hover {
+            opacity: 1;
+        }
+
+        /* Анимации */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .text-container {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(14, 1fr);
+                gap: 3rem;
+                padding: 2rem;
+            }
+            
+            .bg-text {
+                font-size: 5rem;
+                -webkit-text-stroke: 1.3px var(--bg-outline-color);
+                text-stroke: 1.3px var(--bg-outline-color);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .commands-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .section-header {
+                padding: 1rem 1.25rem;
+            }
+            
+            .section-title {
+                font-size: 1.25rem;
+            }
+            
+            .balance-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .balance-table th,
+            .balance-table td {
+                padding: 1rem;
+                min-width: 150px;
+            }
+            
+            .balance-header {
+                padding: 1.25rem 1.5rem;
+            }
+            
+            .balance-title {
+                font-size: 1.25rem;
+            }
+            
+            .logo {
+                font-size: 1.75rem;
+            }
+            
+            .text-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(16, 1fr);
+                gap: 2rem;
+                padding: 1.5rem;
+            }
+            
+            .bg-text {
+                font-size: 4rem;
+                -webkit-text-stroke: 1.2px var(--bg-outline-color);
+                text-stroke: 1.2px var(--bg-outline-color);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .commands-jump-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .section-badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+            }
+            
+            .metric-value {
+                font-size: 2rem;
+            }
+            
+            .balance-title {
+                font-size: 1.1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+                letter-spacing: 0.5px;
+            }
+            
+            .theme-buttons {
+                gap: 0.125rem;
+                padding: 0.125rem;
+            }
+            
+            .theme-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+            }
+            
+            .text-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(18, 1fr);
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+            
+            .bg-text {
+                font-size: 3rem;
+                -webkit-text-stroke: 1px var(--bg-outline-color);
+                text-stroke: 1px var(--bg-outline-color);
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Звезды для космической темы -->
+    <div class="stars" id="starsContainer"></div>
+
+    <!-- Анимированный фон с крестиками и текстом -->
+    <div class="animated-bg" id="animatedBg">
+        <!-- Крестики на разных слоях для 3D эффекта -->
+        <div class="cross-container" id="crossContainer"></div>
+        <!-- Фоновый текст (позади крестиков) -->
+        <div class="text-container" id="textContainer"></div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="nav">
+        <div class="container nav-content">
+            <a href="#" class="logo">Charm Bot</a>
+            <div class="nav-controls">
+                <div class="theme-buttons">
+                    <button class="theme-btn active" data-theme="light" title="Светлая тема">L</button>
+                    <button class="theme-btn" data-theme="dark" title="Темная тема">D</button>
+                    <button class="theme-btn" data-theme="space" title="Космическая тема">S</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="container">
+        <!-- Херо секция с ОДНОТОННЫМ фоном на всю ширину, ПРОЗРАЧНОСТЬЮ 20% и РАЗМЫТИЕМ 30% -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Звуковые команды</h1>
+                <p class="hero-subtitle">
+                    Интерактивная система управления звуками через чат. 
+                    Зарабатывайте шармы активностью и активируйте звуковые команды.
+                </p>
+                
+                <!-- Кнопка "К командам" -->
+                <div style="margin-bottom: 3rem;">
+                    <a href="#commands-section" class="commands-jump-btn">
+                        <i class="fas fa-arrow-down"></i>
+                        Смотреть все команды
+                    </a>
+                </div>
+                
+                <div class="hero-metrics-container">
+                    <!-- Ключевые метрики -->
+                    <div class="metrics-grid">
+                        <div class="metric-card floating" style="animation-delay: 0s;">
+                            <div class="metric-value">+20</div>
+                            <div class="metric-label">Шармов за сообщение</div>
+                        </div>
+                        
+                        <div class="metric-card floating" style="animation-delay: 0.2s;">
+                            <div class="metric-value">500</div>
+                            <div class="metric-label">Стоимость звука</div>
+                        </div>
+                        
+                        <div class="metric-card floating" style="animation-delay: 0.4s;">
+                            <div class="metric-value">40K+</div>
+                            <div class="metric-label">Для розыгрыша</div>
+                        </div>
+                        
+                        <div class="metric-card floating" style="animation-delay: 0.6s;">
+                            <div class="metric-value">100K+</div>
+                            <div class="metric-label">Расширенный розыгрыш</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Информационные карточки -->
+        <div class="info-cards">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="fas fa-comment-dots info-card-icon"></i>
+                    Как работают шармы?
+                </h3>
+                <p class="info-card-content">
+                    Шармы начисляются за активность в чате. Каждое сообщение приносит 20 шармов. 
+                    Дополнительные бонусы за лайки и участие в активностях.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="fas fa-volume-up info-card-icon"></i>
+                    Как использовать звуки?
+                </h3>
+                <p class="info-card-content">
+                    Напишите команду в чат, и звук прозвучит на стриме. 
+                    Каждая команда стоит 500 шармов. Проверьте баланс командой <code>!шармы</code>.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="fas fa-trophy info-card-icon"></i>
+                    Участие в розыгрышах
+                </h3>
+                <p class="info-card-content">
+                    Для участия в розыгрышах игр нужен баланс от 40,000 шармов. 
+                    Расширенный розыгрыш — от 100,000+ шармов.
+                </p>
+            </div>
+        </div>
+
+        <!-- Система начисления шармов (скрывающийся блок) -->
+        <div class="balance-container">
+            <div class="balance-header" id="balanceToggle">
+                <h3 class="balance-title">
+                    <i class="fas fa-chart-line"></i>
+                    Система начисления шармов
+                </h3>
+                <i class="fas fa-chevron-down balance-toggle" id="balanceToggleIcon"></i>
+            </div>
+            
+            <div class="balance-content-wrapper" id="balanceContent">
+                <table class="balance-table">
+                    <thead>
+                        <tr>
+                            <th>Действие</th>
+                            <th>Начисление</th>
+                            <th>Условия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Сообщение в чате</td>
+                            <td>+20 шармов</td>
+                            <td>Каждое сообщение</td>
+                        </tr>
+                        <tr>
+                            <td>Лайки на стриме</td>
+                            <td>+1000 шармов</td>
+                            <td>На 100 лайков (раздача)</td>
+                        </tr>
+                        <tr>
+                            <td>Дополнительные шармы</td>
+                            <td>+500 шармов</td>
+                            <td>Каждые 50 лайков</td>
+                        </tr>
+                        <tr>
+                            <td>Участие в конкурсах</td>
+                            <td>Бонусные шармы</td>
+                            <td>Активности стрима</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Команды с якорем -->
+        <div id="commands-section"></div>
+        
+        <!-- Секции команд с раскрывающимся контентом -->
+        <section class="commands-section" data-category="greetings">
+            <div class="section-header" id="greetingsHeader">
+                <h3 class="section-title">
+                    <i class="fas fa-hand-spock"></i>
+                    Приветствия
+                </h3>
+                <div class="section-toggle">
+                    <span class="section-badge">6 команд</span>
+                    <i class="fas fa-chevron-down" id="greetingsToggleIcon"></i>
+                </div>
+            </div>
+            <div class="commands-wrapper" id="greetingsCommands">
+                <div class="commands-grid" id="greetings-commands">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="commands-section" data-category="phrases">
+            <div class="section-header" id="phrasesHeader">
+                <h3 class="section-title">
+                    <i class="fas fa-comment"></i>
+                    Популярные фразы
+                </h3>
+                <div class="section-toggle">
+                    <span class="section-badge">33 команд</span>
+                    <i class="fas fa-chevron-down" id="phrasesToggleIcon"></i>
+                </div>
+            </div>
+            <div class="commands-wrapper" id="phrasesCommands">
+                <div class="commands-grid" id="phrases-commands">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="commands-section" data-category="battle">
+            <div class="section-header" id="battleHeader">
+                <h3 class="section-title">
+                    <i class="fas fa-fist-raised"></i>
+                    Боевые
+                </h3>
+                <div class="section-toggle">
+                    <span class="section-badge">8 команд</span>
+                    <i class="fas fa-chevron-down" id="battleToggleIcon"></i>
+                </div>
+            </div>
+            <div class="commands-wrapper" id="battleCommands">
+                <div class="commands-grid" id="battle-commands">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="commands-section" data-category="reactions">
+            <div class="section-header" id="reactionsHeader">
+                <h3 class="section-title">
+                    <i class="fas fa-surprise"></i>
+                    Реакции
+                </h3>
+                <div class="section-toggle">
+                    <span class="section-badge">23 команды</span>
+                    <i class="fas fa-chevron-down" id="reactionsToggleIcon"></i>
+                </div>
+            </div>
+            <div class="commands-wrapper" id="reactionsCommands">
+                <div class="commands-grid" id="reactions-commands">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="commands-section" data-category="ending">
+            <div class="section-header" id="endingHeader">
+                <h3 class="section-title">
+                    <i class="fas fa-flag-checkered"></i>
+                    Завершение стрима
+                </h3>
+                <div class="section-toggle">
+                    <span class="section-badge">5 команд</span>
+                    <i class="fas fa-chevron-down" id="endingToggleIcon"></i>
+                </div>
+            </div>
+            <div class="commands-wrapper" id="endingCommands">
+                <div class="commands-grid" id="ending-commands">
+                    <!-- Будет заполнено через JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Уведомление о копировании -->
+    <div class="copy-toast" id="copyToast">
+        <i class="fas fa-check-circle" style="color: var(--accent-color);"></i>
+        <span>Команда скопирована!</span>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <p>Charm Bot System • AlienCharm Stream</p>
+            <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">
+                Обновлено: Декабрь 2023
+            </p>
+            <!-- Подпись дизайнера -->
+            <div class="designer-signature">
+                Designed by EVRUS
+            </div>
+        </div>
+    </footer>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        // Данные команд
+        const commandsData = {
+            'greetings': [
+                "!здарова бандиты",
+                "!здарова чуваки",
+                "!О привет",
+                "!здарова отцы",
+                "!здарова брат",
+                "!здравствуй брат"
+            ],
+            'phrases': [
+                {text: "!испанцы"},
+                {text: "!начальники не опаздывают"},
+                {text: "!вы нас балуете ваша светлость"},
+                {text: "!потерялася"},
+                {text: "!сильно потерялася"},
+                {text: "!вот это поворот"},
+                {text: "!совпадение"},
+                {text: "!ду хаст"},
+                {text: "!x-files"},
+                {text: "!великолепный план Уолтер"},
+                {text: "!просчитался но где"},
+                {text: "!широкую на широкую"},
+                {text: "!гениально"},
+                {text: "!не участвую"},
+                {text: "!фиаско"},
+                {text: "!коварный тип"},
+                {text: "!это безопасно", hint: "андроид Дэвид"},
+                {text: "!хьюстон у нас проблема"},
+                {text: "!сомнительно но окей", hint: "(с) Тинькофф"},
+                {text: "!это было п#здец как смело", hint: "(с) Тинькофф"},
+                {text: "!желаю здоровья и выжить", hint: "(с) Тинькофф"},
+                {text: "!любая миссия", hint: "Футурама"},
+                {text: "!бендер"},
+                {text: "!I need to meditate", hint: "Trevor GTA"},
+                {text: "!I'll be back"},
+                {text: "!you died", hint: "Dark Souls"},
+                {text: "!мои нервы"},
+                {text: "!титры", hint: "directed by Robert B. Weide"},
+                {text: "!Ералаш"},
+                {text: "!ямэтэ кудасай"},
+                {text: "!хлопики"},
+                {text: "!модуль космоса", hint: "Portal"},
+                {text: "!Фримен"}
+            ],
+            'battle': [
+                "!крик Вильгельма",
+                "!ножик",
+                {text: "!бонжур", hint: "Bad Commedian"},
+                "!дробовики",
+                "!дрын",
+                "!на нас напали",
+                "!опять разборка",
+                "!киборг убийца"
+            ],
+            'reactions': [
+                {text: "!чтооо", hint: "вопросительно"},
+                {text: "!да да", hint: "иронично"},
+                "!нет",
+                "!hitler nein",
+                "!omg",
+                "!повезло",
+                "!не пройдешь",
+                "!ты пройдешь",
+                "!галочка",
+                "!пожили и хватит",
+                "!меня убили но я выжил",
+                "!я маслину поймал",
+                "!это жестко",
+                "!святая корова",
+                "!да ладно",
+                "!вонючий случай",
+                "!туды яго",
+                "!опа кого-то хлопнули",
+                "!писюны",
+                "!в очередь",
+                "!полномочия",
+                "!ура заработало",
+                "!убойные каникулы"
+            ],
+            'ending': [
+                "!всего хо ро ше го",
+                "!все вон",
+                "!счастливо братва",
+                "!скоро встретимся",
+                "!hasta la vista"
+            ]
+        };
+
+        // Состояние раскрытия секций
+        let sectionsState = {
+            'greetings': false,
+            'phrases': false,
+            'battle': false,
+            'reactions': false,
+            'ending': false
+        };
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загрузка команд
+            loadCommands();
+            
+            // Настройка темы
+            setupTheme();
+            
+            // Настройка копирования команд
+            setupCommandCopy();
+            
+            // Настройка скрывающегося блока баланса
+            setupBalanceToggle();
+            
+            // Настройка раскрывающихся секций команд
+            setupCommandSections();
+            
+            // Создание анимированного фона с крестиками и текстом
+            createAnimatedBackground();
+            
+            // Создание звезд для космической темы
+            createStars();
+            
+            // Настройка плавной прокрутки для якорей
+            setupAnchorScroll();
+        });
+
+        // Создание звезд для космической темы
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            starsContainer.innerHTML = '';
+            
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Случайный размер звезды
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Случайная позиция
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Случайная яркость
+                const brightness = 0.5 + Math.random() * 0.5;
+                star.style.opacity = brightness.toString();
+                
+                // Анимация мерцания
+                const twinkleDuration = 2 + Math.random() * 3;
+                const twinkleDelay = Math.random() * 5;
+                star.style.animation = `twinkle ${twinkleDuration}s infinite ${twinkleDelay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Создание анимированного фона с крестиками и текстом
+        function createAnimatedBackground() {
+            createAnimatedCrosses();
+            createBackgroundText();
+        }
+
+        // Создание крестиков с 3D эффектом - без наложения
+        function createAnimatedCrosses() {
+            const crossContainer = document.getElementById('crossContainer');
+            crossContainer.innerHTML = '';
+            
+            // Уменьшаем количество крестиков на 30% (было 70, стало 49)
+            const totalCrosses = 49; // 70 - 30% = 49 крестиков
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight * 2; // Удвоенная высота для анимации
+            
+            // Размеры крестиков
+            const sizeVariations = [30, 40, 50, 60, 70, 80, 90, 100];
+            
+            // Массив для хранения уже размещенных крестиков и их параметров
+            const placedCrosses = [];
+            
+            // Функция проверки наложения
+            function checkCollision(x, y, size) {
+                // Увеличиваем безопасную зону вокруг крестика
+                const safetyMargin = size * 1.5;
+                
+                for (const cross of placedCrosses) {
+                    // Рассчитываем расстояние между центрами
+                    const distanceX = Math.abs(x - cross.x);
+                    const distanceY = Math.abs(y - cross.y);
+                    
+                    // Рассчитываем минимальное безопасное расстояние
+                    const minDistance = (size + cross.size) / 2 + 20;
+                    
+                    // Если крестики слишком близко - есть наложение
+                    if (distanceX < minDistance && distanceY < minDistance) {
+                        // Более строгая проверка с учетом диагоналей
+                        const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                        if (distance < minDistance) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            // Создаем два слоя для непрерывной анимации
+            for (let layer = 0; layer < 2; layer++) {
+                // Распределяем крестики по слоям (примерно поровну)
+                const crossesPerLayer = Math.floor(totalCrosses / 2);
+                
+                for (let i = 0; i < crossesPerLayer; i++) {
+                    let attempts = 0;
+                    let placed = false;
+                    
+                    // Пытаемся разместить крестик без наложений
+                    while (attempts < 50 && !placed) { // Максимум 50 попыток
+                        // Случайный размер
+                        const randomSize = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
+                        
+                        // Случайная позиция с отступами от краев
+                        const minX = randomSize / 2 + 20;
+                        const maxX = viewportWidth - randomSize / 2 - 20;
+                        const minY = randomSize / 2 + 20 + (layer * viewportHeight / 2);
+                        const maxY = viewportHeight / 2 - randomSize / 2 - 20 + (layer * viewportHeight / 2);
+                        
+                        const randomX = minX + Math.random() * (maxX - minX);
+                        const randomY = minY + Math.random() * (maxY - minY);
+                        
+                        // Проверяем наложение с другими крестиками
+                        if (!checkCollision(randomX, randomY, randomSize)) {
+                            // Создаем крестик
+                            const cross = document.createElement('div');
+                            cross.className = 'cross';
+                            
+                            // Устанавливаем размер крестика
+                            cross.style.setProperty('--cross-size', `${randomSize}px`);
+                            cross.style.width = `${randomSize}px`;
+                            cross.style.height = `${randomSize}px`;
+                            
+                            // Устанавливаем позицию
+                            cross.style.left = `${randomX}px`;
+                            cross.style.top = `${randomY}px`;
+                            
+                            // 3D ЭФФЕКТ: разные уровни z-index и прозрачности
+                            const depthLayer = Math.floor(Math.random() * 3); // 0, 1 или 2
+                            
+                            if (depthLayer === 0) {
+                                // Задний слой - самые далекие
+                                cross.style.zIndex = '0';
+                                cross.style.opacity = (0.1 + Math.random() * 0.2).toString(); // 0.1-0.3
+                            } else if (depthLayer === 1) {
+                                // Средний слой
+                                cross.style.zIndex = '1';
+                                cross.style.opacity = (0.3 + Math.random() * 0.2).toString(); // 0.3-0.5
+                            } else {
+                                // Передний слой - самые близкие
+                                cross.style.zIndex = '2';
+                                cross.style.opacity = (0.5 + Math.random() * 0.3).toString(); // 0.5-0.8
+                            }
+                            
+                            // Разный цвет в зависимости от темы
+                            const isSpaceMode = document.body.classList.contains('space-mode');
+                            const isLightMode = document.body.classList.contains('light-mode');
+                            
+                            if (isSpaceMode) {
+                                cross.style.setProperty('--cross-color', 'var(--space-neon)'); // Изменено на мятно-зеленый
+                            } else if (isLightMode) {
+                                cross.style.setProperty('--cross-color', 'var(--black)');
+                            } else {
+                                cross.style.setProperty('--cross-color', 'var(--white)');
+                            }
+                            
+                            // Случайный поворот (небольшой)
+                            const randomRotation = -5 + Math.random() * 10; // от -5 до +5 градусов
+                            cross.style.transform = `rotate(${randomRotation}deg)`;
+                            
+                            crossContainer.appendChild(cross);
+                            
+                            // Добавляем крестик в массив размещенных
+                            placedCrosses.push({
+                                x: randomX,
+                                y: randomY,
+                                size: randomSize
+                            });
+                            
+                            placed = true;
+                        }
+                        
+                        attempts++;
+                    }
+                    
+                    // Если не удалось разместить без наложений, размещаем в любом случае
+                    if (!placed) {
+                        const randomSize = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
+                        const randomX = randomSize / 2 + 20 + Math.random() * (viewportWidth - randomSize - 40);
+                        const randomY = randomSize / 2 + 20 + Math.random() * (viewportHeight / 2 - randomSize - 40) + (layer * viewportHeight / 2);
+                        
+                        const cross = document.createElement('div');
+                        cross.className = 'cross';
+                        cross.style.setProperty('--cross-size', `${randomSize}px`);
+                        cross.style.width = `${randomSize}px`;
+                        cross.style.height = `${randomSize}px`;
+                        cross.style.left = `${randomX}px`;
+                        cross.style.top = `${randomY}px`;
+                        
+                        // Простая логика слоев для оставшихся крестиков
+                        cross.style.zIndex = Math.floor(Math.random() * 3);
+                        cross.style.opacity = (0.2 + Math.random() * 0.6).toString();
+                        
+                        const isSpaceMode = document.body.classList.contains('space-mode');
+                        const isLightMode = document.body.classList.contains('light-mode');
+                        
+                        if (isSpaceMode) {
+                            cross.style.setProperty('--cross-color', 'var(--space-neon)'); // Изменено на мятно-зеленый
+                        } else if (isLightMode) {
+                            cross.style.setProperty('--cross-color', 'var(--black)');
+                        } else {
+                            cross.style.setProperty('--cross-color', 'var(--white)');
+                        }
+                        
+                        cross.style.transform = `rotate(${-5 + Math.random() * 10}deg)`;
+                        crossContainer.appendChild(cross);
+                    }
+                }
+            }
+        }
+
+        // Создание фонового текста
+        function createBackgroundText() {
+            const textContainer = document.getElementById('textContainer');
+            textContainer.innerHTML = '';
+            
+            const rows = 12;
+            const cols = 4;
+            
+            // Создаем двойную сетку для непрерывной анимации
+            for (let row = 0; row < rows * 2; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const bgText = document.createElement('div');
+                    bgText.className = 'bg-text';
+                    
+                    // Вариации текста для разнообразия
+                    const textVariations = ['CHARM BOT', 'ALIEN CHARM', 'SOUND BOT', 'STREAM'];
+                    const randomText = textVariations[Math.floor(Math.random() * textVariations.length)];
+                    bgText.textContent = randomText;
+                    
+                    // Равномерное распределение прозрачности
+                    const opacity = 0.4 + (row % 4) * 0.15;
+                    bgText.style.opacity = opacity.toString();
+                    
+                    // Небольшие вариации в размере
+                    const sizeVariation = 0.9 + (Math.random() * 0.2);
+                    bgText.style.fontSize = `${5.5 * sizeVariation}rem`;
+                    
+                    textContainer.appendChild(bgText);
+                }
+            }
+        }
+
+        // Настройка темы
+        function setupTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme, true); // true - начальная загрузка без анимации
+            
+            // Настройка кнопок переключения темы
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const theme = this.dataset.theme;
+                    setTheme(theme, false); // false - с анимацией
+                });
+            });
+        }
+
+        // Установка темы
+        function setTheme(theme, isInitialLoad = false) {
+            // Если это не начальная загрузка, добавляем класс для плавного перехода
+            if (!isInitialLoad) {
+                document.body.classList.add('theme-transitioning');
+            }
+            
+            // Удаляем все классы тем
+            document.body.classList.remove('light-mode', 'dark-mode', 'space-mode');
+            
+            // Добавляем выбранную тему
+            document.body.classList.add(`${theme}-mode`);
+            
+            // Обновляем активную кнопку
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.theme === theme) {
+                    button.classList.add('active');
+                }
+            });
+            
+            // Сохраняем тему в localStorage
+            localStorage.setItem('theme', theme);
+            
+            // Пересоздаем фон при смене темы (с задержкой для плавности)
+            if (!isInitialLoad) {
+                setTimeout(() => {
+                    createAnimatedBackground();
+                    // Убираем класс после завершения анимации
+                    setTimeout(() => {
+                        document.body.classList.remove('theme-transitioning');
+                    }, 500);
+                }, 50); // Небольшая задержка для начала анимации
+            } else {
+                createAnimatedBackground();
+            }
+        }
+
+        // Загрузка команд в интерфейс
+        function loadCommands() {
+            for (const category in commandsData) {
+                const container = document.getElementById(`${category}-commands`);
+                if (!container) continue;
+                
+                const commands = commandsData[category];
+                
+                commands.forEach(commandData => {
+                    const commandItem = document.createElement('div');
+                    commandItem.className = 'command-item';
+                    
+                    let commandText, commandHint;
+                    
+                    if (typeof commandData === 'string') {
+                        commandText = commandData;
+                        commandHint = '';
+                    } else {
+                        commandText = commandData.text;
+                        commandHint = commandData.hint || '';
+                    }
+                    
+                    commandItem.innerHTML = `
+                        <div>
+                            <div class="command-text">${commandText}</div>
+                            ${commandHint ? `<div class="command-hint">${commandHint}</div>` : ''}
+                        </div>
+                        <i class="fas fa-copy command-icon"></i>
+                    `;
+                    
+                    commandItem.dataset.command = commandText;
+                    container.appendChild(commandItem);
+                });
+            }
+        }
+
+        // Настройка скрывающегося блока баланса
+        function setupBalanceToggle() {
+            const balanceToggle = document.getElementById('balanceToggle');
+            const balanceToggleIcon = document.getElementById('balanceToggleIcon');
+            const balanceContent = document.getElementById('balanceContent');
+            
+            // Инициализация начального состояния
+            balanceContent.classList.remove('expanded');
+            balanceToggleIcon.classList.remove('rotated');
+            balanceToggle.classList.remove('expanded-header');
+            
+            balanceToggle.addEventListener('click', function() {
+                if (balanceContent.classList.contains('expanded')) {
+                    // Скрываем блок
+                    balanceContent.classList.remove('expanded');
+                    balanceToggleIcon.classList.remove('rotated');
+                    balanceToggle.classList.remove('expanded-header');
+                    balanceContent.style.maxHeight = '0';
+                    balanceContent.style.opacity = '0';
+                } else {
+                    // Раскрываем блок
+                    balanceContent.classList.add('expanded');
+                    balanceToggleIcon.classList.add('rotated');
+                    balanceToggle.classList.add('expanded-header');
+                    balanceContent.style.maxHeight = balanceContent.scrollHeight + 'px';
+                    balanceContent.style.opacity = '1';
+                }
+            });
+        }
+
+        // Настройка раскрывающихся секций команд
+        function setupCommandSections() {
+            const sections = document.querySelectorAll('.commands-section');
+            
+            sections.forEach(section => {
+                const header = section.querySelector('.section-header');
+                const wrapper = section.querySelector('.commands-wrapper');
+                const toggleIcon = section.querySelector('.section-toggle i');
+                const category = section.dataset.category;
+                
+                // Инициализация начального состояния
+                wrapper.classList.remove('expanded');
+                header.classList.remove('expanded');
+                toggleIcon.classList.remove('rotated');
+                sectionsState[category] = false;
+                
+                header.addEventListener('click', function() {
+                    toggleSection(category, header, wrapper, toggleIcon);
+                });
+            });
+        }
+
+        // Переключение состояния секции
+        function toggleSection(category, header, wrapper, toggleIcon) {
+            const isExpanded = sectionsState[category];
+            
+            if (isExpanded) {
+                // Скрываем секцию
+                wrapper.classList.remove('expanded');
+                header.classList.remove('expanded');
+                toggleIcon.classList.remove('rotated');
+                wrapper.style.maxHeight = '0';
+                wrapper.style.opacity = '0';
+                sectionsState[category] = false;
+            } else {
+                // Раскрываем секцию
+                wrapper.classList.add('expanded');
+                header.classList.add('expanded');
+                toggleIcon.classList.add('rotated');
+                wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+                wrapper.style.opacity = '1';
+                sectionsState[category] = true;
+            }
+        }
+
+        // Настройка копирования команд
+        function setupCommandCopy() {
+            const commandItems = document.querySelectorAll('.command-item');
+            const copyToast = document.getElementById('copyToast');
+            
+            commandItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const command = this.dataset.command;
+                    copyToClipboard(command);
+                    
+                    this.style.borderColor = 'var(--accent-color)';
+                    this.style.boxShadow = '0 0 0 2px rgba(0, 209, 255, 0.1)';
+                    
+                    setTimeout(() => {
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }, 300);
+                });
+            });
+            
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    copyToast.classList.add('show');
+                    
+                    setTimeout(() => {
+                        copyToast.classList.remove('show');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Ошибка при копировании:', err);
+                    
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    copyToast.classList.add('show');
+                    
+                    setTimeout(() => {
+                        copyToast.classList.remove('show');
+                    }, 2000);
+                });
+            }
+        }
+
+        // Настройка плавной прокрутки для якорей
+        function setupAnchorScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Пересоздаем фон при изменении размера окна
+        window.addEventListener('resize', function() {
+            createAnimatedBackground();
+            createStars();
+        });
+    </script>
+</body>
+</html>
