@@ -2091,4 +2091,89 @@
                 toggleIcon.classList.remove('rotated');
                 wrapper.style.maxHeight = '0';
                 wrapper.style.opacity = '0';
-                sectionsState
+                sectionsState[category] = false;
+            } else {
+                // Раскрываем секцию
+                wrapper.classList.add('expanded');
+                header.classList.add('expanded');
+                toggleIcon.classList.add('rotated');
+                wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+                wrapper.style.opacity = '1';
+                sectionsState[category] = true;
+            }
+        }
+
+        // Настройка копирования команд
+        function setupCommandCopy() {
+            const commandItems = document.querySelectorAll('.command-item');
+            const copyToast = document.getElementById('copyToast');
+            
+            commandItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const command = this.dataset.command;
+                    copyToClipboard(command);
+                    
+                    this.style.borderColor = 'var(--accent-color)';
+                    this.style.boxShadow = '0 0 0 2px rgba(0, 209, 255, 0.1)';
+                    
+                    setTimeout(() => {
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }, 300);
+                });
+            });
+            
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    copyToast.classList.add('show');
+                    
+                    setTimeout(() => {
+                        copyToast.classList.remove('show');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Ошибка при копировании:', err);
+                    
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    copyToast.classList.add('show');
+                    
+                    setTimeout(() => {
+                        copyToast.classList.remove('show');
+                    }, 2000);
+                });
+            }
+        }
+
+        // Настройка плавной прокрутки для якорей
+        function setupAnchorScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Пересоздаем фон при изменении размера окна
+        window.addEventListener('resize', function() {
+            createAnimatedBackground();
+            createStars();
+        });
+    </script>
+</body>
+</html>
