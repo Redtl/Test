@@ -648,13 +648,13 @@
             height: 100%;
             z-index: -1;
             
-            /* Эффект жидкого стекла - уменьшенный блюр на 20% */
-            background: rgba(255, 255, 255, 0.05);
+            /* Эффект жидкого стекла с повышенной на 20% прозрачностью */
+            background: rgba(255, 255, 255, 0.04); /* Было 0.05, стало 0.04 (увеличили прозрачность на 20%) */
             backdrop-filter: blur(16px); /* Было 20px, уменьшили на 20% */
             -webkit-backdrop-filter: blur(16px); /* Было 20px, уменьшили на 20% */
             
             /* Границы с градиентом */
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Сделали границу немного прозрачнее */
             border-top: none;
             border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
             
@@ -683,8 +683,8 @@
 
         /* Настройки для светлой темы */
         .light-mode .hero::before {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.56); /* Было 0.7, стало 0.56 (увеличили прозрачность на 20%) */
+            border-color: rgba(0, 0, 0, 0.06); /* Сделали границу немного прозрачнее */
             backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
             -webkit-backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
         }
@@ -699,8 +699,8 @@
 
         /* Настройки для темной темы */
         .dark-mode .hero::before {
-            background: rgba(0, 0, 0, 0.6);
-            border-color: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.48); /* Было 0.6, стало 0.48 (увеличили прозрачность на 20%) */
+            border-color: rgba(255, 255, 255, 0.06); /* Сделали границу немного прозрачнее */
             backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
             -webkit-backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
         }
