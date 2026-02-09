@@ -105,6 +105,8 @@
             --theme-btn-border: var(--gray-300);
             --social-icon-color: var(--gray-700);
             --social-icon-hover: var(--black);
+            --cube-point-color: var(--black);
+            --cube-line-color: var(--black);
         }
 
         .dark-mode {
@@ -135,6 +137,8 @@
             --theme-btn-border: rgba(255, 255, 255, 0.1);
             --social-icon-color: var(--gray-300);
             --social-icon-hover: var(--white);
+            --cube-point-color: var(--white);
+            --cube-line-color: var(--white);
         }
 
         .space-mode {
@@ -157,7 +161,7 @@
             --btn-border: var(--space-blue);
             --btn-hover-bg: var(--space-neon);
             --btn-hover-border: var(--space-neon);
-            --cross-color: var(--space-neon); /* Изменено на мятно-зеленый */
+            --cross-color: var(--space-neon);
             --accent-color: var(--space-neon);
             --gradient-primary: var(--gradient-space);
             --gradient-subtle-active: var(--gradient-space-subtle);
@@ -165,6 +169,8 @@
             --theme-btn-border: rgba(0, 180, 216, 0.3);
             --social-icon-color: rgba(255, 255, 255, 0.7);
             --social-icon-hover: var(--space-neon);
+            --cube-point-color: var(--space-neon);
+            --cube-line-color: var(--space-neon);
         }
 
         * {
@@ -212,6 +218,50 @@
             transition: background-color var(--transition-slow);
         }
 
+        /* Куб с геометрической сеткой */
+        .cube-geometry {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -3;
+            opacity: 0.3;
+            transition: opacity var(--transition-slow);
+        }
+
+        .light-mode .cube-geometry {
+            opacity: 0.4;
+        }
+
+        .dark-mode .cube-geometry {
+            opacity: 0.3;
+        }
+
+        .space-mode .cube-geometry {
+            opacity: 0.7;
+        }
+
+        .cube-point {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--cube-point-color);
+            transition: all var(--transition-fast);
+        }
+
+        .cube-line {
+            position: absolute;
+            height: 1px;
+            transform-origin: 0 0;
+            transition: all var(--transition-fast);
+            background: var(--cube-line-color);
+            opacity: 0.2;
+        }
+
         /* Анимированный фон с крестиками и текстом */
         .animated-bg {
             position: fixed;
@@ -249,7 +299,7 @@
             gap: 4rem;
             padding: 3rem;
             animation: scrollDown 40s linear infinite;
-            z-index: -1; /* Текст позади крестиков */
+            z-index: -1;
         }
 
         /* НЕПРЕРЫВНАЯ АНИМАЦИЯ */
@@ -272,27 +322,25 @@
             transition: transform var(--transition-slow);
         }
 
-        /* ЛЕВАЯ НАКЛОННАЯ ЛИНИЯ X (от левого верхнего к правому нижнему) */
         .cross::before {
             content: '';
             position: absolute;
             background-color: var(--cross-color);
-            border-radius: 3px; /* Более скругленные углы для толстых линий */
+            border-radius: 3px;
             width: 100%;
-            height: calc(var(--cross-size) * 0.25); /* УВЕЛИЧЕНА толщина: 25% от размера крестика */
+            height: calc(var(--cross-size) * 0.25);
             transform: rotate(45deg);
             transform-origin: center;
             transition: background-color var(--transition-slow), transform var(--transition-slow);
         }
 
-        /* ПРАВАЯ НАКЛОННАЯ ЛИНИЯ X (от правого верхнего к левому нижнему) */
         .cross::after {
             content: '';
             position: absolute;
             background-color: var(--cross-color);
-            border-radius: 3px; /* Более скругленные углы для толстых линий */
+            border-radius: 3px;
             width: 100%;
-            height: calc(var(--cross-size) * 0.25); /* УВЕЛИЧЕНА толщина: 25% от размера крестика */
+            height: calc(var(--cross-size) * 0.25);
             transform: rotate(-45deg);
             transform-origin: center;
             transition: background-color var(--transition-slow), transform var(--transition-slow);
@@ -598,7 +646,6 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* ПРОЗРАЧНОСТЬ 20% и РАЗМЫТИЕ 30% */
             opacity: 0.2;
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
@@ -606,15 +653,15 @@
         }
 
         .light-mode .hero::before {
-            background: var(--white); /* Белый фон в светлой теме */
+            background: var(--white);
         }
 
         .dark-mode .hero::before {
-            background: var(--black); /* Черный фон в темной теме */
+            background: var(--black);
         }
 
         .space-mode .hero::before {
-            background: var(--space-dark); /* Темно-синий фон в космической теме */
+            background: var(--space-dark);
         }
 
         .hero-title {
@@ -666,7 +713,6 @@
             overflow: hidden;
         }
 
-        /* Эффект при наведении - легкое свечение */
         .metric-card::before {
             content: '';
             position: absolute;
@@ -1107,9 +1153,9 @@
             border-top: 1px solid var(--border-color);
             text-align: center;
             color: var(--text-secondary);
-            background-color: var(--bg-primary); /* Полоса фона в зависимости от темы */
+            background-color: var(--bg-primary);
             position: relative;
-            z-index: 100; /* Чтобы футер был поверх анимированного фона */
+            z-index: 100;
             transition: background-color var(--transition-slow), border-color var(--transition-slow), color var(--transition-slow);
         }
 
@@ -1178,7 +1224,7 @@
             }
             
             .social-icons {
-                order: -1; /* Социальные иконки вверху на мобильных */
+                order: -1;
             }
             
             .section-header {
@@ -1296,6 +1342,9 @@
 <body class="dark-mode">
     <!-- Звезды для космической темы -->
     <div class="stars" id="starsContainer"></div>
+
+    <!-- Геометрический куб на фоне -->
+    <div class="cube-geometry" id="cubeGeometry"></div>
 
     <!-- Анимированный фон с крестиками и текстом -->
     <div class="animated-bg" id="animatedBg">
@@ -1700,6 +1749,9 @@
             // Создание звезд для космической темы
             createStars();
             
+            // Создание геометрического куба
+            createGeometryCube();
+            
             // Настройка плавной прокрутки для якорей
             setupAnchorScroll();
         });
@@ -1728,13 +1780,112 @@
                 const brightness = 0.5 + Math.random() * 0.5;
                 star.style.opacity = brightness.toString();
                 
-                // Анимация мерцания
-                const twinkleDuration = 2 + Math.random() * 3;
-                const twinkleDelay = Math.random() * 5;
-                star.style.animation = `twinkle ${twinkleDuration}s infinite ${twinkleDelay}s`;
-                
                 starsContainer.appendChild(star);
             }
+        }
+
+        // Создание геометрического куба с четкими линиями
+        function createGeometryCube() {
+            const cubeContainer = document.getElementById('cubeGeometry');
+            cubeContainer.innerHTML = '';
+            
+            const rows = 6;
+            const cols = 6;
+            
+            // Создаем точки в виде сетки
+            const points = [];
+            
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const point = document.createElement('div');
+                    point.className = 'cube-point';
+                    
+                    // Рассчитываем позицию в сетке
+                    const x = (col / (cols - 1)) * 80 + 10; // 10% - 90%
+                    const y = (row / (rows - 1)) * 80 + 10; // 10% - 90%
+                    
+                    point.style.left = `${x}%`;
+                    point.style.top = `${y}%`;
+                    
+                    cubeContainer.appendChild(point);
+                    points.push({x, y, element: point, row, col});
+                }
+            }
+            
+            // Создаем линии, соединяющие точки по сетке
+            createGridLines(points, rows, cols, cubeContainer);
+        }
+
+        // Создание линий сетки
+        function createGridLines(points, rows, cols, container) {
+            // Горизонтальные линии
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols - 1; col++) {
+                    const point1 = points[row * cols + col];
+                    const point2 = points[row * cols + col + 1];
+                    
+                    createLineBetweenPoints(point1, point2, container);
+                }
+            }
+            
+            // Вертикальные линии
+            for (let col = 0; col < cols; col++) {
+                for (let row = 0; row < rows - 1; row++) {
+                    const point1 = points[row * cols + col];
+                    const point2 = points[(row + 1) * cols + col];
+                    
+                    createLineBetweenPoints(point1, point2, container);
+                }
+            }
+            
+            // Диагональные линии для создания 3D эффекта
+            // Диагонали в одну сторону
+            for (let row = 0; row < rows - 1; row++) {
+                for (let col = 0; col < cols - 1; col++) {
+                    const point1 = points[row * cols + col];
+                    const point2 = points[(row + 1) * cols + (col + 1)];
+                    
+                    createLineBetweenPoints(point1, point2, container, 0.1); // Более прозрачные
+                }
+            }
+            
+            // Диагонали в другую сторону
+            for (let row = 0; row < rows - 1; row++) {
+                for (let col = 1; col < cols; col++) {
+                    const point1 = points[row * cols + col];
+                    const point2 = points[(row + 1) * cols + (col - 1)];
+                    
+                    createLineBetweenPoints(point1, point2, container, 0.1); // Более прозрачные
+                }
+            }
+        }
+
+        // Создание линии между двумя точками
+        function createLineBetweenPoints(point1, point2, container, customOpacity = null) {
+            const line = document.createElement('div');
+            line.className = 'cube-line';
+            
+            // Рассчитываем расстояние между точками
+            const distance = Math.sqrt(
+                Math.pow(point2.x - point1.x, 2) + 
+                Math.pow(point2.y - point1.y, 2)
+            );
+            
+            // Рассчитываем угол поворота
+            const angle = Math.atan2(point2.y - point1.y, point2.x - point1.x) * 180 / Math.PI;
+            
+            // Устанавливаем свойства линии
+            line.style.left = `${point1.x}%`;
+            line.style.top = `${point1.y}%`;
+            line.style.width = `${distance}%`;
+            line.style.transform = `rotate(${angle}deg)`;
+            
+            // Настраиваем прозрачность
+            if (customOpacity !== null) {
+                line.style.opacity = customOpacity.toString();
+            }
+            
+            container.appendChild(line);
         }
 
         // Создание анимированного фона с крестиками и текстом
@@ -1982,6 +2133,7 @@
             if (!isInitialLoad) {
                 setTimeout(() => {
                     createAnimatedBackground();
+                    createGeometryCube();
                     // Убираем класс после завершения анимации
                     setTimeout(() => {
                         document.body.classList.remove('theme-transitioning');
@@ -1989,6 +2141,7 @@
                 }, 50); // Небольшая задержка для начала анимации
             } else {
                 createAnimatedBackground();
+                createGeometryCube();
             }
         }
 
@@ -2173,6 +2326,7 @@
         window.addEventListener('resize', function() {
             createAnimatedBackground();
             createStars();
+            createGeometryCube();
         });
     </script>
 </body>
