@@ -648,10 +648,10 @@
             height: 100%;
             z-index: -1;
             
-            /* Эффект жидкого стекла */
+            /* Эффект жидкого стекла - уменьшенный блюр на 20% */
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px); /* Было 20px, уменьшили на 20% */
+            -webkit-backdrop-filter: blur(16px); /* Было 20px, уменьшили на 20% */
             
             /* Границы с градиентом */
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -685,8 +685,8 @@
         .light-mode .hero::before {
             background: rgba(255, 255, 255, 0.7);
             border-color: rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
+            -webkit-backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
         }
 
         .light-mode .hero::after {
@@ -701,8 +701,8 @@
         .dark-mode .hero::before {
             background: rgba(0, 0, 0, 0.6);
             border-color: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
+            -webkit-backdrop-filter: blur(20px); /* Было 25px, уменьшили на 20% */
         }
 
         .dark-mode .hero::after {
@@ -713,62 +713,22 @@
             );
         }
 
-        /* Настройки для космической темы */
+        /* Настройки для космической темы - ПРОЗРАЧНЫЙ ФОН БЕЗ ЭФФЕКТА СТЕКЛА */
         .space-mode .hero::before {
-            background: rgba(10, 10, 42, 0.7);
-            border-color: rgba(0, 255, 157, 0.15); /* Мятно-зеленая граница */
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 
-                inset 0 0 0 1px rgba(0, 255, 157, 0.1),
-                0 20px 40px rgba(0, 0, 0, 0.3);
+            background: transparent !important; /* Полностью прозрачный фон */
+            backdrop-filter: none !important; /* Убираем блюр */
+            -webkit-backdrop-filter: none !important; /* Убираем блюр */
+            border: none !important; /* Убираем границу */
+            box-shadow: none !important; /* Убираем тень */
         }
 
         .space-mode .hero::after {
-            background: linear-gradient(
-                135deg,
-                rgba(0, 180, 216, 0.05),
-                rgba(0, 255, 157, 0.05)
-            );
+            background: transparent !important; /* Убираем фоновый градиент */
         }
 
-        /* Эффект градиентной рамки для дополнительного акцента в космической теме */
-        .space-mode .hero::before {
-            position: relative;
-        }
-
+        /* Убираем градиентную рамку для космической темы */
         .space-mode .hero::before::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(
-                45deg,
-                rgba(0, 180, 216, 0.2),
-                rgba(0, 255, 157, 0.2),
-                rgba(74, 0, 224, 0.2)
-            );
-            border-radius: inherit;
-            z-index: -1;
-            opacity: 0.7;
-            animation: gradientShift 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-                filter: hue-rotate(0deg);
-            }
-            50% {
-                background-position: 100% 50%;
-                filter: hue-rotate(90deg);
-            }
-            100% {
-                background-position: 0% 50%;
-                filter: hue-rotate(0deg);
-            }
+            display: none !important;
         }
 
         .hero-title {
@@ -1317,18 +1277,13 @@
             }
             
             .hero::before {
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px);
+                backdrop-filter: blur(12px); /* Было 15px, уменьшили на 20% */
+                -webkit-backdrop-filter: blur(12px); /* Было 15px, уменьшили на 20% */
                 border-radius: 0 0 var(--radius-xl) var(--radius-xl);
             }
             
             .hero::after {
                 border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-            }
-            
-            .space-mode .hero::before {
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
             }
             
             .commands-grid {
@@ -1404,8 +1359,8 @@
             }
             
             .hero::before {
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(8px); /* Было 10px, уменьшили на 20% */
+                -webkit-backdrop-filter: blur(8px); /* Было 10px, уменьшили на 20% */
             }
             
             .commands-jump-btn {
@@ -1827,17 +1782,17 @@
                 "!пожили и хватит",
                 "!меня убили но я выжил",
                 "!я маслину поймал",
-                "!это жестко",
-                "!святая корова",
-                "!да ладно",
-                "!вонючий случай",
-                "!туды яго",
-                "!опа кого-то хлопнули",
-                "!писюны",
-                "!в очередь",
-                "!полномочия",
-                "!ура заработало",
-                "!убойные каникулы"
+                {text: "!это жестко"},
+                {text: "!святая корова"},
+                {text: "!да ладно"},
+                {text: "!вонючий случай"},
+                {text: "!туды яго"},
+                {text: "!опа кого-то хлопнули"},
+                {text: "!писюны"},
+                {text: "!в очередь"},
+                {text: "!полномочия"},
+                {text: "!ура заработало"},
+                {text: "!убойные каникулы"}
             ],
             'ending': [
                 "!всего хо ро ше го",
