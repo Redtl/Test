@@ -6,7 +6,7 @@
     <title>Sound Commands | AlienCharm</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Roboto:wght@400&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/akony" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/sprite-graffiti" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -169,6 +169,70 @@
             transition: background-color var(--transition-slow), color var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
             position: relative;
             min-height: 100vh;
+        }
+
+        /* Анимация волны при смене темы */
+        .theme-wave-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-wave-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .wave-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--wave-color) 0%, transparent 70%);
+            opacity: 0;
+            transform: scale(0);
+            will-change: transform, opacity;
+            animation: waveExpand 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes waveExpand {
+            0% {
+                transform: scale(0);
+                opacity: 0.9;
+            }
+            70% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Плавное появление элементов после перехода */
+        .content-fade {
+            opacity: 1;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-transitioning .content-fade {
+            opacity: 0.3;
+        }
+
+        /* Плавная загрузка фоновых элементов */
+        .bg-elements {
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-transitioning .bg-elements {
+            opacity: 0.2;
         }
 
         .stars {
@@ -461,6 +525,7 @@
             border-radius: var(--radius-md);
             padding: 0.25rem;
             transition: background var(--transition-slow), border-color var(--transition-slow);
+            position: relative;
         }
 
         .theme-btn {
@@ -477,6 +542,7 @@
             position: relative;
             color: var(--text-secondary);
             font-size: 0.875rem;
+            will-change: transform, background-color;
         }
 
         .theme-btn:hover {
@@ -1185,6 +1251,154 @@
             opacity: 1;
         }
 
+        /* Стили для вертикального глитч-числа */
+        .vertical-number {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Roboto', monospace;
+            font-weight: 400;
+            font-size: 16px;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
+            opacity: 0.6;
+            z-index: 9999;
+            pointer-events: none;
+            transition: color var(--transition-slow), opacity var(--transition-slow);
+            user-select: none;
+        }
+
+        .vertical-number span {
+            display: inline-block;
+            transform: rotate(180deg);
+        }
+
+        .glitch-number {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-digit {
+            position: relative;
+            display: inline-block;
+            width: 0.6em;
+            text-align: center;
+        }
+
+        .digit-static {
+            opacity: 1;
+            transition: opacity 0.1s;
+        }
+
+        .digit-glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            color: var(--accent-color);
+        }
+
+        .space-mode .digit-glitch {
+            color: var(--space-neon);
+        }
+
+        .digit-separator {
+            opacity: 1 !important;
+            color: var(--text-tertiary) !important;
+            position: relative !important;
+        }
+
+        .space-mode .digit-separator {
+            color: var(--space-neon) !important;
+            opacity: 0.8 !important;
+        }
+
+        .light-mode .vertical-number {
+            color: var(--gray-500);
+            opacity: 0.7;
+        }
+
+        .dark-mode .vertical-number {
+            color: var(--gray-400);
+            opacity: 0.6;
+        }
+
+        .space-mode .vertical-number {
+            color: var(--space-neon);
+            opacity: 0.5;
+            text-shadow: 0 0 5px rgba(0, 255, 157, 0.3);
+        }
+
+        /* Ускоренные анимации для глитча */
+        @keyframes glitchFlicker {
+            0% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+            25% {
+                opacity: 1;
+                transform: translateY(-1px);
+                filter: brightness(1.5);
+            }
+            50% {
+                opacity: 0.6;
+                transform: translateY(1px);
+            }
+            75% {
+                opacity: 0.3;
+                transform: translateY(-0.5px);
+                filter: brightness(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glitchShift {
+            0% {
+                transform: translateX(0);
+            }
+            33% {
+                transform: translateX(-1px);
+            }
+            66% {
+                transform: translateX(1px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes digitFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(2px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Более быстрое свечение для космической темы */
+        .space-mode .glitch-digit.active {
+            animation: glowPulse 1.5s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                text-shadow: 0 0 3px rgba(0, 255, 157, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 6px rgba(0, 255, 157, 0.6), 0 0 12px rgba(0, 255, 157, 0.3);
+            }
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -1293,6 +1507,12 @@
                 -webkit-text-stroke: 1.2px var(--bg-outline-color);
                 text-stroke: 1.2px var(--bg-outline-color);
             }
+            
+            .vertical-number {
+                left: 15px;
+                bottom: 15px;
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1364,18 +1584,43 @@
                 -webkit-text-stroke: 1px var(--bg-outline-color);
                 text-stroke: 1px var(--bg-outline-color);
             }
+            
+            .vertical-number {
+                left: 10px;
+                bottom: 10px;
+                font-size: 12px;
+                opacity: 0.5;
+            }
         }
     </style>
 </head>
 <body class="dark-mode">
-    <div class="stars" id="starsContainer"></div>
-    <div class="cube-geometry" id="cubeGeometry"></div>
-    <div class="animated-bg" id="animatedBg">
+    <!-- Анимация волны при смене темы -->
+    <div class="theme-wave-overlay" id="themeWave"></div>
+
+    <!-- Вертикальное глитч-число в левом нижнем углу -->
+    <div class="vertical-number" id="verticalNumber">
+        <div class="glitch-number">
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">2</span><span class="digit-glitch">7</span></span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">0</span><span class="digit-glitch">3</span></span>
+            <span class="glitch-digit digit-separator" data-type="separator">.</span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">4</span><span class="digit-glitch">9</span></span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">2</span><span class="digit-glitch">8</span></span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">1</span></span>
+            <span class="glitch-digit digit-separator" data-type="separator">-</span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">6</span></span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">7</span></span>
+        </div>
+    </div>
+
+    <div class="stars bg-elements" id="starsContainer"></div>
+    <div class="cube-geometry bg-elements" id="cubeGeometry"></div>
+    <div class="animated-bg bg-elements" id="animatedBg">
         <div class="cross-container" id="crossContainer"></div>
         <div class="text-container" id="textContainer"></div>
     </div>
 
-    <nav class="nav">
+    <nav class="nav content-fade">
         <div class="container nav-content">
             <a href="#" class="logo">Charm Bot</a>
             <div class="nav-controls">
@@ -1400,7 +1645,7 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main class="container content-fade">
         <section class="hero">
             <div class="container">
                 <h1 class="hero-title">Звуковые команды</h1>
@@ -1442,7 +1687,7 @@
             </div>
         </section>
 
-        <div class="info-cards">
+        <div class="info-cards content-fade">
             <div class="info-card">
                 <h3 class="info-card-title">
                     <i class="fas fa-comment-dots info-card-icon"></i>
@@ -1477,7 +1722,7 @@
             </div>
         </div>
 
-        <div class="balance-container">
+        <div class="balance-container content-fade">
             <div class="balance-header" id="balanceToggle">
                 <h3 class="balance-title">
                     <i class="fas fa-chart-line"></i>
@@ -1523,7 +1768,7 @@
 
         <div id="commands-section"></div>
         
-        <section class="commands-section" data-category="greetings">
+        <section class="commands-section content-fade" data-category="greetings">
             <div class="section-header" id="greetingsHeader">
                 <h3 class="section-title">
                     <i class="fas fa-hand-spock"></i>
@@ -1539,7 +1784,7 @@
             </div>
         </section>
 
-        <section class="commands-section" data-category="phrases">
+        <section class="commands-section content-fade" data-category="phrases">
             <div class="section-header" id="phrasesHeader">
                 <h3 class="section-title">
                     <i class="fas fa-comment"></i>
@@ -1555,7 +1800,7 @@
             </div>
         </section>
 
-        <section class="commands-section" data-category="battle">
+        <section class="commands-section content-fade" data-category="battle">
             <div class="section-header" id="battleHeader">
                 <h3 class="section-title">
                     <i class="fas fa-fist-raised"></i>
@@ -1571,7 +1816,7 @@
             </div>
         </section>
 
-        <section class="commands-section" data-category="reactions">
+        <section class="commands-section content-fade" data-category="reactions">
             <div class="section-header" id="reactionsHeader">
                 <h3 class="section-title">
                     <i class="fas fa-surprise"></i>
@@ -1587,7 +1832,7 @@
             </div>
         </section>
 
-        <section class="commands-section" data-category="ending">
+        <section class="commands-section content-fade" data-category="ending">
             <div class="section-header" id="endingHeader">
                 <h3 class="section-title">
                     <i class="fas fa-flag-checkered"></i>
@@ -1609,7 +1854,7 @@
         <span>Команда скопирована!</span>
     </div>
 
-    <footer class="footer">
+    <footer class="footer content-fade">
         <div class="container">
             <p>Charm Bot System • AlienCharm Stream</p>
             <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">
@@ -1720,6 +1965,181 @@
             'ending': false
         };
 
+        // Глитч-система для чисел с ускоренными эффектами
+        class GlitchNumber {
+            constructor(element) {
+                this.element = element;
+                this.digits = this.element.querySelectorAll('.glitch-digit[data-type="digit"]');
+                this.glitchElements = this.element.querySelectorAll('.digit-glitch');
+                this.currentValues = ['2', '0', '4', '2', '3', '3', '3'];
+                this.glitchTimeout = null;
+                this.fullGlitchTimeout = null;
+                this.isGlitching = false;
+                this.isPaused = false;
+                
+                this.init();
+            }
+            
+            init() {
+                // Начинаем случайные глитч-эффекты с более частыми интервалами
+                this.startRandomGlitch();
+                
+                // Запланируем первый полный глитч
+                this.scheduleFullGlitch();
+            }
+            
+            startRandomGlitch() {
+                const startGlitch = () => {
+                    if (this.isPaused) {
+                        // Если на паузе, проверяем снова через 2 секунды
+                        setTimeout(startGlitch, 2000);
+                        return;
+                    }
+                    
+                    // Более частые глитчи: 3-8 секунд
+                    const nextGlitchDelay = 3000 + Math.random() * 5000;
+                    
+                    // Запускаем таймер для следующего глитча
+                    this.glitchTimeout = setTimeout(() => {
+                        // С вероятностью 80% делаем обычный глитч, 20% - паузу
+                        if (Math.random() > 0.2) {
+                            this.randomDigitGlitch();
+                        } else {
+                            // Короткая пауза - пропускаем один цикл
+                            this.isPaused = true;
+                            setTimeout(() => {
+                                this.isPaused = false;
+                            }, 2000 + Math.random() * 3000); // Пауза 2-5 секунд
+                        }
+                        
+                        // Планируем следующий глитч
+                        startGlitch();
+                    }, nextGlitchDelay);
+                };
+                
+                // Начинаем первый глитч через 1.5 секунды после загрузки
+                setTimeout(() => {
+                    startGlitch();
+                }, 1500);
+            }
+            
+            scheduleFullGlitch() {
+                // Полные глитчи происходят чаще: 15-40 секунд
+                const fullGlitchDelay = 15000 + Math.random() * 25000;
+                
+                this.fullGlitchTimeout = setTimeout(() => {
+                    if (!this.isPaused) {
+                        this.fullGlitch();
+                    }
+                    // Планируем следующий полный глитч
+                    this.scheduleFullGlitch();
+                }, fullGlitchDelay);
+            }
+            
+            randomDigitGlitch() {
+                // Выбираем случайную цифру
+                const digitIndex = Math.floor(Math.random() * this.digits.length);
+                const digit = this.digits[digitIndex];
+                const glitchElement = this.glitchElements[digitIndex];
+                
+                if (!digit || !glitchElement) return;
+                
+                // Генерируем случайную цифру для глитча (0-9)
+                const randomDigit = Math.floor(Math.random() * 10).toString();
+                glitchElement.textContent = randomDigit;
+                
+                // Активируем глитч с ускоренной анимацией
+                this.activateGlitch(digit, glitchElement);
+                
+                // В 15% случаев меняем основную цифру
+                if (Math.random() > 0.85) {
+                    setTimeout(() => {
+                        this.changeDigit(digitIndex, randomDigit);
+                    }, 300);
+                }
+            }
+            
+            activateGlitch(digit, glitchElement) {
+                // Добавляем класс для анимации
+                digit.classList.add('active');
+                
+                // Показываем глитч-элемент с быстрой анимацией
+                glitchElement.style.opacity = '1';
+                glitchElement.style.animation = 'glitchFlicker 0.3s forwards';
+                
+                // Убираем глитч через 0.3 секунды
+                setTimeout(() => {
+                    glitchElement.style.opacity = '0';
+                    glitchElement.style.animation = '';
+                    digit.classList.remove('active');
+                }, 300);
+            }
+            
+            changeDigit(index, newValue) {
+                if (index >= 0 && index < this.currentValues.length) {
+                    this.currentValues[index] = newValue;
+                    const digit = this.digits[index];
+                    const staticElement = digit.querySelector('.digit-static');
+                    
+                    if (staticElement) {
+                        staticElement.style.opacity = '0';
+                        setTimeout(() => {
+                            staticElement.textContent = newValue;
+                            staticElement.style.opacity = '1';
+                            staticElement.style.animation = 'digitFadeIn 0.2s forwards';
+                        }, 50);
+                    }
+                }
+            }
+            
+            fullGlitch() {
+                if (this.isGlitching) return;
+                
+                this.isGlitching = true;
+                
+                // Активируем все глитч-элементы одновременно
+                this.glitchElements.forEach((glitch, index) => {
+                    const randomDigit = Math.floor(Math.random() * 10).toString();
+                    glitch.textContent = randomDigit;
+                    glitch.style.opacity = '1';
+                    glitch.style.animation = 'glitchFlicker 0.4s forwards';
+                    
+                    // Активируем родительскую цифру
+                    this.digits[index].classList.add('active');
+                    
+                    // В 25% случаев меняем основную цифру при полном глитче
+                    if (Math.random() > 0.75) {
+                        setTimeout(() => {
+                            this.changeDigit(index, randomDigit);
+                        }, 350);
+                    }
+                });
+                
+                // Добавляем эффект сдвига всему числу
+                this.element.style.animation = 'glitchShift 0.4s forwards';
+                
+                // Сбрасываем состояние через 0.4 секунды
+                setTimeout(() => {
+                    this.glitchElements.forEach(glitch => {
+                        glitch.style.opacity = '0';
+                        glitch.style.animation = '';
+                    });
+                    
+                    this.digits.forEach(digit => {
+                        digit.classList.remove('active');
+                    });
+                    
+                    this.element.style.animation = '';
+                    this.isGlitching = false;
+                }, 400);
+            }
+            
+            destroy() {
+                if (this.glitchTimeout) clearTimeout(this.glitchTimeout);
+                if (this.fullGlitchTimeout) clearTimeout(this.fullGlitchTimeout);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadCommands();
             setupTheme();
@@ -1730,6 +2150,12 @@
             createStars();
             createGeometryCube();
             setupAnchorScroll();
+            
+            // Инициализируем глитч-систему
+            const glitchNumberElement = document.querySelector('.glitch-number');
+            if (glitchNumberElement) {
+                window.glitchNumber = new GlitchNumber(glitchNumberElement);
+            }
         });
 
         function createStars() {
@@ -2018,43 +2444,110 @@
             
             const themeButtons = document.querySelectorAll('.theme-btn');
             themeButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(e) {
                     const theme = this.dataset.theme;
-                    setTheme(theme, false);
+                    if (this.classList.contains('active')) return; // Если уже активна - не меняем
+                    
+                    // Получаем позицию кнопки для анимации волны
+                    const rect = this.getBoundingClientRect();
+                    const clickX = rect.left + rect.width / 2;
+                    const clickY = rect.top + rect.height / 2;
+                    
+                    setTheme(theme, false, {x: clickX, y: clickY});
                 });
             });
         }
 
-        function setTheme(theme, isInitialLoad = false) {
+        function setTheme(theme, isInitialLoad = false, clickPosition = null) {
             if (!isInitialLoad) {
+                // Добавляем класс для плавного перехода
                 document.body.classList.add('theme-transitioning');
+                
+                // Активируем анимацию волны с небольшой задержкой
+                setTimeout(() => {
+                    const waveOverlay = document.getElementById('themeWave');
+                    
+                    // Определяем цвет волны в зависимости от новой темы
+                    let waveColor;
+                    if (theme === 'space') {
+                        waveColor = 'rgba(0, 255, 157, 0.6)';
+                    } else if (theme === 'light') {
+                        waveColor = 'rgba(0, 0, 0, 0.6)';
+                    } else {
+                        waveColor = 'rgba(255, 255, 255, 0.6)';
+                    }
+                    
+                    // Создаем круг волны
+                    waveOverlay.innerHTML = '';
+                    const waveCircle = document.createElement('div');
+                    waveCircle.className = 'wave-circle';
+                    waveCircle.style.setProperty('--wave-color', waveColor);
+                    
+                    // Позиционируем волну от кнопки
+                    if (clickPosition) {
+                        waveCircle.style.left = `${clickPosition.x}px`;
+                        waveCircle.style.top = `${clickPosition.y}px`;
+                    } else {
+                        waveCircle.style.left = '50%';
+                        waveCircle.style.top = '50%';
+                        waveCircle.style.transform = 'translate(-50%, -50%) scale(0)';
+                    }
+                    
+                    waveOverlay.appendChild(waveCircle);
+                    
+                    // Плавно показываем оверлей
+                    setTimeout(() => {
+                        waveOverlay.classList.add('active');
+                    }, 10);
+                    
+                }, 50);
             }
             
-            document.body.classList.remove('light-mode', 'dark-mode', 'space-mode');
-            document.body.classList.add(`${theme}-mode`);
-            
-            const themeButtons = document.querySelectorAll('.theme-btn');
-            themeButtons.forEach(button => {
-                button.classList.remove('active');
-                if (button.dataset.theme === theme) {
-                    button.classList.add('active');
-                }
-            });
-            
-            localStorage.setItem('theme', theme);
-            
-            if (!isInitialLoad) {
-                setTimeout(() => {
+            // Смена темы происходит с небольшой задержкой после начала анимации
+            setTimeout(() => {
+                document.body.classList.remove('light-mode', 'dark-mode', 'space-mode');
+                document.body.classList.add(`${theme}-mode`);
+                
+                const themeButtons = document.querySelectorAll('.theme-btn');
+                themeButtons.forEach(button => {
+                    button.classList.remove('active');
+                    if (button.dataset.theme === theme) {
+                        button.classList.add('active');
+                    }
+                });
+                
+                localStorage.setItem('theme', theme);
+                
+                if (!isInitialLoad) {
+                    // Пересоздаем фоновые элементы после завершения анимации
+                    setTimeout(() => {
+                        createAnimatedBackground();
+                        createGeometryCube();
+                        
+                        // Плавно скрываем волну и убираем класс перехода
+                        setTimeout(() => {
+                            const waveOverlay = document.getElementById('themeWave');
+                            waveOverlay.classList.remove('active');
+                            
+                            setTimeout(() => {
+                                waveOverlay.innerHTML = '';
+                                document.body.classList.remove('theme-transitioning');
+                                
+                                // Обновляем звезды для космической темы
+                                if (theme === 'space') {
+                                    createStars();
+                                }
+                            }, 300);
+                        }, 700);
+                    }, 200);
+                } else {
                     createAnimatedBackground();
                     createGeometryCube();
-                    setTimeout(() => {
-                        document.body.classList.remove('theme-transitioning');
-                    }, 500);
-                }, 50);
-            } else {
-                createAnimatedBackground();
-                createGeometryCube();
-            }
+                    if (theme === 'space') {
+                        createStars();
+                    }
+                }
+            }, isInitialLoad ? 0 : 150);
         }
 
         function loadCommands() {
@@ -2226,6 +2719,13 @@
             createAnimatedBackground();
             createStars();
             createGeometryCube();
+        });
+        
+        // Уничтожаем глитч-систему при разгрузке страницы
+        window.addEventListener('beforeunload', function() {
+            if (window.glitchNumber) {
+                window.glitchNumber.destroy();
+            }
         });
     </script>
 </body>
