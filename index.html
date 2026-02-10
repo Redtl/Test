@@ -213,43 +213,29 @@
             position: relative;
             display: inline-block;
             text-transform: uppercase;
+            color: var(--accent-color);
         }
 
-        /* Глитч-эффект для заголовка приветствия */
-        .welcome-glitch {
+        /* Быстрый глитч-эффект как у цифр */
+        .welcome-glitch-container {
             position: relative;
             display: inline-block;
-            color: var(--accent-color);
-            text-shadow: 
-                0.05em 0 0 rgba(255, 0, 255, 0.7),
-                -0.025em -0.05em 0 rgba(0, 255, 255, 0.7),
-                0.025em 0.05em 0 rgba(255, 255, 0, 0.7);
-            animation: welcomeGlitch 500ms infinite;
         }
 
-        .welcome-glitch::before,
-        .welcome-glitch::after {
-            content: attr(data-text);
+        .welcome-text-static {
+            opacity: 1;
+            transition: opacity 0.1s;
+        }
+
+        .welcome-text-glitch {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.8;
-        }
-
-        .welcome-glitch::before {
-            animation: glitch-anim-1 2s infinite linear alternate-reverse;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-            color: rgba(255, 0, 255, 0.8);
-            transform: translate(-0.025em, -0.0125em);
-        }
-
-        .welcome-glitch::after {
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-            color: rgba(0, 255, 255, 0.8);
-            transform: translate(0.0125em, 0.025em);
+            opacity: 0;
+            color: var(--accent-magenta);
+            animation: none;
         }
 
         .welcome-subtitle {
@@ -305,100 +291,79 @@
             }
         }
 
-        /* Анимации для глитч-эффекта */
-        @keyframes welcomeGlitch {
+        /* Быстрые анимации для глитча */
+        @keyframes fastGlitchFlicker {
             0% {
-                text-shadow: 
-                    0.05em 0 0 rgba(255, 0, 255, 0.7),
-                    -0.025em -0.05em 0 rgba(0, 255, 255, 0.7),
-                    0.025em 0.05em 0 rgba(255, 255, 0, 0.7);
+                opacity: 0;
+                transform: translateY(0);
             }
-            14% {
-                text-shadow: 
-                    0.05em 0 0 rgba(255, 0, 255, 0.7),
-                    -0.025em -0.05em 0 rgba(0, 255, 255, 0.7),
-                    0.025em 0.05em 0 rgba(255, 255, 0, 0.7);
-            }
-            15% {
-                text-shadow: 
-                    -0.05em -0.025em 0 rgba(255, 0, 255, 0.7),
-                    0.025em 0.025em 0 rgba(0, 255, 255, 0.7),
-                    -0.05em -0.05em 0 rgba(255, 255, 0, 0.7);
-            }
-            49% {
-                text-shadow: 
-                    -0.05em -0.025em 0 rgba(255, 0, 255, 0.7),
-                    0.025em 0.025em 0 rgba(0, 255, 255, 0.7),
-                    -0.05em -0.05em 0 rgba(255, 255, 0, 0.7);
-            }
-            50% {
-                text-shadow: 
-                    0.025em 0.05em 0 rgba(255, 0, 255, 0.7),
-                    0.05em 0 0 rgba(0, 255, 255, 0.7),
-                    0 -0.05em 0 rgba(255, 255, 0, 0.7);
-            }
-            99% {
-                text-shadow: 
-                    0.025em 0.05em 0 rgba(255, 0, 255, 0.7),
-                    0.05em 0 0 rgba(0, 255, 255, 0.7),
-                    0 -0.05em 0 rgba(255, 255, 0, 0.7);
-            }
-            100% {
-                text-shadow: 
-                    -0.025em 0 0 rgba(255, 0, 255, 0.7),
-                    -0.025em -0.025em 0 rgba(0, 255, 255, 0.7),
-                    -0.025em -0.05em 0 rgba(255, 255, 0, 0.7);
-            }
-        }
-
-        @keyframes glitch-anim-1 {
-            0% {
-                clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-                transform: translate(-0.025em, -0.0125em);
+            10% {
+                opacity: 1;
+                transform: translateY(-1px);
+                filter: brightness(1.8);
             }
             20% {
-                clip-path: polygon(0 15%, 100% 15%, 100% 60%, 0 60%);
-                transform: translate(0.0125em, 0.025em);
+                opacity: 0.8;
+                transform: translateY(1px);
+            }
+            30% {
+                opacity: 0.4;
+                transform: translateY(-0.5px);
+                filter: brightness(1.4);
             }
             40% {
-                clip-path: polygon(0 30%, 100% 30%, 100% 75%, 0 75%);
-                transform: translate(-0.0125em, -0.025em);
+                opacity: 0.9;
+                transform: translateY(0.5px);
             }
-            60% {
-                clip-path: polygon(0 45%, 100% 45%, 100% 90%, 0 90%);
-                transform: translate(0.025em, 0.0125em);
-            }
-            80% {
-                clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-                transform: translate(-0.0125em, 0.025em);
+            50% {
+                opacity: 0.3;
+                transform: translateY(-0.3px);
+                filter: brightness(1.6);
             }
             100% {
-                clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-                transform: translate(0.025em, -0.0125em);
+                opacity: 0;
+                transform: translateY(0);
             }
         }
 
-        @keyframes glitch-anim-2 {
+        @keyframes fastGlitchShift {
             0% {
-                clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-                transform: translate(0.0125em, 0.025em);
+                transform: translateX(0);
             }
-            25% {
-                clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-                transform: translate(-0.025em, -0.0125em);
+            10% {
+                transform: translateX(-2px);
+            }
+            20% {
+                transform: translateX(2px);
+            }
+            30% {
+                transform: translateX(-1px);
+            }
+            40% {
+                transform: translateX(1px);
             }
             50% {
-                clip-path: polygon(0 30%, 100% 30%, 100% 75%, 0 75%);
-                transform: translate(0.0125em, -0.025em);
+                transform: translateX(-0.5px);
             }
-            75% {
-                clip-path: polygon(0 15%, 100% 15%, 100% 60%, 0 60%);
-                transform: translate(-0.0125em, 0.025em);
+            60% {
+                transform: translateX(0.5px);
             }
             100% {
-                clip-path: polygon(0 45%, 100% 45%, 100% 90%, 0 90%);
-                transform: translate(0.025em, 0.0125em);
+                transform: translateX(0);
             }
+        }
+
+        @keyframes welcomePulse {
+            0%, 100% {
+                text-shadow: 0 0 3px rgba(0, 209, 255, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 8px rgba(0, 209, 255, 0.6), 0 0 15px rgba(0, 209, 255, 0.3);
+            }
+        }
+
+        .space-mode .welcome-text-static.active {
+            animation: welcomePulse 1s infinite;
         }
 
         /* Анимация волны при смене темы */
@@ -1336,7 +1301,7 @@
 
         .balance-header.expanded-header {
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            border-bottom-color: transparent;
+            border-bottom-color = transparent;
             box-shadow: 0 4px 12px rgba(0, 209, 255, 0.05), var(--shadow-md);
         }
 
@@ -1827,7 +1792,10 @@
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-content">
             <h1 class="welcome-title">
-                <span class="welcome-glitch" data-text="CHARM BOT">CHARM BOT</span>
+                <span class="welcome-glitch-container">
+                    <span class="welcome-text-static">CHARM BOT</span>
+                    <span class="welcome-text-glitch"></span>
+                </span>
             </h1>
             <p class="welcome-subtitle">Звуковые команды для вашего стрима</p>
             <div class="loading-dots">
@@ -2308,14 +2276,14 @@
                 
                 // Показываем глитч-элемент с быстрой анимацией
                 glitchElement.style.opacity = '1';
-                glitchElement.style.animation = 'glitchFlicker 0.3s forwards';
+                glitchElement.style.animation = 'fastGlitchFlicker 0.2s forwards';
                 
-                // Убираем глитч через 0.3 секунды
+                // Убираем глитч через 0.2 секунды
                 setTimeout(() => {
                     glitchElement.style.opacity = '0';
                     glitchElement.style.animation = '';
                     digit.classList.remove('active');
-                }, 300);
+                }, 200);
             }
             
             changeDigit(index, newValue) {
@@ -2329,8 +2297,8 @@
                         setTimeout(() => {
                             staticElement.textContent = newValue;
                             staticElement.style.opacity = '1';
-                            staticElement.style.animation = 'digitFadeIn 0.2s forwards';
-                        }, 50);
+                            staticElement.style.animation = 'digitFadeIn 0.1s forwards';
+                        }, 30);
                     }
                 }
             }
@@ -2345,7 +2313,7 @@
                     const randomDigit = Math.floor(Math.random() * 10).toString();
                     glitch.textContent = randomDigit;
                     glitch.style.opacity = '1';
-                    glitch.style.animation = 'glitchFlicker 0.4s forwards';
+                    glitch.style.animation = 'fastGlitchFlicker 0.3s forwards';
                     
                     // Активируем родительскую цифру
                     this.digits[index].classList.add('active');
@@ -2354,14 +2322,14 @@
                     if (Math.random() > 0.75) {
                         setTimeout(() => {
                             this.changeDigit(index, randomDigit);
-                        }, 350);
+                        }, 250);
                     }
                 });
                 
                 // Добавляем эффект сдвига всему числу
-                this.element.style.animation = 'glitchShift 0.4s forwards';
+                this.element.style.animation = 'fastGlitchShift 0.3s forwards';
                 
-                // Сбрасываем состояние через 0.4 секунды
+                // Сбрасываем состояние через 0.3 секунды
                 setTimeout(() => {
                     this.glitchElements.forEach(glitch => {
                         glitch.style.opacity = '0';
@@ -2374,7 +2342,143 @@
                     
                     this.element.style.animation = '';
                     this.isGlitching = false;
-                }, 400);
+                }, 300);
+            }
+            
+            destroy() {
+                if (this.glitchTimeout) clearTimeout(this.glitchTimeout);
+                if (this.fullGlitchTimeout) clearTimeout(this.fullGlitchTimeout);
+            }
+        }
+
+        // Быстрая глитч-система для приветственного заголовка
+        class FastWelcomeGlitch {
+            constructor(element) {
+                this.element = element;
+                this.staticText = this.element.querySelector('.welcome-text-static');
+                this.glitchText = this.element.querySelector('.welcome-text-glitch');
+                this.glitchTimeout = null;
+                this.fullGlitchTimeout = null;
+                this.isGlitching = false;
+                
+                this.init();
+            }
+            
+            init() {
+                // Начинаем случайные глитч-эффекты с очень частыми интервалами
+                this.startRandomGlitch();
+                
+                // Запланируем первый полный глитч
+                this.scheduleFullGlitch();
+            }
+            
+            startRandomGlitch() {
+                const startGlitch = () => {
+                    // Очень частые глитчи: 0.8-2 секунды
+                    const nextGlitchDelay = 800 + Math.random() * 1200;
+                    
+                    // Запускаем таймер для следующего глитча
+                    this.glitchTimeout = setTimeout(() => {
+                        // Всегда делаем глитч (без пауз)
+                        this.randomGlitch();
+                        
+                        // Планируем следующий глитч
+                        startGlitch();
+                    }, nextGlitchDelay);
+                };
+                
+                // Начинаем первый глитч через 0.3 секунды после загрузки
+                setTimeout(() => {
+                    startGlitch();
+                }, 300);
+            }
+            
+            scheduleFullGlitch() {
+                // Полные глитчи происходят очень часто: 5-12 секунд
+                const fullGlitchDelay = 5000 + Math.random() * 7000;
+                
+                this.fullGlitchTimeout = setTimeout(() => {
+                    this.fullGlitch();
+                    // Планируем следующий полный глитч
+                    this.scheduleFullGlitch();
+                }, fullGlitchDelay);
+            }
+            
+            randomGlitch() {
+                // Генерируем случайный текст для глитча
+                const glitchChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?';
+                let glitchString = '';
+                
+                // Создаем строку со случайными символами той же длины
+                for (let i = 0; i < 9; i++) { // "CHARM BOT" = 9 символов
+                    const randomIndex = Math.floor(Math.random() * glitchChars.length);
+                    glitchString += glitchChars[randomIndex];
+                }
+                
+                this.glitchText.textContent = glitchString;
+                
+                // Активируем глитч с очень быстрой анимацией
+                this.activateGlitch();
+                
+                // В 10% случаев делаем акцент на основном тексте
+                if (Math.random() > 0.9) {
+                    this.staticText.classList.add('active');
+                    setTimeout(() => {
+                        this.staticText.classList.remove('active');
+                    }, 300);
+                }
+            }
+            
+            activateGlitch() {
+                // Показываем глитч-элемент с очень быстрой анимацией
+                this.glitchText.style.opacity = '1';
+                this.glitchText.style.animation = 'fastGlitchFlicker 0.15s forwards';
+                
+                // Добавляем эффект сдвига всему контейнеру
+                this.element.style.animation = 'fastGlitchShift 0.15s forwards';
+                
+                // Убираем глитч через 0.15 секунды
+                setTimeout(() => {
+                    this.glitchText.style.opacity = '0';
+                    this.glitchText.style.animation = '';
+                    this.element.style.animation = '';
+                }, 150);
+            }
+            
+            fullGlitch() {
+                if (this.isGlitching) return;
+                
+                this.isGlitching = true;
+                
+                // Генерируем случайный текст для полного глитча
+                const glitchChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+                let glitchString = '';
+                
+                for (let i = 0; i < 9; i++) {
+                    const randomIndex = Math.floor(Math.random() * glitchChars.length);
+                    glitchString += glitchChars[randomIndex];
+                }
+                
+                this.glitchText.textContent = glitchString;
+                
+                // Показываем глитч-элемент
+                this.glitchText.style.opacity = '1';
+                this.glitchText.style.animation = 'fastGlitchFlicker 0.25s forwards';
+                
+                // Добавляем эффект сдвига
+                this.element.style.animation = 'fastGlitchShift 0.25s forwards';
+                
+                // Активируем основной текст
+                this.staticText.classList.add('active');
+                
+                // Сбрасываем состояние через 0.25 секунды
+                setTimeout(() => {
+                    this.glitchText.style.opacity = '0';
+                    this.glitchText.style.animation = '';
+                    this.element.style.animation = '';
+                    this.staticText.classList.remove('active');
+                    this.isGlitching = false;
+                }, 250);
             }
             
             destroy() {
@@ -2387,9 +2491,20 @@
             // Показываем приветственное сообщение
             const welcomeOverlay = document.getElementById('welcomeOverlay');
             
+            // Инициализируем быстрый глитч для заголовка
+            const welcomeGlitchContainer = document.querySelector('.welcome-glitch-container');
+            if (welcomeGlitchContainer) {
+                window.welcomeGlitch = new FastWelcomeGlitch(welcomeGlitchContainer);
+            }
+            
             // Скрываем приветствие через 3 секунды
             setTimeout(() => {
                 welcomeOverlay.classList.add('hidden');
+                
+                // Уничтожаем глитч-систему приветствия
+                if (window.welcomeGlitch) {
+                    window.welcomeGlitch.destroy();
+                }
                 
                 // Удаляем элемент из DOM после завершения анимации
                 setTimeout(() => {
@@ -2408,7 +2523,7 @@
             createGeometryCube();
             setupAnchorScroll();
             
-            // Инициализируем глитч-систему
+            // Инициализируем глитч-систему для цифр
             const glitchNumberElement = document.querySelector('.glitch-number');
             if (glitchNumberElement) {
                 window.glitchNumber = new GlitchNumber(glitchNumberElement);
@@ -2953,6 +3068,9 @@
         window.addEventListener('beforeunload', function() {
             if (window.glitchNumber) {
                 window.glitchNumber.destroy();
+            }
+            if (window.welcomeGlitch) {
+                window.welcomeGlitch.destroy();
             }
         });
     </script>
