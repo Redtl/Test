@@ -1712,10 +1712,14 @@
             color: var(--text-tertiary);
             letter-spacing: 1px;
             opacity: 0.6;
-            z-index: 9999;
+            z-index: 9999; /* Стандартный высокий z-index */
             pointer-events: none;
-            transition: color var(--transition-slow), opacity var(--transition-slow);
+            transition: color var(--transition-slow), opacity var(--transition-slow), z-index 0.3s ease;
             user-select: none;
+        }
+
+        .vertical-number.behind-footer {
+            z-index: 90 !important; /* Ниже футера (100) */
         }
 
         .vertical-number span {
@@ -2848,14 +2852,53 @@
             setupAnchorScroll();
             setupSearch(); // New Search Logic
             setupScrollTop(); 
-            setupTiltEffect(); 
+            setupTiltEffect();
             
             // Инициализируем глитч-систему для цифр
             const glitchNumberElement = document.querySelector('.glitch-number');
             if (glitchNumberElement) {
                 window.glitchNumber = new GlitchNumber(glitchNumberElement);
             }
+
+            // Добавляем обработчик скролла для вертикальных чисел
+            setupVerticalNumberScroll();
         });
+
+        // Новая функция: управление z-index вертикальных чисел при скролле
+        function setupVerticalNumberScroll() {
+            const verticalNumber = document.getElementById('verticalNumber');
+            const footer = document.querySelector('footer');
+            
+            if (!verticalNumber || !footer) return;
+            
+            function checkScrollPosition() {
+                const scrollPosition = window.scrollY + window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                const footerTop = footer.offsetTop;
+                
+                // Если мы прокрутили достаточно близко к футеру (за 100px до него)
+                if (scrollPosition > footerTop - 100) {
+                    // Добавляем класс, который опускает z-index ниже футера
+                    verticalNumber.classList.add('behind-footer');
+                } else {
+                    // Убираем класс, возвращаем обычный z-index
+                    verticalNumber.classList.remove('behind-footer');
+                }
+            }
+            
+            // Проверяем позицию при загрузке
+            checkScrollPosition();
+            
+            // Проверяем позицию при скролле (с debounce для производительности)
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(checkScrollPosition, 50);
+            });
+            
+            // Также проверяем при изменении размера окна
+            window.addEventListener('resize', checkScrollPosition);
+        }
 
         // --- EXPANDABLE SEARCH FUNCTIONALITY ---
         function setupSearch() {
