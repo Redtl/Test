@@ -86,6 +86,8 @@
             --social-icon-hover: var(--black);
             --cube-point-color: var(--black);
             --cube-line-color: var(--black);
+            --welcome-text-color: var(--black);
+            --loading-dot-color: var(--black);
         }
 
         .dark-mode {
@@ -118,6 +120,8 @@
             --social-icon-hover: var(--white);
             --cube-point-color: var(--white);
             --cube-line-color: var(--white);
+            --welcome-text-color: var(--white);
+            --loading-dot-color: var(--white);
         }
 
         .space-mode {
@@ -150,6 +154,8 @@
             --social-icon-hover: var(--space-neon);
             --cube-point-color: var(--space-neon);
             --cube-line-color: var(--space-neon);
+            --welcome-text-color: var(--space-neon);
+            --loading-dot-color: var(--space-neon);
         }
 
         * {
@@ -213,7 +219,22 @@
             position: relative;
             display: inline-block;
             text-transform: uppercase;
-            color: var(--accent-color);
+            /* Используем цветную версию только для космической темы */
+            color: var(--welcome-text-color);
+            white-space: nowrap; /* Обеспечиваем одну строку */
+        }
+
+        /* ЧБ стиль для светлой и темной тем */
+        .light-mode .welcome-title,
+        .dark-mode .welcome-title {
+            color: var(--welcome-text-color);
+            text-shadow: none;
+        }
+
+        /* Цветной стиль только для космической темы */
+        .space-mode .welcome-title {
+            color: var(--space-neon);
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
         }
 
         /* Быстрый глитч-эффект как у цифр */
@@ -256,9 +277,22 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: var(--accent-color);
+            background: var(--loading-dot-color);
             opacity: 0.6;
             animation: dotPulse 1.5s infinite ease-in-out;
+        }
+
+        /* ЧБ точки для светлой и темной тем */
+        .light-mode .dot,
+        .dark-mode .dot {
+            background: var(--loading-dot-color);
+            box-shadow: none;
+        }
+
+        /* Цветные точки для космической темы */
+        .space-mode .dot {
+            background: var(--space-neon);
+            box-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
         }
 
         .dot:nth-child(2) {
