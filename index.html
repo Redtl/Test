@@ -181,6 +181,146 @@
             min-height: 100vh;
         }
 
+        /* --- EXPANDABLE SEARCH STYLES --- */
+        .search-container {
+            position: relative;
+            height: 60px;
+            margin: -2rem auto 3rem;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 30px; /* Perfect circle */
+            display: flex;
+            align-items: center;
+            transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                        border-radius 0.6s ease,
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .search-wrapper.expanded {
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius-xl);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(0, 209, 255, 0.15), var(--shadow-lg);
+            cursor: text;
+        }
+
+        .space-mode .search-wrapper.expanded {
+            border-color: var(--space-neon);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2), var(--shadow-lg);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1.2);
+            color: var(--text-tertiary);
+            font-size: 1.2rem;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .search-wrapper:hover .search-icon {
+            color: var(--accent-color);
+        }
+
+        .space-mode .search-wrapper:hover .search-icon {
+            color: var(--space-neon);
+        }
+
+        .search-wrapper.expanded .search-icon {
+            left: 24px;
+            top: 50%;
+            transform: translate(0, -50%) scale(1);
+            color: var(--accent-color);
+        }
+
+        .space-mode .search-wrapper.expanded .search-icon {
+            color: var(--space-neon);
+        }
+
+        .search-input {
+            width: 100%;
+            height: 100%;
+            padding: 0 1.5rem 0 3.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            outline: none;
+        }
+
+        .search-wrapper.expanded .search-input {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* --- SCROLL TO TOP --- */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .space-mode .scroll-top-btn {
+            color: var(--space-neon);
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-primary);
+            transform: translateY(-5px);
+        }
+
+        .space-mode .scroll-top-btn:hover {
+            background: var(--space-neon);
+            color: var(--space-dark);
+        }
+
         /* Стили для приветственного сообщения */
         .welcome-overlay {
             position: fixed;
@@ -720,11 +860,12 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background-color: var(--bg-primary);
+            background-color: var(--bg-primary); /* Убрана прозрачность, теперь сплошной цвет */
+            /* Убраны эффекты blur (жидкого стекла) */
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             box-shadow: var(--shadow-md);
-            transition: background-color var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
+            transition: all var(--transition-slow);
         }
 
         .nav-content {
@@ -824,8 +965,7 @@
             border: 1px solid var(--theme-btn-border);
             border-radius: var(--radius-md);
             padding: 0.25rem;
-            transition: background var(--transition-slow), border-color var(--transition-slow);
-            position: relative;
+            transition: background var(--transition-slow), border-color var(--transition-slow), position: relative;
         }
 
         .theme-btn {
@@ -1083,6 +1223,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin: 4rem 0;
+            perspective: 1000px; /* Add 3D perspective */
         }
 
         .metric-card {
@@ -1095,6 +1236,7 @@
             box-shadow: var(--shadow-lg);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
         }
 
         .metric-card::before {
@@ -1123,7 +1265,7 @@
         }
 
         .metric-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-4px) rotateX(5deg) rotateY(5deg);
             box-shadow: var(--shadow-xl);
         }
 
@@ -1289,6 +1431,11 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
+        
+        /* Скрываем команду если она не подходит под поиск */
+        .command-item.hidden-by-search {
+            display: none !important;
+        }
 
         .command-item::before {
             content: '';
@@ -1425,7 +1572,7 @@
 
         .balance-header.expanded-header {
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            border-bottom-color = transparent;
+            border-bottom-color: transparent;
             box-shadow: 0 4px 12px rgba(0, 209, 255, 0.05), var(--shadow-md);
         }
 
@@ -1968,6 +2115,11 @@
             <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">7</span></span>
         </div>
     </div>
+    
+    <!-- Кнопка скролла наверх -->
+    <div class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 
     <div class="stars" id="starsContainer"></div>
     <div class="cube-geometry" id="cubeGeometry"></div>
@@ -2019,22 +2171,22 @@
                 
                 <div class="hero-metrics-container">
                     <div class="metrics-grid">
-                        <div class="metric-card floating" style="animation-delay: 0s;">
+                        <div class="metric-card floating tilt-card" style="animation-delay: 0s;">
                             <div class="metric-value">+20</div>
                             <div class="metric-label">Шармов за сообщение</div>
                         </div>
                         
-                        <div class="metric-card floating" style="animation-delay: 0.2s;">
+                        <div class="metric-card floating tilt-card" style="animation-delay: 0.2s;">
                             <div class="metric-value">500</div>
                             <div class="metric-label">Стоимость звука</div>
                         </div>
                         
-                        <div class="metric-card floating" style="animation-delay: 0.4s;">
+                        <div class="metric-card floating tilt-card" style="animation-delay: 0.4s;">
                             <div class="metric-value">40K+</div>
                             <div class="metric-label">Для розыгрыша</div>
                         </div>
                         
-                        <div class="metric-card floating" style="animation-delay: 0.6s;">
+                        <div class="metric-card floating tilt-card" style="animation-delay: 0.6s;">
                             <div class="metric-value">100K+</div>
                             <div class="metric-label">Расширенный розыгрыш</div>
                         </div>
@@ -2123,6 +2275,14 @@
         </div>
 
         <div id="commands-section"></div>
+        
+        <!-- SEARCH BAR ADDED HERE -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="commandSearchInput" placeholder="Поиск команды... (например: привет, хьюстон)">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
         
         <section class="commands-section" data-category="greetings">
             <div class="section-header" id="greetingsHeader">
@@ -2214,7 +2374,7 @@
         <div class="container">
             <p>Charm Bot System • AlienCharm Stream</p>
             <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">
-                Обновлено: Декабрь 2023
+                Обновлено: Февраль 2026
             </p>
             <div class="designer-signature">
                 Designed by EVRUS
@@ -2686,6 +2846,9 @@
             createStars();
             createGeometryCube();
             setupAnchorScroll();
+            setupSearch(); // New Search Logic
+            setupScrollTop(); 
+            setupTiltEffect(); 
             
             // Инициализируем глитч-систему для цифр
             const glitchNumberElement = document.querySelector('.glitch-number');
@@ -2693,6 +2856,212 @@
                 window.glitchNumber = new GlitchNumber(glitchNumberElement);
             }
         });
+
+        // --- EXPANDABLE SEARCH FUNCTIONALITY ---
+        function setupSearch() {
+            const searchContainer = document.querySelector('.search-wrapper');
+            const searchInput = document.getElementById('commandSearchInput');
+            const sections = document.querySelectorAll('.commands-section');
+            const allCommands = document.querySelectorAll('.command-item');
+            let scrollTimeout; // Переменная для таймера прокрутки
+            
+            // Раскрытие поиска при клике
+            searchContainer.addEventListener('click', function() {
+                if (!this.classList.contains('expanded')) {
+                    this.classList.add('expanded');
+                    searchInput.focus();
+                }
+            });
+
+            // Скрытие поиска при клике снаружи
+            document.addEventListener('click', function(e) {
+                if (!searchContainer.contains(e.target) && searchInput.value.trim() === '') {
+                    searchContainer.classList.remove('expanded');
+                }
+            });
+
+            // Функция для прокрутки к первому результату
+            function scrollToFirstResult(searchTerm) {
+                if (!searchTerm) return;
+                
+                // Ищем первый видимый элемент (не скрытый поиском)
+                const firstVisible = document.querySelector('.command-item:not(.hidden-by-search)');
+                
+                if (firstVisible) {
+                    // Вычисляем позицию элемента относительно верха страницы
+                    // Вычитаем высоту навигации + отступ, чтобы элемент был по центру
+                    const elementRect = firstVisible.getBoundingClientRect();
+                    const absoluteElementTop = elementRect.top + window.pageYOffset;
+                    const headerOffset = 250; // Отступ сверху (чтобы не под шапкой и было видно)
+                    const scrollPosition = absoluteElementTop - headerOffset;
+
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: "smooth"
+                    });
+                    
+                    // Визуальный эффект подсветки
+                    const originalBorder = firstVisible.style.borderColor;
+                    const originalShadow = firstVisible.style.boxShadow;
+                    
+                    firstVisible.style.borderColor = 'var(--accent-color)';
+                    firstVisible.style.boxShadow = '0 0 15px rgba(0, 209, 255, 0.3)';
+                    firstVisible.style.transition = 'all 0.3s ease';
+                    
+                    setTimeout(() => {
+                        firstVisible.style.borderColor = originalBorder;
+                        firstVisible.style.boxShadow = originalShadow;
+                    }, 1000);
+                }
+            }
+
+            // Обработка клавиши Enter
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(scrollTimeout); // Отменяем таймер если нажали Enter
+                    scrollToFirstResult(searchInput.value.toLowerCase().trim());
+                }
+            });
+            
+            // Логика фильтрации
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                
+                // Очищаем таймер при каждом вводе символа (debounce)
+                clearTimeout(scrollTimeout);
+
+                // Если поиск пуст, восстанавливаем исходное состояние секций
+                if (searchTerm === '') {
+                    sections.forEach(section => {
+                        const category = section.dataset.category;
+                        const header = section.querySelector('.section-header');
+                        const wrapper = section.querySelector('.commands-wrapper');
+                        const toggleIcon = section.querySelector('.section-toggle i');
+                        
+                        if (!header || !wrapper) return;
+
+                        // Сначала показываем все элементы
+                        const items = section.querySelectorAll('.command-item');
+                        items.forEach(item => item.classList.remove('hidden-by-search'));
+
+                        // Восстанавливаем состояние (свернуто/развернуто)
+                        if (sectionsState[category]) {
+                            wrapper.classList.add('expanded');
+                            header.classList.add('expanded');
+                            if (toggleIcon) toggleIcon.classList.add('rotated');
+                            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+                            wrapper.style.opacity = '1';
+                        } else {
+                            wrapper.classList.remove('expanded');
+                            header.classList.remove('expanded');
+                            if (toggleIcon) toggleIcon.classList.remove('rotated');
+                            wrapper.style.maxHeight = '0';
+                            wrapper.style.opacity = '0';
+                        }
+                    });
+                    return;
+                }
+                
+                // Фильтрация
+                sections.forEach(section => {
+                    const items = section.querySelectorAll('.command-item');
+                    let hasVisibleItems = false;
+                    
+                    items.forEach(item => {
+                        try {
+                            const textEl = item.querySelector('.command-text');
+                            const hintEl = item.querySelector('.command-hint');
+                            
+                            const text = textEl ? textEl.textContent.toLowerCase() : '';
+                            const hint = hintEl ? hintEl.textContent.toLowerCase() : '';
+                            
+                            if (text.includes(searchTerm) || hint.includes(searchTerm)) {
+                                item.classList.remove('hidden-by-search');
+                                hasVisibleItems = true;
+                            } else {
+                                item.classList.add('hidden-by-search');
+                            }
+                        } catch (err) {
+                            console.error('Error filtering item:', err);
+                        }
+                    });
+                    
+                    const header = section.querySelector('.section-header');
+                    const wrapper = section.querySelector('.commands-wrapper');
+                    const toggleIcon = section.querySelector('.section-toggle i');
+                    
+                    if (!header || !wrapper) return;
+
+                    // Всегда разворачиваем секции, где есть совпадения
+                    if (hasVisibleItems) {
+                        wrapper.classList.add('expanded');
+                        header.classList.add('expanded');
+                        if (toggleIcon) toggleIcon.classList.add('rotated');
+                        // Принудительно ставим большую высоту для поиска, чтобы гарантировать раскрытие всех категорий
+                        wrapper.style.maxHeight = '5000px'; 
+                        wrapper.style.opacity = '1';
+                    } else {
+                        // Сворачиваем пустые секции
+                        wrapper.classList.remove('expanded');
+                        header.classList.remove('expanded');
+                        if (toggleIcon) toggleIcon.classList.remove('rotated');
+                        wrapper.style.maxHeight = '0';
+                        wrapper.style.opacity = '0';
+                    }
+                });
+
+                // Запускаем таймер прокрутки (если пользователь перестал печатать на 600мс)
+                scrollTimeout = setTimeout(() => {
+                     scrollToFirstResult(searchTerm);
+                }, 600);
+            });
+        }
+
+        // --- SCROLL TO TOP FUNCTIONALITY ---
+        function setupScrollTop() {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+            
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // --- 3D TILT EFFECT ---
+        function setupTiltEffect() {
+            const cards = document.querySelectorAll('.tilt-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                });
+            });
+        }
 
         function createStars() {
             const starsContainer = document.getElementById('starsContainer');
@@ -3162,19 +3531,21 @@
             const commandItems = document.querySelectorAll('.command-item');
             const copyToast = document.getElementById('copyToast');
             
-            commandItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const command = this.dataset.command;
-                    copyToClipboard(command);
-                    
-                    this.style.borderColor = 'var(--accent-color)';
-                    this.style.boxShadow = '0 0 0 2px rgba(0, 209, 255, 0.1)';
-                    
-                    setTimeout(() => {
-                        this.style.borderColor = '';
-                        this.style.boxShadow = '';
-                    }, 300);
-                });
+            // Delegate event listener for better performance with search
+            document.addEventListener('click', function(e) {
+                const item = e.target.closest('.command-item');
+                if (!item) return;
+                
+                const command = item.dataset.command;
+                copyToClipboard(command);
+                
+                item.style.borderColor = 'var(--accent-color)';
+                item.style.boxShadow = '0 0 0 2px rgba(0, 209, 255, 0.1)';
+                
+                setTimeout(() => {
+                    item.style.borderColor = '';
+                    item.style.boxShadow = '';
+                }, 300);
             });
             
             function copyToClipboard(text) {
