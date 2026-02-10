@@ -183,7 +183,7 @@
             opacity: 0;
             visibility: hidden;
             overflow: hidden;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s ease;
         }
 
         .theme-wave-overlay.active {
@@ -198,7 +198,7 @@
             opacity: 0;
             transform: scale(0);
             will-change: transform, opacity;
-            animation: waveExpand 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: waveExpand 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             mix-blend-mode: overlay;
         }
 
@@ -211,28 +211,9 @@
                 opacity: 0.6;
             }
             100% {
-                transform: scale(4);
+                transform: scale(3);
                 opacity: 0;
             }
-        }
-
-        /* Плавное появление элементов после перехода */
-        .content-fade {
-            opacity: 1;
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .theme-transitioning .content-fade {
-            opacity: 0.3;
-        }
-
-        /* Плавная загрузка фоновых элементов */
-        .bg-elements {
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .theme-transitioning .bg-elements {
-            opacity: 0.2;
         }
 
         .stars {
@@ -1613,14 +1594,14 @@
         </div>
     </div>
 
-    <div class="stars bg-elements" id="starsContainer"></div>
-    <div class="cube-geometry bg-elements" id="cubeGeometry"></div>
-    <div class="animated-bg bg-elements" id="animatedBg">
+    <div class="stars" id="starsContainer"></div>
+    <div class="cube-geometry" id="cubeGeometry"></div>
+    <div class="animated-bg" id="animatedBg">
         <div class="cross-container" id="crossContainer"></div>
         <div class="text-container" id="textContainer"></div>
     </div>
 
-    <nav class="nav content-fade">
+    <nav class="nav">
         <div class="container nav-content">
             <a href="#" class="logo">Charm Bot</a>
             <div class="nav-controls">
@@ -1645,7 +1626,7 @@
         </div>
     </nav>
 
-    <main class="container content-fade">
+    <main class="container">
         <section class="hero">
             <div class="container">
                 <h1 class="hero-title">Звуковые команды</h1>
@@ -1687,7 +1668,7 @@
             </div>
         </section>
 
-        <div class="info-cards content-fade">
+        <div class="info-cards">
             <div class="info-card">
                 <h3 class="info-card-title">
                     <i class="fas fa-comment-dots info-card-icon"></i>
@@ -1722,7 +1703,7 @@
             </div>
         </div>
 
-        <div class="balance-container content-fade">
+        <div class="balance-container">
             <div class="balance-header" id="balanceToggle">
                 <h3 class="balance-title">
                     <i class="fas fa-chart-line"></i>
@@ -1768,7 +1749,7 @@
 
         <div id="commands-section"></div>
         
-        <section class="commands-section content-fade" data-category="greetings">
+        <section class="commands-section" data-category="greetings">
             <div class="section-header" id="greetingsHeader">
                 <h3 class="section-title">
                     <i class="fas fa-hand-spock"></i>
@@ -1784,7 +1765,7 @@
             </div>
         </section>
 
-        <section class="commands-section content-fade" data-category="phrases">
+        <section class="commands-section" data-category="phrases">
             <div class="section-header" id="phrasesHeader">
                 <h3 class="section-title">
                     <i class="fas fa-comment"></i>
@@ -1800,7 +1781,7 @@
             </div>
         </section>
 
-        <section class="commands-section content-fade" data-category="battle">
+        <section class="commands-section" data-category="battle">
             <div class="section-header" id="battleHeader">
                 <h3 class="section-title">
                     <i class="fas fa-fist-raised"></i>
@@ -1816,7 +1797,7 @@
             </div>
         </section>
 
-        <section class="commands-section content-fade" data-category="reactions">
+        <section class="commands-section" data-category="reactions">
             <div class="section-header" id="reactionsHeader">
                 <h3 class="section-title">
                     <i class="fas fa-surprise"></i>
@@ -1832,7 +1813,7 @@
             </div>
         </section>
 
-        <section class="commands-section content-fade" data-category="ending">
+        <section class="commands-section" data-category="ending">
             <div class="section-header" id="endingHeader">
                 <h3 class="section-title">
                     <i class="fas fa-flag-checkered"></i>
@@ -1854,7 +1835,7 @@
         <span>Команда скопирована!</span>
     </div>
 
-    <footer class="footer content-fade">
+    <footer class="footer">
         <div class="container">
             <p>Charm Bot System • AlienCharm Stream</p>
             <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.7;">
@@ -2446,7 +2427,7 @@
             themeButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     const theme = this.dataset.theme;
-                    if (this.classList.contains('active')) return; // Если уже активна - не меняем
+                    if (this.classList.contains('active')) return;
                     
                     // Получаем позицию кнопки для анимации волны
                     const rect = this.getBoundingClientRect();
@@ -2459,95 +2440,66 @@
         }
 
         function setTheme(theme, isInitialLoad = false, clickPosition = null) {
-            if (!isInitialLoad) {
-                // Добавляем класс для плавного перехода
-                document.body.classList.add('theme-transitioning');
-                
-                // Активируем анимацию волны с небольшой задержкой
-                setTimeout(() => {
-                    const waveOverlay = document.getElementById('themeWave');
-                    
-                    // Определяем цвет волны в зависимости от новой темы
-                    let waveColor;
-                    if (theme === 'space') {
-                        waveColor = 'rgba(0, 255, 157, 0.6)';
-                    } else if (theme === 'light') {
-                        waveColor = 'rgba(0, 0, 0, 0.6)';
-                    } else {
-                        waveColor = 'rgba(255, 255, 255, 0.6)';
-                    }
-                    
-                    // Создаем круг волны
-                    waveOverlay.innerHTML = '';
-                    const waveCircle = document.createElement('div');
-                    waveCircle.className = 'wave-circle';
-                    waveCircle.style.setProperty('--wave-color', waveColor);
-                    
-                    // Позиционируем волну от кнопки
-                    if (clickPosition) {
-                        waveCircle.style.left = `${clickPosition.x}px`;
-                        waveCircle.style.top = `${clickPosition.y}px`;
-                    } else {
-                        waveCircle.style.left = '50%';
-                        waveCircle.style.top = '50%';
-                        waveCircle.style.transform = 'translate(-50%, -50%) scale(0)';
-                    }
-                    
-                    waveOverlay.appendChild(waveCircle);
-                    
-                    // Плавно показываем оверлей
-                    setTimeout(() => {
-                        waveOverlay.classList.add('active');
-                    }, 10);
-                    
-                }, 50);
+            // Немедленно меняем тему
+            document.body.classList.remove('light-mode', 'dark-mode', 'space-mode');
+            document.body.classList.add(`${theme}-mode`);
+            
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.theme === theme) {
+                    button.classList.add('active');
+                }
+            });
+            
+            localStorage.setItem('theme', theme);
+            
+            // Немедленно обновляем фоновые элементы
+            createAnimatedBackground();
+            createGeometryCube();
+            
+            // Для космической темы создаем звезды
+            if (theme === 'space') {
+                createStars();
             }
             
-            // Смена темы происходит с небольшой задержкой после начала анимации
-            setTimeout(() => {
-                document.body.classList.remove('light-mode', 'dark-mode', 'space-mode');
-                document.body.classList.add(`${theme}-mode`);
+            if (!isInitialLoad && clickPosition) {
+                // Создаем волну после смены темы
+                const waveOverlay = document.getElementById('themeWave');
                 
-                const themeButtons = document.querySelectorAll('.theme-btn');
-                themeButtons.forEach(button => {
-                    button.classList.remove('active');
-                    if (button.dataset.theme === theme) {
-                        button.classList.add('active');
-                    }
-                });
-                
-                localStorage.setItem('theme', theme);
-                
-                if (!isInitialLoad) {
-                    // Пересоздаем фоновые элементы после завершения анимации
-                    setTimeout(() => {
-                        createAnimatedBackground();
-                        createGeometryCube();
-                        
-                        // Плавно скрываем волну и убираем класс перехода
-                        setTimeout(() => {
-                            const waveOverlay = document.getElementById('themeWave');
-                            waveOverlay.classList.remove('active');
-                            
-                            setTimeout(() => {
-                                waveOverlay.innerHTML = '';
-                                document.body.classList.remove('theme-transitioning');
-                                
-                                // Обновляем звезды для космической темы
-                                if (theme === 'space') {
-                                    createStars();
-                                }
-                            }, 300);
-                        }, 700);
-                    }, 200);
+                // Определяем цвет волны
+                let waveColor;
+                if (theme === 'space') {
+                    waveColor = 'rgba(0, 255, 157, 0.5)';
+                } else if (theme === 'light') {
+                    waveColor = 'rgba(0, 0, 0, 0.5)';
                 } else {
-                    createAnimatedBackground();
-                    createGeometryCube();
-                    if (theme === 'space') {
-                        createStars();
-                    }
+                    waveColor = 'rgba(255, 255, 255, 0.5)';
                 }
-            }, isInitialLoad ? 0 : 150);
+                
+                // Создаем круг волны
+                waveOverlay.innerHTML = '';
+                const waveCircle = document.createElement('div');
+                waveCircle.className = 'wave-circle';
+                waveCircle.style.setProperty('--wave-color', waveColor);
+                
+                // Позиционируем волну от кнопки
+                waveCircle.style.left = `${clickPosition.x}px`;
+                waveCircle.style.top = `${clickPosition.y}px`;
+                
+                waveOverlay.appendChild(waveCircle);
+                
+                // Показываем волну
+                waveOverlay.classList.add('active');
+                
+                // Убираем волну после анимации
+                setTimeout(() => {
+                    waveOverlay.classList.remove('active');
+                    setTimeout(() => {
+                        waveOverlay.innerHTML = '';
+                    }, 200);
+                }, 600);
+            }
         }
 
         function loadCommands() {
