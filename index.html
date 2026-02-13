@@ -11,7 +11,6 @@
     <link href="https://fonts.cdnfonts.com/css/sprite-graffiti" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/fyodor" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/valorax" rel="stylesheet">
-    <!-- Добавляем шрифт Promethean Regular -->
     <link href="https://fonts.cdnfonts.com/css/promethean" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -181,7 +180,6 @@
             min-height: 100vh;
         }
 
-        /* --- EXPANDABLE SEARCH STYLES --- */
         .search-container {
             position: relative;
             height: 60px;
@@ -198,7 +196,7 @@
             height: 60px;
             background: var(--bg-secondary);
             border: 2px solid var(--border-color);
-            border-radius: 30px; /* Perfect circle */
+            border-radius: 30px;
             display: flex;
             align-items: center;
             transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
@@ -277,7 +275,6 @@
             pointer-events: all;
         }
 
-        /* --- SCROLL TO TOP --- */
         .scroll-top-btn {
             position: fixed;
             bottom: 2rem;
@@ -321,7 +318,6 @@
             color: var(--space-dark);
         }
 
-        /* Стили для приветственного сообщения */
         .welcome-overlay {
             position: fixed;
             top: 0;
@@ -336,7 +332,6 @@
             opacity: 1;
             visibility: visible;
             transition: opacity 0.8s ease, visibility 0.8s ease;
-            /* Remove pointer-events none to allow initial interaction if needed, though usually it blocks */
             overflow: hidden;
         }
 
@@ -346,72 +341,82 @@
             pointer-events: none;
         }
 
-        /* Канвас для топографии фона приветствия */
         #welcomeTopoCanvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Позади контента */
-            opacity: 0.3; /* Прозрачность фона */
+            z-index: 0;
+            opacity: 0.3;
             pointer-events: none;
         }
 
-        /* Канвас для фона шапки */
         #heroTopoCanvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Самый задний план внутри .hero */
+            z-index: 0;
             opacity: 1;
             pointer-events: none;
         }
 
         .welcome-content {
             text-align: center;
-            padding: 3rem;
+            padding: 2rem;
             max-width: 600px;
-            position: relative; /* Чтобы быть над канвасом */
+            position: relative;
             z-index: 1;
             animation: welcomeFadeIn 1s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         .welcome-title {
-            /* Меняем шрифт на Promethean Regular */
-            font-family: 'Promethean', 'Valorax', 'Sprite Graffiti', 'Space Grotesk', monospace;
-            font-size: 4.5rem;
-            font-weight: 400; /* Regular weight */
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-            line-height: 1.1;
+            font-family: 'Akony', 'Promethean', 'Valorax', 'Sprite Graffiti', 'Space Grotesk', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            line-height: 1.2;
             position: relative;
-            display: inline-block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             text-transform: uppercase;
-            /* Используем цветную версию только для космической темы */
             color: var(--welcome-text-color);
-            white-space: nowrap; /* Обеспечиваем одну строку */
+            white-space: nowrap;
+            width: 100%;
         }
 
-        /* ЧБ стиль для светлой и темной тем */
         .light-mode .welcome-title,
         .dark-mode .welcome-title {
             color: var(--welcome-text-color);
             text-shadow: none;
+            -webkit-text-stroke: 1px var(--welcome-text-color);
+            text-stroke: 1px var(--welcome-text-color);
+            letter-spacing: 0.12em;
         }
 
-        /* Цветной стиль только для космической темы */
         .space-mode .welcome-title {
             color: var(--space-neon);
             text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            -webkit-text-stroke: 1px rgba(0, 255, 157, 0.3);
+            text-stroke: 1px rgba(0, 255, 157, 0.3);
         }
 
-        /* Быстрый глитч-эффект как у цифр */
         .welcome-glitch-container {
             position: relative;
-            display: inline-block;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
         .welcome-text-static {
@@ -437,7 +442,6 @@
             opacity: 0.9;
         }
 
-        /* Круговая загрузка вместо точек */
         .loading-circle-container {
             display: flex;
             justify-content: center;
@@ -583,7 +587,6 @@
             }
         }
 
-        /* Быстрые анимации для глитча */
         @keyframes fastGlitchFlicker {
             0% {
                 opacity: 0;
@@ -658,7 +661,6 @@
             animation: welcomePulse 1s infinite;
         }
 
-        /* Анимация волны при смене темы */
         .theme-wave-overlay {
             position: fixed;
             top: 0;
@@ -747,7 +749,7 @@
         }
 
         .space-mode .cube-geometry {
-            display: none; /* Полностью скрываем сетку в космической теме */
+            display: none;
         }
 
         .cube-point {
@@ -888,8 +890,7 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background-color: var(--bg-primary); /* Убрана прозрачность, теперь сплошной цвет */
-            /* Убраны эффекты blur (жидкого стекла) */
+            background-color: var(--bg-primary);
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             box-shadow: var(--shadow-md);
@@ -993,7 +994,7 @@
             border: 1px solid var(--theme-btn-border);
             border-radius: var(--radius-md);
             padding: 0.25rem;
-            transition: background var(--transition-slow), border-color var(--transition-slow), position: relative;
+            transition: background var(--transition-slow), border-color var(--transition-slow);
         }
 
         .theme-btn {
@@ -1030,15 +1031,14 @@
             color: var(--space-dark);
         }
 
-        /* --- UPDATED BUTTON STYLE FOR TOPO EFFECT --- */
         .commands-jump-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
             padding: 1rem 2rem;
-            background: transparent; /* Canvas is background */
-            color: var(--btn-text); /* UPDATED: Use variable instead of fixed white */
+            background: transparent;
+            color: var(--btn-text);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-lg);
             font-family: 'Space Grotesk', monospace;
@@ -1055,7 +1055,6 @@
             text-transform: uppercase;
         }
 
-        /* Canvas container inside button */
         #topoCanvas {
             position: absolute;
             top: 0;
@@ -1063,7 +1062,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            pointer-events: none; /* Let clicks pass through to link */
+            pointer-events: none;
         }
 
         .commands-jump-btn:hover {
@@ -1085,7 +1084,6 @@
             transform: translateY(3px);
         }
         
-        /* Remove old pulse animations since we have the canvas now */
         .light-mode .commands-jump-btn,
         .dark-mode .commands-jump-btn,
         .space-mode .commands-jump-btn {
@@ -1181,10 +1179,6 @@
             background: transparent !important;
         }
 
-        .space-mode .hero::before::before {
-            display: none !important;
-        }
-
         .hero-title {
             font-family: 'Fyodor', 'Sprite Graffiti', 'Space Grotesk', monospace;
             font-size: 4.5rem;
@@ -1219,7 +1213,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin: 4rem 0;
-            perspective: 1000px; /* Add 3D perspective */
+            perspective: 1000px;
         }
 
         .metric-card {
@@ -1428,7 +1422,6 @@
             box-shadow: var(--shadow-sm);
         }
         
-        /* Скрываем команду если она не подходит под поиск */
         .command-item.hidden-by-search {
             display: none !important;
         }
@@ -1695,7 +1688,6 @@
             opacity: 1;
         }
 
-        /* Стили для вертикального глитч-числа */
         .vertical-number {
             position: fixed;
             left: 20px;
@@ -1777,7 +1769,6 @@
             text-shadow: 0 0 5px rgba(0, 255, 157, 0.3);
         }
 
-        /* Ускоренные анимации для глитча */
         @keyframes glitchFlicker {
             0% {
                 opacity: 0;
@@ -1829,7 +1820,6 @@
             }
         }
 
-        /* Более быстрое свечение для космической темы */
         .space-mode .glitch-digit.active {
             animation: glowPulse 1.5s infinite;
         }
@@ -1953,7 +1943,7 @@
             }
             
             .welcome-title {
-                font-size: 3.5rem;
+                font-size: 2.4rem;
             }
             
             .welcome-content {
@@ -2047,7 +2037,8 @@
             }
             
             .welcome-title {
-                font-size: 2.8rem;
+                font-size: 2rem;
+                letter-spacing: 0.06em;
             }
             
             .welcome-subtitle {
@@ -2073,9 +2064,7 @@
     </style>
 </head>
 <body class="dark-mode">
-    <!-- Приветственное сообщение -->
     <div class="welcome-overlay" id="welcomeOverlay">
-        <!-- Канвас для топографии фона -->
         <canvas id="welcomeTopoCanvas"></canvas>
         
         <div class="welcome-content">
@@ -2097,10 +2086,8 @@
         </div>
     </div>
 
-    <!-- Анимация волны при смене темы -->
     <div class="theme-wave-overlay" id="themeWave"></div>
 
-    <!-- Вертикальное глитч-число в левом нижнем углу -->
     <div class="vertical-number" id="verticalNumber">
         <div class="glitch-number">
             <span class="glitch-digit" data-type="digit"><span class="digit-static">2</span><span class="digit-glitch">7</span></span>
@@ -2115,7 +2102,6 @@
         </div>
     </div>
     
-    <!-- Кнопка скролла наверх -->
     <div class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
         <i class="fas fa-arrow-up"></i>
     </div>
@@ -2154,7 +2140,6 @@
 
     <main class="container">
         <section class="hero">
-            <!-- Канвас для фона шапки -->
             <canvas id="heroTopoCanvas"></canvas>
             <div class="container">
                 <h1 class="hero-title">ЗВУКОВЫЕ КОМАНДЫ</h1>
@@ -2164,7 +2149,6 @@
                 </p>
                 
                 <div style="margin-bottom: 3rem;">
-                    <!-- MODIFIED BUTTON: Added Canvas and Wrapped Text -->
                     <a href="#commands-section" class="commands-jump-btn" id="topoButton">
                         <canvas id="topoCanvas"></canvas>
                         <span style="position: relative; z-index: 1; display: flex; align-items: center; gap: 0.75rem;">
@@ -2200,7 +2184,6 @@
             </div>
         </section>
 
-        <!-- ... existing content (info cards, etc) ... -->
         <div class="info-cards">
             <div class="info-card">
                 <h3 class="info-card-title">
@@ -2282,7 +2265,6 @@
 
         <div id="commands-section"></div>
         
-        <!-- SEARCH BAR -->
         <div class="search-container">
             <div class="search-wrapper">
                 <input type="text" class="search-input" id="commandSearchInput" placeholder="Поиск команды... (например: привет, хьюстон)">
@@ -2391,7 +2373,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
     <script>
-        // ... existing commandsData and GlitchNumber classes ...
         const commandsData = {
             'greetings': [
                 "!здарова бандиты", "!здарова чуваки", "!О привет", "!здарова отцы", "!здарова брат", "!здравствуй брат"
@@ -2596,7 +2577,6 @@
             }
         }
 
-        // --- WEBGL TOPO BUTTON LOGIC ---
         function initTopoButton() {
             const canvas = document.getElementById('topoCanvas');
             const button = document.getElementById('topoButton');
@@ -2613,7 +2593,6 @@
                 }
             `;
 
-            // Обновленные параметры: ОЧЕНЬ тонкие линии и адаптивные цвета
             const fsSource = `
                 precision mediump float;
                 uniform vec2 u_resolution;
@@ -2661,8 +2640,6 @@
                     
                     float lines = sin(finalNoise * 8.0);
                     
-                    // Очень высокий порог для сверхтонких линий
-                    // Рисуем только верхушку синусоиды
                     lines = smoothstep(0.92, 0.98, lines);
                     
                     vec3 color = mix(u_bgColor, u_lineColor, lines);
@@ -2723,27 +2700,17 @@
                     gl.viewport(0, 0, canvas.width, canvas.height);
                 }
 
-                // Определение цветов в зависимости от темы
                 let bgR, bgG, bgB;
                 let lineR, lineG, lineB;
 
                 if (document.body.classList.contains('light-mode')) {
-                    // Кнопка черная, текст белый
-                    // Фон: Почти черный
                     bgR = 0.05; bgG = 0.05; bgB = 0.05;
-                    // Линии: Серые (тонкие)
                     lineR = 0.4; lineG = 0.4; lineB = 0.4;
                 } else if (document.body.classList.contains('space-mode')) {
-                    // Кнопка синяя (#00b4d8), текст темный
-                    // Фон: Синий
                     bgR = 0.0; bgG = 0.706; bgB = 0.847;
-                    // Линии: Неоновый зеленый (#00ff9d) для космо-эффекта
                     lineR = 0.0; lineG = 1.0; lineB = 0.616;
                 } else {
-                    // Dark mode (по умолчанию кнопка белая, текст черный)
-                    // Фон: Почти белый
                     bgR = 0.95; bgG = 0.95; bgB = 0.95;
-                    // Линии: Темно-серые
                     lineR = 0.6; lineG = 0.6; lineB = 0.6;
                 }
 
@@ -2755,7 +2722,6 @@
                 gl.uniform1f(programInfo.uniformLocations.time, now);
                 gl.uniform2f(programInfo.uniformLocations.mouse, mouseX, mouseY);
                 
-                // Передаем цвета
                 gl.uniform3f(programInfo.uniformLocations.bgColor, bgR, bgG, bgB);
                 gl.uniform3f(programInfo.uniformLocations.lineColor, lineR, lineG, lineB);
 
@@ -2765,7 +2731,6 @@
             requestAnimationFrame(render);
         }
 
-        // --- WEBGL TOPO WELCOME BACKGROUND LOGIC ---
         function initWelcomeTopo() {
             const canvas = document.getElementById('welcomeTopoCanvas');
             const container = document.getElementById('welcomeOverlay');
@@ -2775,7 +2740,6 @@
             const gl = canvas.getContext('webgl');
             if (!gl) return;
 
-            // Вершинный шейдер стандартный (как в кнопке)
             const vsSource = `
                 attribute vec4 aVertexPosition;
                 void main() {
@@ -2783,7 +2747,6 @@
                 }
             `;
 
-            // Фрагментный шейдер с увеличенным масштабом для полного экрана
             const fsSource = `
                 precision mediump float;
                 uniform vec2 u_resolution;
@@ -2818,24 +2781,19 @@
                     vec2 st = gl_FragCoord.xy / u_resolution.xy;
                     st.x *= u_resolution.x / u_resolution.y;
                     
-                    // Увеличиваем масштаб для полного экрана, чтобы линии были более плавными
-                    float scale = 1.5; 
-                    float speed = 0.03;
+                    float scale = 0.8; 
+                    float speed = 0.02;
                     
-                    // Используем время для плавного движения
                     float n = snoise(st * scale + vec2(u_time * speed));
-                    float n2 = snoise(st * scale * 2.0 - vec2(u_time * speed * 0.5));
+                    float n2 = snoise(st * scale * 1.5 - vec2(u_time * speed * 0.3));
                     
-                    float finalNoise = n * 0.6 + n2 * 0.4;
+                    float finalNoise = n * 0.5 + n2 * 0.5;
                     
-                    // Частота линий
-                    float lines = sin(finalNoise * 15.0);
+                    float lines = sin(finalNoise * 25.0);
                     
-                    // Делаем линии очень тонкими и мягкими
-                    lines = smoothstep(0.95, 0.98, lines);
+                    lines = smoothstep(0.97, 0.995, lines);
                     
-                    // Фон прозрачный (0.0), рисуем только линии
-                    vec4 color = vec4(u_lineColor, lines * 0.5); // 0.5 прозрачность линий
+                    vec4 color = vec4(u_lineColor, lines * 0.35);
                     
                     gl_FragColor = color;
                 }
@@ -2874,11 +2832,10 @@
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]), gl.STATIC_DRAW);
 
             let animationFrameId;
-            // Флаг для остановки анимации, когда оверлей скрыт
             window.isWelcomeActive = true; 
 
             function render(now) {
-                if (!window.isWelcomeActive) return; // Останавливаем рендер, если оверлей скрыт
+                if (!window.isWelcomeActive) return;
 
                 now *= 0.001;
                 const displayWidth = container.clientWidth;
@@ -2890,11 +2847,19 @@
                     gl.viewport(0, 0, canvas.width, canvas.height);
                 }
 
-                // Цвет линий (светло-серый/белый для темного фона загрузки)
-                // #e5e5e5 в RGB
-                const lineR = 0.8;
-                const lineG = 0.8; 
-                const lineB = 0.8;
+                // АДАПТИВНЫЙ ЦВЕТ ЛИНИЙ В ЗАВИСИМОСТИ ОТ ТЕМЫ
+                let lineR, lineG, lineB;
+                
+                if (document.body.classList.contains('light-mode')) {
+                    // Черные линии для светлой темы
+                    lineR = 0.0; lineG = 0.0; lineB = 0.0;
+                } else if (document.body.classList.contains('space-mode')) {
+                    // Неоновые линии для космической темы
+                    lineR = 0.0; lineG = 1.0; lineB = 0.616;
+                } else {
+                    // Светло-серые линии для темной темы
+                    lineR = 0.9; lineG = 0.9; lineB = 0.9;
+                }
 
                 gl.useProgram(programInfo.program);
                 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -2905,7 +2870,6 @@
                 gl.uniform1f(programInfo.uniformLocations.time, now);
                 gl.uniform3f(programInfo.uniformLocations.lineColor, lineR, lineG, lineB);
                 
-                // Включаем смешивание для прозрачности
                 gl.enable(gl.BLEND);
                 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -2915,7 +2879,6 @@
             render(0);
         }
 
-        // --- WEBGL HERO BACKGROUND TOPO ---
         function initHeroTopo() {
             const canvas = document.getElementById('heroTopoCanvas');
             const heroSection = document.querySelector('.hero');
@@ -2925,7 +2888,6 @@
             const gl = canvas.getContext('webgl');
             if (!gl) return;
 
-            // Вершинный шейдер стандартный
             const vsSource = `
                 attribute vec4 aVertexPosition;
                 void main() {
@@ -2933,7 +2895,6 @@
                 }
             `;
 
-            // Фрагментный шейдер
             const fsSource = `
                 precision mediump float;
                 uniform vec2 u_resolution;
@@ -2968,7 +2929,7 @@
                     vec2 st = gl_FragCoord.xy / u_resolution.xy;
                     st.x *= u_resolution.x / u_resolution.y;
                     
-                    float scale = 3.0; // Scale increased for more detail
+                    float scale = 3.0;
                     float speed = 0.015;
                     
                     float n = snoise(st * scale + vec2(u_time * speed));
@@ -2976,13 +2937,11 @@
                     
                     float finalNoise = n * 0.6 + n2 * 0.4;
                     
-                    float lines = sin(finalNoise * 30.0); // Frequency increased
+                    float lines = sin(finalNoise * 30.0);
                     
-                    // Very thin lines
                     lines = smoothstep(0.92, 0.95, lines);
                     
-                    // Low opacity
-                    vec4 color = vec4(u_lineColor, lines * 0.15); // Slightly higher opacity for hero area visibility
+                    vec4 color = vec4(u_lineColor, lines * 0.15);
                     
                     gl_FragColor = color;
                 }
@@ -3031,16 +2990,12 @@
                     gl.viewport(0, 0, canvas.width, canvas.height);
                 }
 
-                // Адаптация цвета линий под тему
                 let lineR, lineG, lineB;
                 if (document.body.classList.contains('light-mode')) {
-                    // Темные линии для светлой темы (темно-серые для контраста на белом)
                     lineR = 0.2; lineG = 0.2; lineB = 0.2; 
                 } else if (document.body.classList.contains('space-mode')) {
-                    // Неоновые/Циан линии для космической темы
                     lineR = 0.0; lineG = 1.0; lineB = 0.8;
                 } else {
-                    // Светлые линии для темной темы
                     lineR = 0.8; lineG = 0.8; lineB = 0.8;
                 }
 
@@ -3063,7 +3018,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // ... existing init code ...
             const welcomeOverlay = document.getElementById('welcomeOverlay');
             const progressElement = document.querySelector('.loading-progress');
             
@@ -3077,9 +3031,8 @@
             const updateInterval = 50;
             const increment = (updateInterval / totalDuration) * 100;
             
-            // --- INIT BACKGROUNDS ---
             initWelcomeTopo();
-            initHeroTopo(); // Запускаем фон шапки
+            initHeroTopo();
 
             const progressInterval = setInterval(() => {
                 progress += increment;
@@ -3095,7 +3048,6 @@
                 clearInterval(progressInterval);
                 if (window.welcomeGlitch) window.welcomeGlitch.destroy();
                 
-                // Останавливаем WebGL анимацию фона приветствия
                 window.isWelcomeActive = false;
 
                 setTimeout(() => { welcomeOverlay.remove(); }, 800);
@@ -3114,7 +3066,6 @@
             setupScrollTop(); 
             setupTiltEffect(); 
             
-            // --- INIT TOPO BUTTON ---
             initTopoButton();
             
             const glitchNumberElement = document.querySelector('.glitch-number');
@@ -3122,8 +3073,6 @@
                 window.glitchNumber = new GlitchNumber(glitchNumberElement);
             }
         });
-        
-        // ... (Keep existing setupSearch, setupScrollTop, etc. functions) ...
 
         function setupSearch() {
             const searchContainer = document.querySelector('.search-wrapper');
@@ -3475,7 +3424,6 @@
             createGeometryCube();
             if (theme === 'space') { createStars(); }
             
-            // Re-render crosses to update color
             createAnimatedCrosses(); 
 
             if (!isInitialLoad && clickPosition) {
