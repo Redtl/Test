@@ -358,6 +358,18 @@
             pointer-events: none;
         }
 
+        /* Канвас для фона шапки */
+        #heroTopoCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Самый задний план внутри .hero */
+            opacity: 1;
+            pointer-events: none;
+        }
+
         .welcome-content {
             text-align: center;
             padding: 3rem;
@@ -735,7 +747,7 @@
         }
 
         .space-mode .cube-geometry {
-            opacity: 0.7;
+            display: none; /* Полностью скрываем сетку в космической теме */
         }
 
         .cube-point {
@@ -2142,6 +2154,8 @@
 
     <main class="container">
         <section class="hero">
+            <!-- Канвас для фона шапки -->
+            <canvas id="heroTopoCanvas"></canvas>
             <div class="container">
                 <h1 class="hero-title">ЗВУКОВЫЕ КОМАНДЫ</h1>
                 <p class="hero-subtitle">
@@ -2901,6 +2915,153 @@
             render(0);
         }
 
+        // --- WEBGL HERO BACKGROUND TOPO ---
+        function initHeroTopo() {
+            const canvas = document.getElementById('heroTopoCanvas');
+            const heroSection = document.querySelector('.hero');
+            
+            if (!canvas || !heroSection) return;
+
+            const gl = canvas.getContext('webgl');
+            if (!gl) return;
+
+            // Вершинный шейдер стандартный
+            const vsSource = `
+                attribute vec4 aVertexPosition;
+                void main() {
+                    gl_Position = aVertexPosition;
+                }
+            `;
+
+            // Фрагментный шейдер
+            const fsSource = `
+                precision mediump float;
+                uniform vec2 u_resolution;
+                uniform float u_time;
+                uniform vec3 u_lineColor;
+
+                vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                float snoise(vec2 v){
+                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                    vec2 i  = floor(v + dot(v, C.yy) );
+                    vec2 x0 = v -   i + dot(i, C.xx);
+                    vec2 i1;
+                    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                    vec4 x12 = x0.xyxy + C.xxzz;
+                    x12.xy -= i1;
+                    i = mod(i, 289.0);
+                    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                    m = m*m ; m = m*m ;
+                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                    vec3 h = abs(x) - 0.5;
+                    vec3 ox = floor(x + 0.5);
+                    vec3 a0 = x - ox;
+                    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                    vec3 g;
+                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                    return 130.0 * dot(m, g);
+                }
+
+                void main() {
+                    vec2 st = gl_FragCoord.xy / u_resolution.xy;
+                    st.x *= u_resolution.x / u_resolution.y;
+                    
+                    float scale = 3.0; // Scale increased for more detail
+                    float speed = 0.015;
+                    
+                    float n = snoise(st * scale + vec2(u_time * speed));
+                    float n2 = snoise(st * scale * 2.0 - vec2(u_time * speed * 0.5));
+                    
+                    float finalNoise = n * 0.6 + n2 * 0.4;
+                    
+                    float lines = sin(finalNoise * 30.0); // Frequency increased
+                    
+                    // Very thin lines
+                    lines = smoothstep(0.92, 0.95, lines);
+                    
+                    // Low opacity
+                    vec4 color = vec4(u_lineColor, lines * 0.15); // Slightly higher opacity for hero area visibility
+                    
+                    gl_FragColor = color;
+                }
+            `;
+
+            function loadShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+
+            const programInfo = {
+                program: shaderProgram,
+                attribLocations: { vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition') },
+                uniformLocations: {
+                    resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
+                    time: gl.getUniformLocation(shaderProgram, 'u_time'),
+                    lineColor: gl.getUniformLocation(shaderProgram, 'u_lineColor'),
+                },
+            };
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]), gl.STATIC_DRAW);
+
+            function render(now) {
+                now *= 0.001;
+                const displayWidth = heroSection.clientWidth;
+                const displayHeight = heroSection.clientHeight;
+                
+                if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+                    canvas.width = displayWidth;
+                    canvas.height = displayHeight;
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+                }
+
+                // Адаптация цвета линий под тему
+                let lineR, lineG, lineB;
+                if (document.body.classList.contains('light-mode')) {
+                    // Темные линии для светлой темы (темно-серые для контраста на белом)
+                    lineR = 0.2; lineG = 0.2; lineB = 0.2; 
+                } else if (document.body.classList.contains('space-mode')) {
+                    // Неоновые/Циан линии для космической темы
+                    lineR = 0.0; lineG = 1.0; lineB = 0.8;
+                } else {
+                    // Светлые линии для темной темы
+                    lineR = 0.8; lineG = 0.8; lineB = 0.8;
+                }
+
+                gl.useProgram(programInfo.program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+                
+                gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+                gl.uniform1f(programInfo.uniformLocations.time, now);
+                gl.uniform3f(programInfo.uniformLocations.lineColor, lineR, lineG, lineB);
+                
+                gl.enable(gl.BLEND);
+                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            }
+            render(0);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // ... existing init code ...
             const welcomeOverlay = document.getElementById('welcomeOverlay');
@@ -2916,8 +3077,9 @@
             const updateInterval = 50;
             const increment = (updateInterval / totalDuration) * 100;
             
-            // --- INIT BACKGROUND TOPO ---
+            // --- INIT BACKGROUNDS ---
             initWelcomeTopo();
+            initHeroTopo(); // Запускаем фон шапки
 
             const progressInterval = setInterval(() => {
                 progress += increment;
@@ -2933,7 +3095,7 @@
                 clearInterval(progressInterval);
                 if (window.welcomeGlitch) window.welcomeGlitch.destroy();
                 
-                // Останавливаем WebGL анимацию фона
+                // Останавливаем WebGL анимацию фона приветствия
                 window.isWelcomeActive = false;
 
                 setTimeout(() => { welcomeOverlay.remove(); }, 800);
