@@ -336,18 +336,34 @@
             opacity: 1;
             visibility: visible;
             transition: opacity 0.8s ease, visibility 0.8s ease;
-            pointer-events: none;
+            /* Remove pointer-events none to allow initial interaction if needed, though usually it blocks */
+            overflow: hidden;
         }
 
         .welcome-overlay.hidden {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Канвас для топографии фона приветствия */
+        #welcomeTopoCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Позади контента */
+            opacity: 0.3; /* Прозрачность фона */
+            pointer-events: none;
         }
 
         .welcome-content {
             text-align: center;
             padding: 3rem;
             max-width: 600px;
+            position: relative; /* Чтобы быть над канвасом */
+            z-index: 1;
             animation: welcomeFadeIn 1s ease-out;
         }
 
@@ -1002,20 +1018,22 @@
             color: var(--space-dark);
         }
 
+        /* --- UPDATED BUTTON STYLE FOR TOPO EFFECT --- */
         .commands-jump-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.75rem;
             padding: 1rem 2rem;
-            background: var(--btn-bg);
-            color: var(--btn-text);
-            border: 2px solid var(--btn-border);
+            background: transparent; /* Canvas is background */
+            color: var(--btn-text); /* UPDATED: Use variable instead of fixed white */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-lg);
             font-family: 'Space Grotesk', monospace;
             font-weight: 600;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: all var(--transition-base);
+            transition: transform var(--transition-base), box-shadow var(--transition-base), color var(--transition-slow);
             text-decoration: none;
             box-shadow: var(--shadow-lg);
             position: relative;
@@ -1025,33 +1043,25 @@
             text-transform: uppercase;
         }
 
-        .commands-jump-btn::before {
-            content: '';
+        /* Canvas container inside button */
+        #topoCanvas {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--btn-hover-bg);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity var(--transition-base);
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none; /* Let clicks pass through to link */
         }
 
         .commands-jump-btn:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-xl);
-            color: var(--btn-text);
-            border-color: var(--btn-hover-border);
-        }
-
-        .commands-jump-btn:hover::before {
-            opacity: 1;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         .commands-jump-btn:active {
             transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
         }
 
         .commands-jump-btn i {
@@ -1062,38 +1072,12 @@
         .commands-jump-btn:hover i {
             transform: translateY(3px);
         }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: var(--shadow-lg);
-            }
-            50% {
-                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
-            }
-            100% {
-                box-shadow: var(--shadow-lg);
-            }
-        }
-
-        @keyframes pulse-space {
-            0% {
-                box-shadow: var(--shadow-space);
-            }
-            50% {
-                box-shadow: 0 0 0 15px rgba(0, 180, 216, 0.1);
-            }
-            100% {
-                box-shadow: var(--shadow-space);
-            }
-        }
-
+        
+        /* Remove old pulse animations since we have the canvas now */
         .light-mode .commands-jump-btn,
-        .dark-mode .commands-jump-btn {
-            animation: pulse 3s infinite;
-        }
-
+        .dark-mode .commands-jump-btn,
         .space-mode .commands-jump-btn {
-            animation: pulse-space 3s infinite;
+            animation: none; 
         }
 
         .hero {
@@ -1712,14 +1696,10 @@
             color: var(--text-tertiary);
             letter-spacing: 1px;
             opacity: 0.6;
-            z-index: 9999; /* Стандартный высокий z-index */
+            z-index: 9999;
             pointer-events: none;
-            transition: color var(--transition-slow), opacity var(--transition-slow), z-index 0.3s ease;
+            transition: color var(--transition-slow), opacity var(--transition-slow);
             user-select: none;
-        }
-
-        .vertical-number.behind-footer {
-            z-index: 90 !important; /* Ниже футера (100) */
         }
 
         .vertical-number span {
@@ -2083,6 +2063,9 @@
 <body class="dark-mode">
     <!-- Приветственное сообщение -->
     <div class="welcome-overlay" id="welcomeOverlay">
+        <!-- Канвас для топографии фона -->
+        <canvas id="welcomeTopoCanvas"></canvas>
+        
         <div class="welcome-content">
             <h1 class="welcome-title">
                 <span class="welcome-glitch-container">
@@ -2113,7 +2096,7 @@
             <span class="glitch-digit digit-separator" data-type="separator">.</span>
             <span class="glitch-digit" data-type="digit"><span class="digit-static">4</span><span class="digit-glitch">9</span></span>
             <span class="glitch-digit" data-type="digit"><span class="digit-static">2</span><span class="digit-glitch">8</span></span>
-            <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">1</span></span>
+            <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">3</span></span>
             <span class="glitch-digit digit-separator" data-type="separator">-</span>
             <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">6</span></span>
             <span class="glitch-digit" data-type="digit"><span class="digit-static">3</span><span class="digit-glitch">7</span></span>
@@ -2167,9 +2150,13 @@
                 </p>
                 
                 <div style="margin-bottom: 3rem;">
-                    <a href="#commands-section" class="commands-jump-btn">
-                        <i class="fas fa-arrow-down"></i>
-                        Смотреть все команды
+                    <!-- MODIFIED BUTTON: Added Canvas and Wrapped Text -->
+                    <a href="#commands-section" class="commands-jump-btn" id="topoButton">
+                        <canvas id="topoCanvas"></canvas>
+                        <span style="position: relative; z-index: 1; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-arrow-down"></i>
+                            Смотреть все команды
+                        </span>
                     </a>
                 </div>
                 
@@ -2199,6 +2186,7 @@
             </div>
         </section>
 
+        <!-- ... existing content (info cards, etc) ... -->
         <div class="info-cards">
             <div class="info-card">
                 <h3 class="info-card-title">
@@ -2280,7 +2268,7 @@
 
         <div id="commands-section"></div>
         
-        <!-- SEARCH BAR ADDED HERE -->
+        <!-- SEARCH BAR -->
         <div class="search-container">
             <div class="search-wrapper">
                 <input type="text" class="search-input" id="commandSearchInput" placeholder="Поиск команды... (например: привет, хьюстон)">
@@ -2343,7 +2331,7 @@
                     Реакции
                 </h3>
                 <div class="section-toggle">
-                    <span class="section-badge">23 команды</span>
+                    <span class="section-badge">23 команд</span>
                     <i class="fas fa-chevron-down" id="reactionsToggleIcon"></i>
                 </div>
             </div>
@@ -2389,94 +2377,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
     <script>
+        // ... existing commandsData and GlitchNumber classes ...
         const commandsData = {
             'greetings': [
-                "!здарова бандиты",
-                "!здарова чуваки",
-                "!О привет",
-                "!здарова отцы",
-                "!здарова брат",
-                "!здравствуй брат"
+                "!здарова бандиты", "!здарова чуваки", "!О привет", "!здарова отцы", "!здарова брат", "!здравствуй брат"
             ],
             'phrases': [
-                {text: "!испанцы"},
-                {text: "!начальники не опаздывают"},
-                {text: "!вы нас балуете ваша светлость"},
-                {text: "!потерялася"},
-                {text: "!сильно потерялася"},
-                {text: "!вот это поворот"},
-                {text: "!совпадение"},
-                {text: "!ду хаст"},
-                {text: "!x-files"},
-                {text: "!великолепный план Уолтер"},
-                {text: "!просчитался но где"},
-                {text: "!широкую на широкую"},
-                {text: "!гениально"},
-                {text: "!не участвую"},
-                {text: "!фиаско"},
-                {text: "!коварный тип"},
-                {text: "!это безопасно", hint: "андроид Дэвид"},
-                {text: "!хьюстон у нас проблема"},
-                {text: "!сомнительно но окей", hint: "(с) Тинькофф"},
-                {text: "!это было п#здец как смело", hint: "(с) Тинькофф"},
-                {text: "!желаю здоровья и выжить", hint: "(с) Тинькофф"},
-                {text: "!любая миссия", hint: "Футурама"},
-                {text: "!бендер"},
-                {text: "!I need to meditate", hint: "Trevor GTA"},
-                {text: "!I'll be back"},
-                {text: "!you died", hint: "Dark Souls"},
-                {text: "!мои нервы"},
-                {text: "!титры", hint: "directed by Robert B. Weide"},
-                {text: "!Ералаш"},
-                {text: "!ямэтэ кудасай"},
-                {text: "!хлопики"},
-                {text: "!модуль космоса", hint: "Portal"},
-                {text: "!Фримен"}
+                {text: "!испанцы"}, {text: "!начальники не опаздывают"}, {text: "!вы нас балуете ваша светлость"}, {text: "!потерялася"}, {text: "!сильно потерялася"}, {text: "!вот это поворот"}, {text: "!совпадение"}, {text: "!ду хаст"}, {text: "!x-files"}, {text: "!великолепный план Уолтер"}, {text: "!просчитался но где"}, {text: "!широкую на широкую"}, {text: "!гениально"}, {text: "!не участвую"}, {text: "!фиаско"}, {text: "!коварный тип"}, {text: "!это безопасно", hint: "андроид Дэвид"}, {text: "!хьюстон у нас проблема"}, {text: "!сомнительно но окей", hint: "(с) Тинькофф"}, {text: "!это было п#здец как смело", hint: "(с) Тинькофф"}, {text: "!желаю здоровья и выжить", hint: "(с) Тинькофф"}, {text: "!любая миссия", hint: "Футурама"}, {text: "!бендер"}, {text: "!I need to meditate", hint: "Trevor GTA"}, {text: "!I'll be back"}, {text: "!you died", hint: "Dark Souls"}, {text: "!мои нервы"}, {text: "!титры", hint: "directed by Robert B. Weide"}, {text: "!Ералаш"}, {text: "!ямэтэ кудасай"}, {text: "!хлопики"}, {text: "!модуль космоса", hint: "Portal"}, {text: "!Фримен"}
             ],
             'battle': [
-                "!крик Вильгельма",
-                "!ножик",
-                {text: "!бонжур", hint: "Bad Commedian"},
-                "!дробовики",
-                "!дрын",
-                "!на нас напали",
-                "!опять разборка",
-                "!киборг убийца"
+                "!крик Вильгельма", "!ножик", {text: "!бонжур", hint: "Bad Commedian"}, "!дробовики", "!дрын", "!на нас напали", "!опять разборка", "!киборг убийца"
             ],
             'reactions': [
-                {text: "!чтооо", hint: "вопросительно"},
-                {text: "!да да", hint: "иронично"},
-                "!нет",
-                "!hitler nein",
-                "!omg",
-                "!повезло",
-                "!не пройдешь",
-                "!ты пройдешь",
-                "!галочка",
-                "!пожили и хватит",
-                "!меня убили но я выжил",
-                "!я маслину поймал",
-                {text: "!это жестко"},
-                {text: "!святая корова"},
-                {text: "!да ладно"},
-                {text: "!вонючий случай"},
-                {text: "!туды яго"},
-                {text: "!опа кого-то хлопнули"},
-                {text: "!писюны"},
-                {text: "!в очередь"},
-                {text: "!полномочия"},
-                {text: "!ура заработало"},
-                {text: "!убойные каникулы"}
+                {text: "!чтооо", hint: "вопросительно"}, {text: "!да да", hint: "иронично"}, "!нет", "!hitler nein", "!omg", "!повезло", "!не пройдешь", "!ты пройдешь", "!галочка", "!пожили и хватит", "!меня убили но я выжил", "!я маслину поймал", {text: "!это жестко"}, {text: "!святая корова"}, {text: "!да ладно"}, {text: "!вонючий случай"}, {text: "!туды яго"}, {text: "!опа кого-то хлопнули"}, {text: "!писюны"}, {text: "!в очередь"}, {text: "!полномочия"}, {text: "!ура заработало"}, {text: "!убойные каникулы"}
             ],
             'ending': [
-                "!всего хо ро ше го",
-                "!все вон",
-                "!счастливо братва",
-                "!скоро встретимся",
-                "!hasta la vista"
+                "!всего хо ро ше го", "!все вон", "!счастливо братва", "!скоро встретимся", "!hasta la vista"
             ]
         };
-
+        
         let sectionsState = {
             'greetings': false,
             'phrases': false,
@@ -2485,7 +2404,6 @@
             'ending': false
         };
 
-        // Глитч-система для чисел с ускоренными эффектами
         class GlitchNumber {
             constructor(element) {
                 this.element = element;
@@ -2496,111 +2414,56 @@
                 this.fullGlitchTimeout = null;
                 this.isGlitching = false;
                 this.isPaused = false;
-                
                 this.init();
             }
-            
             init() {
-                // Начинаем случайные глитч-эффекты с более частыми интервалами
                 this.startRandomGlitch();
-                
-                // Запланируем первый полный глитч
                 this.scheduleFullGlitch();
             }
-            
             startRandomGlitch() {
                 const startGlitch = () => {
-                    if (this.isPaused) {
-                        // Если на паузе, проверяем снова через 2 секунды
-                        setTimeout(startGlitch, 2000);
-                        return;
-                    }
-                    
-                    // Более частые глитчи: 3-8 секунд
+                    if (this.isPaused) { setTimeout(startGlitch, 2000); return; }
                     const nextGlitchDelay = 3000 + Math.random() * 5000;
-                    
-                    // Запускаем таймер для следующего глитча
                     this.glitchTimeout = setTimeout(() => {
-                        // С вероятностью 80% делаем обычный глитч, 20% - паузу
-                        if (Math.random() > 0.2) {
-                            this.randomDigitGlitch();
-                        } else {
-                            // Короткая пауза - пропускаем один цикл
-                            this.isPaused = true;
-                            setTimeout(() => {
-                                this.isPaused = false;
-                            }, 2000 + Math.random() * 3000); // Пауза 2-5 секунд
-                        }
-                        
-                        // Планируем следующий глитч
+                        if (Math.random() > 0.2) { this.randomDigitGlitch(); } 
+                        else { this.isPaused = true; setTimeout(() => { this.isPaused = false; }, 2000 + Math.random() * 3000); }
                         startGlitch();
                     }, nextGlitchDelay);
                 };
-                
-                // Начинаем первый глитч через 1.5 секунды после загрузки
-                setTimeout(() => {
-                    startGlitch();
-                }, 1500);
+                setTimeout(() => { startGlitch(); }, 1500);
             }
-            
             scheduleFullGlitch() {
-                // Полные глитчи происходят чаще: 15-40 секунд
                 const fullGlitchDelay = 15000 + Math.random() * 25000;
-                
                 this.fullGlitchTimeout = setTimeout(() => {
-                    if (!this.isPaused) {
-                        this.fullGlitch();
-                    }
-                    // Планируем следующий полный глитч
+                    if (!this.isPaused) { this.fullGlitch(); }
                     this.scheduleFullGlitch();
                 }, fullGlitchDelay);
             }
-            
             randomDigitGlitch() {
-                // Выбираем случайную цифру
                 const digitIndex = Math.floor(Math.random() * this.digits.length);
                 const digit = this.digits[digitIndex];
                 const glitchElement = this.glitchElements[digitIndex];
-                
                 if (!digit || !glitchElement) return;
-                
-                // Генерируем случайную цифру для глитча (0-9)
                 const randomDigit = Math.floor(Math.random() * 10).toString();
                 glitchElement.textContent = randomDigit;
-                
-                // Активируем глитч с ускоренной анимацией
                 this.activateGlitch(digit, glitchElement);
-                
-                // В 15% случаев меняем основную цифру
-                if (Math.random() > 0.85) {
-                    setTimeout(() => {
-                        this.changeDigit(digitIndex, randomDigit);
-                    }, 300);
-                }
+                if (Math.random() > 0.85) { setTimeout(() => { this.changeDigit(digitIndex, randomDigit); }, 300); }
             }
-            
             activateGlitch(digit, glitchElement) {
-                // Добавляем класс для анимации
                 digit.classList.add('active');
-                
-                // Показываем глитч-элемент с быстрой анимацией
                 glitchElement.style.opacity = '1';
                 glitchElement.style.animation = 'fastGlitchFlicker 0.2s forwards';
-                
-                // Убираем глитч через 0.2 секунды
                 setTimeout(() => {
                     glitchElement.style.opacity = '0';
                     glitchElement.style.animation = '';
                     digit.classList.remove('active');
                 }, 200);
             }
-            
             changeDigit(index, newValue) {
                 if (index >= 0 && index < this.currentValues.length) {
                     this.currentValues[index] = newValue;
                     const digit = this.digits[index];
                     const staticElement = digit.querySelector('.digit-static');
-                    
                     if (staticElement) {
                         staticElement.style.opacity = '0';
                         setTimeout(() => {
@@ -2611,56 +2474,31 @@
                     }
                 }
             }
-            
             fullGlitch() {
                 if (this.isGlitching) return;
-                
                 this.isGlitching = true;
-                
-                // Активируем все глитч-элементы одновременно
                 this.glitchElements.forEach((glitch, index) => {
                     const randomDigit = Math.floor(Math.random() * 10).toString();
                     glitch.textContent = randomDigit;
                     glitch.style.opacity = '1';
                     glitch.style.animation = 'fastGlitchFlicker 0.3s forwards';
-                    
-                    // Активируем родительскую цифру
                     this.digits[index].classList.add('active');
-                    
-                    // В 25% случаев меняем основную цифру при полном глитче
-                    if (Math.random() > 0.75) {
-                        setTimeout(() => {
-                            this.changeDigit(index, randomDigit);
-                        }, 250);
-                    }
+                    if (Math.random() > 0.75) { setTimeout(() => { this.changeDigit(index, randomDigit); }, 250); }
                 });
-                
-                // Добавляем эффект сдвига всему числу
                 this.element.style.animation = 'fastGlitchShift 0.3s forwards';
-                
-                // Сбрасываем состояние через 0.3 секунды
                 setTimeout(() => {
-                    this.glitchElements.forEach(glitch => {
-                        glitch.style.opacity = '0';
-                        glitch.style.animation = '';
-                    });
-                    
-                    this.digits.forEach(digit => {
-                        digit.classList.remove('active');
-                    });
-                    
+                    this.glitchElements.forEach(glitch => { glitch.style.opacity = '0'; glitch.style.animation = ''; });
+                    this.digits.forEach(digit => { digit.classList.remove('active'); });
                     this.element.style.animation = '';
                     this.isGlitching = false;
                 }, 300);
             }
-            
             destroy() {
                 if (this.glitchTimeout) clearTimeout(this.glitchTimeout);
                 if (this.fullGlitchTimeout) clearTimeout(this.fullGlitchTimeout);
             }
         }
 
-        // Быстрая глитч-система для приветственного заголовка
         class FastWelcomeGlitch {
             constructor(element) {
                 this.element = element;
@@ -2669,118 +2507,67 @@
                 this.glitchTimeout = null;
                 this.fullGlitchTimeout = null;
                 this.isGlitching = false;
-                
                 this.init();
             }
-            
             init() {
-                // Начинаем случайные глитч-эффекты с очень частыми интервалами
                 this.startRandomGlitch();
-                
-                // Запланируем первый полный глитч
                 this.scheduleFullGlitch();
             }
-            
             startRandomGlitch() {
                 const startGlitch = () => {
-                    // Очень частые глитчи: 0.8-2 секунды
                     const nextGlitchDelay = 800 + Math.random() * 1200;
-                    
-                    // Запускаем таймер для следующего глитча
                     this.glitchTimeout = setTimeout(() => {
-                        // Всегда делаем глитч (без пауз)
                         this.randomGlitch();
-                        
-                        // Планируем следующий глитч
                         startGlitch();
                     }, nextGlitchDelay);
                 };
-                
-                // Начинаем первый глитч через 0.3 секунды после загрузки
-                setTimeout(() => {
-                    startGlitch();
-                }, 300);
+                setTimeout(() => { startGlitch(); }, 300);
             }
-            
             scheduleFullGlitch() {
-                // Полные глитчи происходят очень часто: 5-12 секунд
                 const fullGlitchDelay = 5000 + Math.random() * 7000;
-                
                 this.fullGlitchTimeout = setTimeout(() => {
                     this.fullGlitch();
-                    // Планируем следующий полный глитч
                     this.scheduleFullGlitch();
                 }, fullGlitchDelay);
             }
-            
             randomGlitch() {
-                // Генерируем случайный текст для глитча
                 const glitchChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?';
                 let glitchString = '';
-                
-                // Создаем строку со случайными символами той же длины
-                for (let i = 0; i < 9; i++) { // "CHARM BOT" = 9 символов
+                for (let i = 0; i < 9; i++) {
                     const randomIndex = Math.floor(Math.random() * glitchChars.length);
                     glitchString += glitchChars[randomIndex];
                 }
-                
                 this.glitchText.textContent = glitchString;
-                
-                // Активируем глитч с очень быстрой анимацией
                 this.activateGlitch();
-                
-                // В 10% случаев делаем акцент на основном тексте
                 if (Math.random() > 0.9) {
                     this.staticText.classList.add('active');
-                    setTimeout(() => {
-                        this.staticText.classList.remove('active');
-                    }, 300);
+                    setTimeout(() => { this.staticText.classList.remove('active'); }, 300);
                 }
             }
-            
             activateGlitch() {
-                // Показываем глитч-элемент с очень быстрой анимацией
                 this.glitchText.style.opacity = '1';
                 this.glitchText.style.animation = 'fastGlitchFlicker 0.15s forwards';
-                
-                // Добавляем эффект сдвига всему контейнеру
                 this.element.style.animation = 'fastGlitchShift 0.15s forwards';
-                
-                // Убираем глитч через 0.15 секунды
                 setTimeout(() => {
                     this.glitchText.style.opacity = '0';
                     this.glitchText.style.animation = '';
                     this.element.style.animation = '';
                 }, 150);
             }
-            
             fullGlitch() {
                 if (this.isGlitching) return;
-                
                 this.isGlitching = true;
-                
-                // Генерируем случайный текст для полного глитча
                 const glitchChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
                 let glitchString = '';
-                
                 for (let i = 0; i < 9; i++) {
                     const randomIndex = Math.floor(Math.random() * glitchChars.length);
                     glitchString += glitchChars[randomIndex];
                 }
-                
                 this.glitchText.textContent = glitchString;
-                
-                // Показываем глитч-элемент
                 this.glitchText.style.opacity = '1';
                 this.glitchText.style.animation = 'fastGlitchFlicker 0.25s forwards';
-                
-                // Добавляем эффект сдвига
                 this.element.style.animation = 'fastGlitchShift 0.25s forwards';
-                
-                // Активируем основной текст
                 this.staticText.classList.add('active');
-                
-                // Сбрасываем состояние через 0.25 секунды
                 setTimeout(() => {
                     this.glitchText.style.opacity = '0';
                     this.glitchText.style.animation = '';
@@ -2789,30 +2576,349 @@
                     this.isGlitching = false;
                 }, 250);
             }
-            
             destroy() {
                 if (this.glitchTimeout) clearTimeout(this.glitchTimeout);
                 if (this.fullGlitchTimeout) clearTimeout(this.fullGlitchTimeout);
             }
         }
 
+        // --- WEBGL TOPO BUTTON LOGIC ---
+        function initTopoButton() {
+            const canvas = document.getElementById('topoCanvas');
+            const button = document.getElementById('topoButton');
+            
+            if (!canvas || !button) return;
+
+            const gl = canvas.getContext('webgl');
+            if (!gl) return;
+
+            const vsSource = `
+                attribute vec4 aVertexPosition;
+                void main() {
+                    gl_Position = aVertexPosition;
+                }
+            `;
+
+            // Обновленные параметры: ОЧЕНЬ тонкие линии и адаптивные цвета
+            const fsSource = `
+                precision mediump float;
+                uniform vec2 u_resolution;
+                uniform float u_time;
+                uniform vec2 u_mouse;
+                uniform vec3 u_bgColor;
+                uniform vec3 u_lineColor;
+
+                vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                float snoise(vec2 v){
+                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                    vec2 i  = floor(v + dot(v, C.yy) );
+                    vec2 x0 = v -   i + dot(i, C.xx);
+                    vec2 i1;
+                    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                    vec4 x12 = x0.xyxy + C.xxzz;
+                    x12.xy -= i1;
+                    i = mod(i, 289.0);
+                    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                    m = m*m ; m = m*m ;
+                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                    vec3 h = abs(x) - 0.5;
+                    vec3 ox = floor(x + 0.5);
+                    vec3 a0 = x - ox;
+                    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                    vec3 g;
+                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                    return 130.0 * dot(m, g);
+                }
+
+                void main() {
+                    vec2 st = gl_FragCoord.xy / u_resolution.xy;
+                    st.x *= u_resolution.x / u_resolution.y;
+                    
+                    float scale = 0.8; 
+                    float speed = 0.05;
+                    
+                    vec2 mouseOffset = u_mouse * 0.4;
+                    float n = snoise(st * scale + vec2(u_time * speed) + mouseOffset);
+                    float n2 = snoise(st * scale * 2.0 - vec2(u_time * speed * 0.5));
+                    
+                    float finalNoise = n * 0.7 + n2 * 0.3;
+                    
+                    float lines = sin(finalNoise * 8.0);
+                    
+                    // Очень высокий порог для сверхтонких линий
+                    // Рисуем только верхушку синусоиды
+                    lines = smoothstep(0.92, 0.98, lines);
+                    
+                    vec3 color = mix(u_bgColor, u_lineColor, lines);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            function loadShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+
+            const programInfo = {
+                program: shaderProgram,
+                attribLocations: { vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition') },
+                uniformLocations: {
+                    resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
+                    time: gl.getUniformLocation(shaderProgram, 'u_time'),
+                    mouse: gl.getUniformLocation(shaderProgram, 'u_mouse'),
+                    bgColor: gl.getUniformLocation(shaderProgram, 'u_bgColor'),
+                    lineColor: gl.getUniformLocation(shaderProgram, 'u_lineColor'),
+                },
+            };
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]), gl.STATIC_DRAW);
+
+            let mouseX = 0.5, mouseY = 0.5;
+
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                mouseX = (e.clientX - rect.left) / rect.width;
+                mouseY = 1.0 - ((e.clientY - rect.top) / rect.height);
+            });
+
+            function render(now) {
+                now *= 0.001;
+                const displayWidth = button.clientWidth;
+                const displayHeight = button.clientHeight;
+                
+                if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+                    canvas.width = displayWidth;
+                    canvas.height = displayHeight;
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+                }
+
+                // Определение цветов в зависимости от темы
+                let bgR, bgG, bgB;
+                let lineR, lineG, lineB;
+
+                if (document.body.classList.contains('light-mode')) {
+                    // Кнопка черная, текст белый
+                    // Фон: Почти черный
+                    bgR = 0.05; bgG = 0.05; bgB = 0.05;
+                    // Линии: Серые (тонкие)
+                    lineR = 0.4; lineG = 0.4; lineB = 0.4;
+                } else if (document.body.classList.contains('space-mode')) {
+                    // Кнопка синяя (#00b4d8), текст темный
+                    // Фон: Синий
+                    bgR = 0.0; bgG = 0.706; bgB = 0.847;
+                    // Линии: Неоновый зеленый (#00ff9d) для космо-эффекта
+                    lineR = 0.0; lineG = 1.0; lineB = 0.616;
+                } else {
+                    // Dark mode (по умолчанию кнопка белая, текст черный)
+                    // Фон: Почти белый
+                    bgR = 0.95; bgG = 0.95; bgB = 0.95;
+                    // Линии: Темно-серые
+                    lineR = 0.6; lineG = 0.6; lineB = 0.6;
+                }
+
+                gl.useProgram(programInfo.program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+                gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+                gl.uniform1f(programInfo.uniformLocations.time, now);
+                gl.uniform2f(programInfo.uniformLocations.mouse, mouseX, mouseY);
+                
+                // Передаем цвета
+                gl.uniform3f(programInfo.uniformLocations.bgColor, bgR, bgG, bgB);
+                gl.uniform3f(programInfo.uniformLocations.lineColor, lineR, lineG, lineB);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // --- WEBGL TOPO WELCOME BACKGROUND LOGIC ---
+        function initWelcomeTopo() {
+            const canvas = document.getElementById('welcomeTopoCanvas');
+            const container = document.getElementById('welcomeOverlay');
+            
+            if (!canvas || !container) return;
+
+            const gl = canvas.getContext('webgl');
+            if (!gl) return;
+
+            // Вершинный шейдер стандартный (как в кнопке)
+            const vsSource = `
+                attribute vec4 aVertexPosition;
+                void main() {
+                    gl_Position = aVertexPosition;
+                }
+            `;
+
+            // Фрагментный шейдер с увеличенным масштабом для полного экрана
+            const fsSource = `
+                precision mediump float;
+                uniform vec2 u_resolution;
+                uniform float u_time;
+                uniform vec3 u_lineColor;
+
+                vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                float snoise(vec2 v){
+                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                    vec2 i  = floor(v + dot(v, C.yy) );
+                    vec2 x0 = v -   i + dot(i, C.xx);
+                    vec2 i1;
+                    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                    vec4 x12 = x0.xyxy + C.xxzz;
+                    x12.xy -= i1;
+                    i = mod(i, 289.0);
+                    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                    m = m*m ; m = m*m ;
+                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                    vec3 h = abs(x) - 0.5;
+                    vec3 ox = floor(x + 0.5);
+                    vec3 a0 = x - ox;
+                    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                    vec3 g;
+                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                    return 130.0 * dot(m, g);
+                }
+
+                void main() {
+                    vec2 st = gl_FragCoord.xy / u_resolution.xy;
+                    st.x *= u_resolution.x / u_resolution.y;
+                    
+                    // Увеличиваем масштаб для полного экрана, чтобы линии были более плавными
+                    float scale = 1.5; 
+                    float speed = 0.03;
+                    
+                    // Используем время для плавного движения
+                    float n = snoise(st * scale + vec2(u_time * speed));
+                    float n2 = snoise(st * scale * 2.0 - vec2(u_time * speed * 0.5));
+                    
+                    float finalNoise = n * 0.6 + n2 * 0.4;
+                    
+                    // Частота линий
+                    float lines = sin(finalNoise * 15.0);
+                    
+                    // Делаем линии очень тонкими и мягкими
+                    lines = smoothstep(0.95, 0.98, lines);
+                    
+                    // Фон прозрачный (0.0), рисуем только линии
+                    vec4 color = vec4(u_lineColor, lines * 0.5); // 0.5 прозрачность линий
+                    
+                    gl_FragColor = color;
+                }
+            `;
+
+            function loadShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+
+            const programInfo = {
+                program: shaderProgram,
+                attribLocations: { vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition') },
+                uniformLocations: {
+                    resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
+                    time: gl.getUniformLocation(shaderProgram, 'u_time'),
+                    lineColor: gl.getUniformLocation(shaderProgram, 'u_lineColor'),
+                },
+            };
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]), gl.STATIC_DRAW);
+
+            let animationFrameId;
+            // Флаг для остановки анимации, когда оверлей скрыт
+            window.isWelcomeActive = true; 
+
+            function render(now) {
+                if (!window.isWelcomeActive) return; // Останавливаем рендер, если оверлей скрыт
+
+                now *= 0.001;
+                const displayWidth = container.clientWidth;
+                const displayHeight = container.clientHeight;
+                
+                if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+                    canvas.width = displayWidth;
+                    canvas.height = displayHeight;
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+                }
+
+                // Цвет линий (светло-серый/белый для темного фона загрузки)
+                // #e5e5e5 в RGB
+                const lineR = 0.8;
+                const lineG = 0.8; 
+                const lineB = 0.8;
+
+                gl.useProgram(programInfo.program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+                
+                gl.uniform2f(programInfo.uniformLocations.resolution, canvas.width, canvas.height);
+                gl.uniform1f(programInfo.uniformLocations.time, now);
+                gl.uniform3f(programInfo.uniformLocations.lineColor, lineR, lineG, lineB);
+                
+                // Включаем смешивание для прозрачности
+                gl.enable(gl.BLEND);
+                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                animationFrameId = requestAnimationFrame(render);
+            }
+            render(0);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Показываем приветственное сообщение
+            // ... existing init code ...
             const welcomeOverlay = document.getElementById('welcomeOverlay');
             const progressElement = document.querySelector('.loading-progress');
             
-            // Инициализируем быстрый глитч для заголовка
             const welcomeGlitchContainer = document.querySelector('.welcome-glitch-container');
             if (welcomeGlitchContainer) {
                 window.welcomeGlitch = new FastWelcomeGlitch(welcomeGlitchContainer);
             }
             
-            // Анимация прогресса круговой загрузки
             let progress = 0;
-            const totalDuration = 3000; // 3 секунды
-            const updateInterval = 50; // Обновляем каждые 50мс
+            const totalDuration = 3000;
+            const updateInterval = 50;
             const increment = (updateInterval / totalDuration) * 100;
             
+            // --- INIT BACKGROUND TOPO ---
+            initWelcomeTopo();
+
             const progressInterval = setInterval(() => {
                 progress += increment;
                 if (progress >= 100) {
@@ -2822,25 +2928,17 @@
                 progressElement.textContent = Math.floor(progress) + '%';
             }, updateInterval);
             
-            // Скрываем приветствие через 3 секунды
             setTimeout(() => {
                 welcomeOverlay.classList.add('hidden');
-                
-                // Останавливаем интервал прогресса
                 clearInterval(progressInterval);
+                if (window.welcomeGlitch) window.welcomeGlitch.destroy();
                 
-                // Уничтожаем глитч-систему приветствия
-                if (window.welcomeGlitch) {
-                    window.welcomeGlitch.destroy();
-                }
-                
-                // Удаляем элемент из DOM после завершения анимации
-                setTimeout(() => {
-                    welcomeOverlay.remove();
-                }, 800);
+                // Останавливаем WebGL анимацию фона
+                window.isWelcomeActive = false;
+
+                setTimeout(() => { welcomeOverlay.remove(); }, 800);
             }, totalDuration);
             
-            // Загружаем остальные функции
             loadCommands();
             setupTheme();
             setupCommandCopy();
@@ -2850,65 +2948,27 @@
             createStars();
             createGeometryCube();
             setupAnchorScroll();
-            setupSearch(); // New Search Logic
+            setupSearch(); 
             setupScrollTop(); 
-            setupTiltEffect();
+            setupTiltEffect(); 
             
-            // Инициализируем глитч-систему для цифр
+            // --- INIT TOPO BUTTON ---
+            initTopoButton();
+            
             const glitchNumberElement = document.querySelector('.glitch-number');
             if (glitchNumberElement) {
                 window.glitchNumber = new GlitchNumber(glitchNumberElement);
             }
-
-            // Добавляем обработчик скролла для вертикальных чисел
-            setupVerticalNumberScroll();
         });
+        
+        // ... (Keep existing setupSearch, setupScrollTop, etc. functions) ...
 
-        // Новая функция: управление z-index вертикальных чисел при скролле
-        function setupVerticalNumberScroll() {
-            const verticalNumber = document.getElementById('verticalNumber');
-            const footer = document.querySelector('footer');
-            
-            if (!verticalNumber || !footer) return;
-            
-            function checkScrollPosition() {
-                const scrollPosition = window.scrollY + window.innerHeight;
-                const documentHeight = document.documentElement.scrollHeight;
-                const footerTop = footer.offsetTop;
-                
-                // Если мы прокрутили достаточно близко к футеру (за 100px до него)
-                if (scrollPosition > footerTop - 100) {
-                    // Добавляем класс, который опускает z-index ниже футера
-                    verticalNumber.classList.add('behind-footer');
-                } else {
-                    // Убираем класс, возвращаем обычный z-index
-                    verticalNumber.classList.remove('behind-footer');
-                }
-            }
-            
-            // Проверяем позицию при загрузке
-            checkScrollPosition();
-            
-            // Проверяем позицию при скролле (с debounce для производительности)
-            let scrollTimeout;
-            window.addEventListener('scroll', function() {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(checkScrollPosition, 50);
-            });
-            
-            // Также проверяем при изменении размера окна
-            window.addEventListener('resize', checkScrollPosition);
-        }
-
-        // --- EXPANDABLE SEARCH FUNCTIONALITY ---
         function setupSearch() {
             const searchContainer = document.querySelector('.search-wrapper');
             const searchInput = document.getElementById('commandSearchInput');
             const sections = document.querySelectorAll('.commands-section');
-            const allCommands = document.querySelectorAll('.command-item');
-            let scrollTimeout; // Переменная для таймера прокрутки
+            let scrollTimeout;
             
-            // Раскрытие поиска при клике
             searchContainer.addEventListener('click', function() {
                 if (!this.classList.contains('expanded')) {
                     this.classList.add('expanded');
@@ -2916,41 +2976,27 @@
                 }
             });
 
-            // Скрытие поиска при клике снаружи
             document.addEventListener('click', function(e) {
                 if (!searchContainer.contains(e.target) && searchInput.value.trim() === '') {
                     searchContainer.classList.remove('expanded');
                 }
             });
 
-            // Функция для прокрутки к первому результату
             function scrollToFirstResult(searchTerm) {
                 if (!searchTerm) return;
-                
-                // Ищем первый видимый элемент (не скрытый поиском)
                 const firstVisible = document.querySelector('.command-item:not(.hidden-by-search)');
-                
                 if (firstVisible) {
-                    // Вычисляем позицию элемента относительно верха страницы
-                    // Вычитаем высоту навигации + отступ, чтобы элемент был по центру
                     const elementRect = firstVisible.getBoundingClientRect();
                     const absoluteElementTop = elementRect.top + window.pageYOffset;
-                    const headerOffset = 250; // Отступ сверху (чтобы не под шапкой и было видно)
+                    const headerOffset = 250;
                     const scrollPosition = absoluteElementTop - headerOffset;
-
-                    window.scrollTo({
-                        top: scrollPosition,
-                        behavior: "smooth"
-                    });
+                    window.scrollTo({ top: scrollPosition, behavior: "smooth" });
                     
-                    // Визуальный эффект подсветки
                     const originalBorder = firstVisible.style.borderColor;
                     const originalShadow = firstVisible.style.boxShadow;
-                    
                     firstVisible.style.borderColor = 'var(--accent-color)';
                     firstVisible.style.boxShadow = '0 0 15px rgba(0, 209, 255, 0.3)';
                     firstVisible.style.transition = 'all 0.3s ease';
-                    
                     setTimeout(() => {
                         firstVisible.style.borderColor = originalBorder;
                         firstVisible.style.boxShadow = originalShadow;
@@ -2958,37 +3004,27 @@
                 }
             }
 
-            // Обработка клавиши Enter
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    clearTimeout(scrollTimeout); // Отменяем таймер если нажали Enter
+                    clearTimeout(scrollTimeout);
                     scrollToFirstResult(searchInput.value.toLowerCase().trim());
                 }
             });
             
-            // Логика фильтрации
             searchInput.addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase().trim();
-                
-                // Очищаем таймер при каждом вводе символа (debounce)
                 clearTimeout(scrollTimeout);
 
-                // Если поиск пуст, восстанавливаем исходное состояние секций
                 if (searchTerm === '') {
                     sections.forEach(section => {
                         const category = section.dataset.category;
                         const header = section.querySelector('.section-header');
                         const wrapper = section.querySelector('.commands-wrapper');
                         const toggleIcon = section.querySelector('.section-toggle i');
-                        
                         if (!header || !wrapper) return;
-
-                        // Сначала показываем все элементы
                         const items = section.querySelectorAll('.command-item');
                         items.forEach(item => item.classList.remove('hidden-by-search'));
-
-                        // Восстанавливаем состояние (свернуто/развернуто)
                         if (sectionsState[category]) {
                             wrapper.classList.add('expanded');
                             header.classList.add('expanded');
@@ -3006,46 +3042,34 @@
                     return;
                 }
                 
-                // Фильтрация
                 sections.forEach(section => {
                     const items = section.querySelectorAll('.command-item');
                     let hasVisibleItems = false;
                     
                     items.forEach(item => {
-                        try {
-                            const textEl = item.querySelector('.command-text');
-                            const hintEl = item.querySelector('.command-hint');
-                            
-                            const text = textEl ? textEl.textContent.toLowerCase() : '';
-                            const hint = hintEl ? hintEl.textContent.toLowerCase() : '';
-                            
-                            if (text.includes(searchTerm) || hint.includes(searchTerm)) {
-                                item.classList.remove('hidden-by-search');
-                                hasVisibleItems = true;
-                            } else {
-                                item.classList.add('hidden-by-search');
-                            }
-                        } catch (err) {
-                            console.error('Error filtering item:', err);
+                        const textEl = item.querySelector('.command-text');
+                        const hintEl = item.querySelector('.command-hint');
+                        const text = textEl ? textEl.textContent.toLowerCase() : '';
+                        const hint = hintEl ? hintEl.textContent.toLowerCase() : '';
+                        if (text.includes(searchTerm) || hint.includes(searchTerm)) {
+                            item.classList.remove('hidden-by-search');
+                            hasVisibleItems = true;
+                        } else {
+                            item.classList.add('hidden-by-search');
                         }
                     });
                     
                     const header = section.querySelector('.section-header');
                     const wrapper = section.querySelector('.commands-wrapper');
                     const toggleIcon = section.querySelector('.section-toggle i');
-                    
                     if (!header || !wrapper) return;
-
-                    // Всегда разворачиваем секции, где есть совпадения
                     if (hasVisibleItems) {
                         wrapper.classList.add('expanded');
                         header.classList.add('expanded');
                         if (toggleIcon) toggleIcon.classList.add('rotated');
-                        // Принудительно ставим большую высоту для поиска, чтобы гарантировать раскрытие всех категорий
                         wrapper.style.maxHeight = '5000px'; 
                         wrapper.style.opacity = '1';
                     } else {
-                        // Сворачиваем пустые секции
                         wrapper.classList.remove('expanded');
                         header.classList.remove('expanded');
                         if (toggleIcon) toggleIcon.classList.remove('rotated');
@@ -3054,52 +3078,32 @@
                     }
                 });
 
-                // Запускаем таймер прокрутки (если пользователь перестал печатать на 600мс)
-                scrollTimeout = setTimeout(() => {
-                     scrollToFirstResult(searchTerm);
-                }, 600);
+                scrollTimeout = setTimeout(() => { scrollToFirstResult(searchTerm); }, 600);
             });
         }
 
-        // --- SCROLL TO TOP FUNCTIONALITY ---
         function setupScrollTop() {
             const scrollBtn = document.getElementById('scrollTopBtn');
-            
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 500) {
-                    scrollBtn.classList.add('visible');
-                } else {
-                    scrollBtn.classList.remove('visible');
-                }
+                if (window.scrollY > 500) { scrollBtn.classList.add('visible'); } 
+                else { scrollBtn.classList.remove('visible'); }
             });
-            
-            scrollBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
+            scrollBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
         }
 
-        // --- 3D TILT EFFECT ---
         function setupTiltEffect() {
             const cards = document.querySelectorAll('.tilt-card');
-            
             cards.forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    
-                    const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+                    const rotateX = ((y - centerY) / centerY) * -10;
                     const rotateY = ((x - centerX) / centerX) * 10;
-                    
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
                 });
-                
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
                 });
@@ -3109,23 +3113,17 @@
         function createStars() {
             const starsContainer = document.getElementById('starsContainer');
             starsContainer.innerHTML = '';
-            
             const starCount = 200;
-            
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                
                 const size = Math.random() * 3;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
-                
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
-                
                 const brightness = 0.5 + Math.random() * 0.5;
                 star.style.opacity = brightness.toString();
-                
                 starsContainer.appendChild(star);
             }
         }
@@ -3133,28 +3131,21 @@
         function createGeometryCube() {
             const cubeContainer = document.getElementById('cubeGeometry');
             cubeContainer.innerHTML = '';
-            
             const rows = 6;
             const cols = 6;
-            
             const points = [];
-            
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     const point = document.createElement('div');
                     point.className = 'cube-point';
-                    
                     const x = (col / (cols - 1)) * 80 + 10;
                     const y = (row / (rows - 1)) * 80 + 10;
-                    
                     point.style.left = `${x}%`;
                     point.style.top = `${y}%`;
-                    
                     cubeContainer.appendChild(point);
                     points.push({x, y, element: point, row, col});
                 }
             }
-            
             createGridLines(points, rows, cols, cubeContainer);
         }
 
@@ -3163,34 +3154,27 @@
                 for (let col = 0; col < cols - 1; col++) {
                     const point1 = points[row * cols + col];
                     const point2 = points[row * cols + col + 1];
-                    
                     createLineBetweenPoints(point1, point2, container);
                 }
             }
-            
             for (let col = 0; col < cols; col++) {
                 for (let row = 0; row < rows - 1; row++) {
                     const point1 = points[row * cols + col];
                     const point2 = points[(row + 1) * cols + col];
-                    
                     createLineBetweenPoints(point1, point2, container);
                 }
             }
-            
             for (let row = 0; row < rows - 1; row++) {
                 for (let col = 0; col < cols - 1; col++) {
                     const point1 = points[row * cols + col];
                     const point2 = points[(row + 1) * cols + (col + 1)];
-                    
                     createLineBetweenPoints(point1, point2, container, 0.1);
                 }
             }
-            
             for (let row = 0; row < rows - 1; row++) {
                 for (let col = 1; col < cols; col++) {
                     const point1 = points[row * cols + col];
                     const point2 = points[(row + 1) * cols + (col - 1)];
-                    
                     createLineBetweenPoints(point1, point2, container, 0.1);
                 }
             }
@@ -3199,23 +3183,13 @@
         function createLineBetweenPoints(point1, point2, container, customOpacity = null) {
             const line = document.createElement('div');
             line.className = 'cube-line';
-            
-            const distance = Math.sqrt(
-                Math.pow(point2.x - point1.x, 2) + 
-                Math.pow(point2.y - point1.y, 2)
-            );
-            
+            const distance = Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
             const angle = Math.atan2(point2.y - point1.y, point2.x - point1.x) * 180 / Math.PI;
-            
             line.style.left = `${point1.x}%`;
             line.style.top = `${point1.y}%`;
             line.style.width = `${distance}%`;
             line.style.transform = `rotate(${angle}deg)`;
-            
-            if (customOpacity !== null) {
-                line.style.opacity = customOpacity.toString();
-            }
-            
+            if (customOpacity !== null) { line.style.opacity = customOpacity.toString(); }
             container.appendChild(line);
         }
 
@@ -3227,29 +3201,20 @@
         function createAnimatedCrosses() {
             const crossContainer = document.getElementById('crossContainer');
             crossContainer.innerHTML = '';
-            
             const totalCrosses = 49;
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight * 2;
-            
             const sizeVariations = [30, 40, 50, 60, 70, 80, 90, 100];
-            
             const placedCrosses = [];
             
             function checkCollision(x, y, size) {
-                const safetyMargin = size * 1.5;
-                
                 for (const cross of placedCrosses) {
                     const distanceX = Math.abs(x - cross.x);
                     const distanceY = Math.abs(y - cross.y);
-                    
                     const minDistance = (size + cross.size) / 2 + 20;
-                    
                     if (distanceX < minDistance && distanceY < minDistance) {
                         const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-                        if (distance < minDistance) {
-                            return true;
-                        }
+                        if (distance < minDistance) return true;
                     }
                 }
                 return false;
@@ -3257,103 +3222,42 @@
 
             for (let layer = 0; layer < 2; layer++) {
                 const crossesPerLayer = Math.floor(totalCrosses / 2);
-                
                 for (let i = 0; i < crossesPerLayer; i++) {
                     let attempts = 0;
                     let placed = false;
-                    
                     while (attempts < 50 && !placed) {
                         const randomSize = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
-                        
                         const minX = randomSize / 2 + 20;
                         const maxX = viewportWidth - randomSize / 2 - 20;
                         const minY = randomSize / 2 + 20 + (layer * viewportHeight / 2);
                         const maxY = viewportHeight / 2 - randomSize / 2 - 20 + (layer * viewportHeight / 2);
-                        
                         const randomX = minX + Math.random() * (maxX - minX);
                         const randomY = minY + Math.random() * (maxY - minY);
                         
                         if (!checkCollision(randomX, randomY, randomSize)) {
                             const cross = document.createElement('div');
                             cross.className = 'cross';
-                            
                             cross.style.setProperty('--cross-size', `${randomSize}px`);
                             cross.style.width = `${randomSize}px`;
                             cross.style.height = `${randomSize}px`;
-                            
                             cross.style.left = `${randomX}px`;
                             cross.style.top = `${randomY}px`;
-                            
                             const depthLayer = Math.floor(Math.random() * 3);
-                            
-                            if (depthLayer === 0) {
-                                cross.style.zIndex = '0';
-                                cross.style.opacity = (0.1 + Math.random() * 0.2).toString();
-                            } else if (depthLayer === 1) {
-                                cross.style.zIndex = '1';
-                                cross.style.opacity = (0.3 + Math.random() * 0.2).toString();
-                            } else {
-                                cross.style.zIndex = '2';
-                                cross.style.opacity = (0.5 + Math.random() * 0.3).toString();
-                            }
-                            
+                            if (depthLayer === 0) { cross.style.zIndex = '0'; cross.style.opacity = (0.1 + Math.random() * 0.2).toString(); } 
+                            else if (depthLayer === 1) { cross.style.zIndex = '1'; cross.style.opacity = (0.3 + Math.random() * 0.2).toString(); } 
+                            else { cross.style.zIndex = '2'; cross.style.opacity = (0.5 + Math.random() * 0.3).toString(); }
                             const isSpaceMode = document.body.classList.contains('space-mode');
                             const isLightMode = document.body.classList.contains('light-mode');
-                            
-                            if (isSpaceMode) {
-                                cross.style.setProperty('--cross-color', 'var(--space-neon)');
-                            } else if (isLightMode) {
-                                cross.style.setProperty('--cross-color', 'var(--black)');
-                            } else {
-                                cross.style.setProperty('--cross-color', 'var(--white)');
-                            }
-                            
+                            if (isSpaceMode) { cross.style.setProperty('--cross-color', 'var(--space-neon)'); } 
+                            else if (isLightMode) { cross.style.setProperty('--cross-color', 'var(--black)'); } 
+                            else { cross.style.setProperty('--cross-color', 'var(--white)'); }
                             const randomRotation = -5 + Math.random() * 10;
                             cross.style.transform = `rotate(${randomRotation}deg)`;
-                            
                             crossContainer.appendChild(cross);
-                            
-                            placedCrosses.push({
-                                x: randomX,
-                                y: randomY,
-                                size: randomSize
-                            });
-                            
+                            placedCrosses.push({ x: randomX, y: randomY, size: randomSize });
                             placed = true;
                         }
-                        
                         attempts++;
-                    }
-                    
-                    if (!placed) {
-                        const randomSize = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
-                        const randomX = randomSize / 2 + 20 + Math.random() * (viewportWidth - randomSize - 40);
-                        const randomY = randomSize / 2 + 20 + Math.random() * (viewportHeight / 2 - randomSize - 40) + (layer * viewportHeight / 2);
-                        
-                        const cross = document.createElement('div');
-                        cross.className = 'cross';
-                        cross.style.setProperty('--cross-size', `${randomSize}px`);
-                        cross.style.width = `${randomSize}px`;
-                        cross.style.height = `${randomSize}px`;
-                        cross.style.left = `${randomX}px`;
-                        cross.style.top = `${randomY}px`;
-                        
-                        cross.style.zIndex = Math.floor(Math.random() * 3);
-                        cross.style.opacity = (0.2 + Math.random() * 0.6).toString();
-                        
-                        const isSpaceMode = document.body.classList.contains('space-mode');
-                        const isLightMode = document.body.classList.contains('light-mode');
-                        
-                        if (isSpaceMode) {
-                            cross.style.setProperty('--cross-color', 'var(--space-neon)');
-                        } else if (isLightMode) {
-                            cross.style.setProperty('--cross-color', 'var(--black)');
-                        } else {
-                            cross.style.setProperty('--cross-color', 'var(--white)');
-                        }
-                        
-                        cross.style.transform = `rotate(${-5 + Math.random() * 10}deg)`;
-                        crossContainer.appendChild(cross);
                     }
                 }
             }
@@ -3362,25 +3266,19 @@
         function createBackgroundText() {
             const textContainer = document.getElementById('textContainer');
             textContainer.innerHTML = '';
-            
             const rows = 12;
             const cols = 4;
-            
             for (let row = 0; row < rows * 2; row++) {
                 for (let col = 0; col < cols; col++) {
                     const bgText = document.createElement('div');
                     bgText.className = 'bg-text';
-                    
                     const textVariations = ['CHARM BOT', 'ALIEN CHARM', 'SOUND BOT', 'STREAM'];
                     const randomText = textVariations[Math.floor(Math.random() * textVariations.length)];
                     bgText.textContent = randomText;
-                    
                     const opacity = 0.4 + (row % 4) * 0.15;
                     bgText.style.opacity = opacity.toString();
-                    
                     const sizeVariation = 0.9 + (Math.random() * 0.2);
                     bgText.style.fontSize = `${5.5 * sizeVariation}rem`;
-                    
                     textContainer.appendChild(bgText);
                 }
             }
@@ -3389,82 +3287,52 @@
         function setupTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             setTheme(savedTheme, true);
-            
             const themeButtons = document.querySelectorAll('.theme-btn');
             themeButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     const theme = this.dataset.theme;
                     if (this.classList.contains('active')) return;
-                    
-                    // Получаем позицию кнопки для анимации волны
                     const rect = this.getBoundingClientRect();
                     const clickX = rect.left + rect.width / 2;
                     const clickY = rect.top + rect.height / 2;
-                    
                     setTheme(theme, false, {x: clickX, y: clickY});
                 });
             });
         }
 
         function setTheme(theme, isInitialLoad = false, clickPosition = null) {
-            // Немедленно меняем тему
             document.body.classList.remove('light-mode', 'dark-mode', 'space-mode');
             document.body.classList.add(`${theme}-mode`);
-            
             const themeButtons = document.querySelectorAll('.theme-btn');
             themeButtons.forEach(button => {
                 button.classList.remove('active');
-                if (button.dataset.theme === theme) {
-                    button.classList.add('active');
-                }
+                if (button.dataset.theme === theme) { button.classList.add('active'); }
             });
-            
             localStorage.setItem('theme', theme);
-            
-            // Немедленно обновляем фоновые элементы
             createAnimatedBackground();
             createGeometryCube();
+            if (theme === 'space') { createStars(); }
             
-            // Для космической темы создаем звезды
-            if (theme === 'space') {
-                createStars();
-            }
-            
+            // Re-render crosses to update color
+            createAnimatedCrosses(); 
+
             if (!isInitialLoad && clickPosition) {
-                // Создаем волну после смены темы
                 const waveOverlay = document.getElementById('themeWave');
-                
-                // Определяем цвет волны
                 let waveColor;
-                if (theme === 'space') {
-                    waveColor = 'rgba(0, 255, 157, 0.5)';
-                } else if (theme === 'light') {
-                    waveColor = 'rgba(0, 0, 0, 0.5)';
-                } else {
-                    waveColor = 'rgba(255, 255, 255, 0.5)';
-                }
-                
-                // Создаем круг волны
+                if (theme === 'space') { waveColor = 'rgba(0, 255, 157, 0.5)'; } 
+                else if (theme === 'light') { waveColor = 'rgba(0, 0, 0, 0.5)'; } 
+                else { waveColor = 'rgba(255, 255, 255, 0.5)'; }
                 waveOverlay.innerHTML = '';
                 const waveCircle = document.createElement('div');
                 waveCircle.className = 'wave-circle';
                 waveCircle.style.setProperty('--wave-color', waveColor);
-                
-                // Позиционируем волну от кнопки
                 waveCircle.style.left = `${clickPosition.x}px`;
                 waveCircle.style.top = `${clickPosition.y}px`;
-                
                 waveOverlay.appendChild(waveCircle);
-                
-                // Показываем волну
                 waveOverlay.classList.add('active');
-                
-                // Убираем волну после анимации
                 setTimeout(() => {
                     waveOverlay.classList.remove('active');
-                    setTimeout(() => {
-                        waveOverlay.innerHTML = '';
-                    }, 200);
+                    setTimeout(() => { waveOverlay.innerHTML = ''; }, 200);
                 }, 600);
             }
         }
@@ -3473,31 +3341,14 @@
             for (const category in commandsData) {
                 const container = document.getElementById(`${category}-commands`);
                 if (!container) continue;
-                
                 const commands = commandsData[category];
-                
                 commands.forEach(commandData => {
                     const commandItem = document.createElement('div');
                     commandItem.className = 'command-item';
-                    
                     let commandText, commandHint;
-                    
-                    if (typeof commandData === 'string') {
-                        commandText = commandData;
-                        commandHint = '';
-                    } else {
-                        commandText = commandData.text;
-                        commandHint = commandData.hint || '';
-                    }
-                    
-                    commandItem.innerHTML = `
-                        <div>
-                            <div class="command-text">${commandText}</div>
-                            ${commandHint ? `<div class="command-hint">${commandHint}</div>` : ''}
-                        </div>
-                        <i class="fas fa-copy command-icon"></i>
-                    `;
-                    
+                    if (typeof commandData === 'string') { commandText = commandData; commandHint = ''; } 
+                    else { commandText = commandData.text; commandHint = commandData.hint || ''; }
+                    commandItem.innerHTML = `<div><div class="command-text">${commandText}</div>${commandHint ? `<div class="command-hint">${commandHint}</div>` : ''}</div><i class="fas fa-copy command-icon"></i>`;
                     commandItem.dataset.command = commandText;
                     container.appendChild(commandItem);
                 });
@@ -3508,11 +3359,9 @@
             const balanceToggle = document.getElementById('balanceToggle');
             const balanceToggleIcon = document.getElementById('balanceToggleIcon');
             const balanceContent = document.getElementById('balanceContent');
-            
             balanceContent.classList.remove('expanded');
             balanceToggleIcon.classList.remove('rotated');
             balanceToggle.classList.remove('expanded-header');
-            
             balanceToggle.addEventListener('click', function() {
                 if (balanceContent.classList.contains('expanded')) {
                     balanceContent.classList.remove('expanded');
@@ -3532,27 +3381,21 @@
 
         function setupCommandSections() {
             const sections = document.querySelectorAll('.commands-section');
-            
             sections.forEach(section => {
                 const header = section.querySelector('.section-header');
                 const wrapper = section.querySelector('.commands-wrapper');
                 const toggleIcon = section.querySelector('.section-toggle i');
                 const category = section.dataset.category;
-                
                 wrapper.classList.remove('expanded');
                 header.classList.remove('expanded');
                 toggleIcon.classList.remove('rotated');
                 sectionsState[category] = false;
-                
-                header.addEventListener('click', function() {
-                    toggleSection(category, header, wrapper, toggleIcon);
-                });
+                header.addEventListener('click', function() { toggleSection(category, header, wrapper, toggleIcon); });
             });
         }
 
         function toggleSection(category, header, wrapper, toggleIcon) {
             const isExpanded = sectionsState[category];
-            
             if (isExpanded) {
                 wrapper.classList.remove('expanded');
                 header.classList.remove('expanded');
@@ -3571,48 +3414,29 @@
         }
 
         function setupCommandCopy() {
-            const commandItems = document.querySelectorAll('.command-item');
             const copyToast = document.getElementById('copyToast');
-            
-            // Delegate event listener for better performance with search
             document.addEventListener('click', function(e) {
                 const item = e.target.closest('.command-item');
                 if (!item) return;
-                
                 const command = item.dataset.command;
                 copyToClipboard(command);
-                
                 item.style.borderColor = 'var(--accent-color)';
                 item.style.boxShadow = '0 0 0 2px rgba(0, 209, 255, 0.1)';
-                
-                setTimeout(() => {
-                    item.style.borderColor = '';
-                    item.style.boxShadow = '';
-                }, 300);
+                setTimeout(() => { item.style.borderColor = ''; item.style.boxShadow = ''; }, 300);
             });
-            
             function copyToClipboard(text) {
                 navigator.clipboard.writeText(text).then(() => {
                     copyToast.classList.add('show');
-                    
-                    setTimeout(() => {
-                        copyToast.classList.remove('show');
-                    }, 2000);
+                    setTimeout(() => { copyToast.classList.remove('show'); }, 2000);
                 }).catch(err => {
-                    console.error('Ошибка при копировании:', err);
-                    
                     const textarea = document.createElement('textarea');
                     textarea.value = text;
                     document.body.appendChild(textarea);
                     textarea.select();
                     document.execCommand('copy');
                     document.body.removeChild(textarea);
-                    
                     copyToast.classList.add('show');
-                    
-                    setTimeout(() => {
-                        copyToast.classList.remove('show');
-                    }, 2000);
+                    setTimeout(() => { copyToast.classList.remove('show'); }, 2000);
                 });
             }
         }
@@ -3621,16 +3445,11 @@
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
-                    
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
+                        window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
                     }
                 });
             });
@@ -3642,14 +3461,9 @@
             createGeometryCube();
         });
         
-        // Уничтожаем глитч-систему при разгрузке страницы
         window.addEventListener('beforeunload', function() {
-            if (window.glitchNumber) {
-                window.glitchNumber.destroy();
-            }
-            if (window.welcomeGlitch) {
-                window.welcomeGlitch.destroy();
-            }
+            if (window.glitchNumber) window.glitchNumber.destroy();
+            if (window.welcomeGlitch) window.welcomeGlitch.destroy();
         });
     </script>
 </body>
